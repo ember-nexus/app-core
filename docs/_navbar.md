@@ -1,0 +1,3 @@
+- [GitHub](https://github.com/ember-nexus/web-registry)
+- [TypeDoc](https://ember-nexus.github.io/web-registry/type/)
+- [NPM](https://www.npmjs.com/package/@ember-nexus/web-registry)

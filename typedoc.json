@@ -1,0 +1,16 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPointStrategy": "expand",
+  "entryPoints": ["./src"],
+  "out": "./docs/type",
+  "plugin": [
+    "typedoc-theme-hierarchy",
+    "typedoc-plugin-mdn-links"
+  ],
+  "theme": "hierarchy",
+  "navigationLinks": {
+    "Web SDK Documentation": "https://ember-nexus.github.io/web-registry",
+    "NPM": "https://www.npmjs.com/package/@ember-nexus/web-registry",
+    "GitHub": "https://github.com/ember-nexus/web-registry"
+  }
+}

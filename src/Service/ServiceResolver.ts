@@ -5,27 +5,36 @@ class ServiceResolver {
 
   constructor() {}
 
-  set(serviceIdentifier: ServiceIdentifier, service: unknown): ServiceResolver {
+  hasService(serviceIdentifier: ServiceIdentifier): boolean {
+    return this.services.has(serviceIdentifier);
+  }
+
+  getService(serviceIdentifier: ServiceIdentifier): null | unknown {
+    if (!this.hasService(serviceIdentifier)) {
+      return null;
+    }
+    return this.services.get(serviceIdentifier);
+  }
+
+  setService(serviceIdentifier: ServiceIdentifier, service: unknown): ServiceResolver {
     this.services.set(serviceIdentifier, service);
     return this;
   }
 
-  has(serviceIdentifier: ServiceIdentifier): boolean {
-    return this.services.has(serviceIdentifier);
-  }
-
-  get(serviceIdentifier: ServiceIdentifier): null | unknown {
-    if (!this.has(serviceIdentifier)) {
-      return null;
-    }
-    return this.services.get(serviceIdentifier);
+  deleteService(serviceIdentifier: ServiceIdentifier): ServiceResolver {
+    this.services.delete(serviceIdentifier);
+    return this;
   }
 
   getServiceIdentifiers(): ServiceIdentifier[] {
     return [...this.services.keys()];
   }
 
-  clear(): ServiceResolver {
+  getServices(): unknown[] {
+    return [...this.services.values()];
+  }
+
+  clearServices(): ServiceResolver {
     this.services.clear();
     return this;
   }

@@ -1,17 +1,12 @@
 interface RegistryInterface<T = unknown> {
   getEntry(key: string): T | null;
   hasEntry(key: string): boolean;
-  setEntry(key: string, value: T): this;
+  setEntry(key: string, entry: T): this;
   deleteEntry(key: string): this;
   clearEntries(): this;
 }
 
-interface PriorityRegistryInterface extends RegistryInterface {
-  setEntry<T = unknown>(key: string, value: T, priority?: number): this;
-  getAllEntriesForKey<T = unknown[]>(key: string): T | null;
-}
-
-class Registry<T = unknown> implements RegistryInterface {
+class Registry<T = unknown> implements RegistryInterface<T> {
   private readonly entries: Map<string, T> = new Map();
 
   clearEntries(): this {
@@ -24,7 +19,7 @@ class Registry<T = unknown> implements RegistryInterface {
     return this;
   }
 
-  getEntry<T = unknown>(key: string): T | null {
+  getEntry(key: string): T | null {
     if (!this.hasEntry(key)) {
       return null;
     }
@@ -35,10 +30,10 @@ class Registry<T = unknown> implements RegistryInterface {
     return this.entries.has(key);
   }
 
-  setEntry(key: string, value: T): this {
-    this.entries.set(key, value);
+  setEntry(key: string, entry: T): this {
+    this.entries.set(key, entry);
     return this;
   }
 }
 
-export { RegistryInterface, PriorityRegistryInterface, Registry };
+export { RegistryInterface, Registry };

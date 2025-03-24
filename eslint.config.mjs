@@ -9,9 +9,9 @@ import {fileURLToPath} from "node:url";
 import js from "@eslint/js";
 import {FlatCompat} from "@eslint/eslintrc";
 import tseslint from "@eslint/js";
-import jest from "eslint-plugin-jest";
 import pluginPromise from 'eslint-plugin-promise';
 import compat from "eslint-plugin-compat";
+import vitest from "@vitest/eslint-plugin";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,14 +43,14 @@ export default [
       "@typescript-eslint": typescriptEslint,
       prettier,
       import: fixupPluginRules(_import),
-      jest,
+      vitest,
     },
 
     languageOptions: {
       globals: {
         ...Object.fromEntries(Object.entries(globals.browser).map(([key]) => [key, "off"])),
         ...globals.node,
-        ...jest.environments.globals.globals
+        ...vitest.environments.env.globals
       },
 
       parser: tsParser,
@@ -71,6 +71,8 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
+      ...vitest.configs.recommended.rules,
+      "no-undef": "off",
       "no-unused-vars": "off",
       "no-template-curly-in-string": "error",
       "no-use-before-define": "error",
@@ -95,11 +97,6 @@ export default [
       "require-await": "error",
       "eqeqeq": ["error", "always"],
       ...tseslint.configs.strict,
-      "jest/no-disabled-tests": "warn",
-      "jest/no-focused-tests": "error",
-      "jest/no-identical-title": "error",
-      "jest/prefer-to-have-length": "warn",
-      "jest/valid-expect": "error",
       "@typescript-eslint/explicit-function-return-type": "warn",
       "@typescript-eslint/no-unused-vars": "error",
       "sort-imports": ["error", {

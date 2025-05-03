@@ -1,4 +1,5 @@
 import { Branded } from './Branded.js';
+import { EventIdentifier } from './EventIdentifier.js';
 import { ParseError } from '../../Error/index.js';
 
 /**
@@ -16,4 +17,20 @@ function validateEventListenerIdentifierFromString(eventListenerIdentifier: stri
   return eventListenerIdentifier as EventListenerIdentifier;
 }
 
-export { EventListenerIdentifier, validateEventListenerIdentifierFromString, eventListenerIdentifierRegex };
+function getEventListenerIdentifiersFromEventIdentifier(eventIdentifier: EventIdentifier): EventListenerIdentifier[] {
+  const parts = eventIdentifier.split('.');
+  const eventListenerIdentifiers: EventListenerIdentifier[] = [];
+  eventListenerIdentifiers.push(validateEventListenerIdentifierFromString(eventIdentifier));
+  for (let i = parts.length - 1; i > 0; i--) {
+    eventListenerIdentifiers.push(validateEventListenerIdentifierFromString(parts.slice(0, i).join('.') + '.*'));
+  }
+  eventListenerIdentifiers.push(validateEventListenerIdentifierFromString('*'));
+  return eventListenerIdentifiers;
+}
+
+export {
+  EventListenerIdentifier,
+  validateEventListenerIdentifierFromString,
+  eventListenerIdentifierRegex,
+  getEventListenerIdentifiersFromEventIdentifier,
+};

@@ -43,7 +43,7 @@
     "lru-cache": "^10.0.1",
     "luxon": "^3.4.4",
     "reflect-metadata": "^0.2",
-    "tslog": "^4.8.2",
+    "tslog": "^4.9.3",
     "typedi": "^0.10.0"
   },
   "devDependencies": {

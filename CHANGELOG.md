@@ -9,3 +9,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Initial code, copied from Ember Nexus Web SDK.
 - Add service resolver.
+- Add event dispatcher, inspired by Symfony.

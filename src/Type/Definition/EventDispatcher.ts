@@ -1,6 +1,7 @@
 import { EventInterface } from './Event.js';
 import { EventListener } from './EventListener.js';
 import { EventListenerIdentifier, getEventListenerIdentifiersFromEventIdentifier } from './EventListenerIdentifier.js';
+import { LoggerInterface } from './Logger.js';
 
 interface EventDispatcherInterface {
   dispatchEvent(event: EventInterface): Promise<void>;
@@ -17,9 +18,16 @@ type EventDispatcherEntry = {
 
 class EventDispatcher implements EventDispatcherInterface {
   private readonly entries: Map<string, EventDispatcherEntry[]> = new Map();
+  private logger: LoggerInterface;
+
+  public constructor(logger: LoggerInterface) {
+    this.logger = logger;
+  }
 
   async dispatchEvent(event: EventInterface): Promise<void> {
+    this.logger.debug(`Dispatching event of identifier ${event.getIdentifier()}.`, { event: event });
     if (event.isPropagationStopped()) {
+      this.logger.debug(`Stopped event propagation because it is already stopped.`, { event: event });
       return undefined;
     }
     const eventListenerIdentifiersToNotify = getEventListenerIdentifiersFromEventIdentifier(event.getIdentifier());
@@ -29,13 +37,25 @@ class EventDispatcher implements EventDispatcherInterface {
       if (eventListeners === undefined) {
         continue;
       }
+      this.logger.debug(`Iterating over resolved event listeners of identifier ${eventListenerIdentifier}`, {
+        event: event,
+      });
       for (let j = eventListeners.length - 1; j >= 0; j--) {
-        await Promise.resolve(eventListeners[j].eventListener(event));
+        try {
+          await Promise.resolve(eventListeners[j].eventListener(event));
+        } catch (e: unknown) {
+          this.logger.error(`Event handler threw exception, dispatcher continues with next event listener.`, {
+            event: event,
+            error: e,
+          });
+        }
         if (event.isPropagationStopped()) {
+          this.logger.debug(`Stopped event propagation as it got stopped.`, { event: event });
           return undefined;
         }
       }
     }
+    this.logger.debug(`Event got handled by all event listeners.`, { event: event });
     return undefined;
   }
 

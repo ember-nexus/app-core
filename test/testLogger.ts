@@ -3,7 +3,7 @@ import { Logger } from 'tslog';
 import type { LoggerInterface } from '../src/Type/Definition';
 
 const testLogger = new Logger({
-  name: 'web-sdk',
+  name: 'app-core',
   // type: "json"
   type: 'pretty',
 });

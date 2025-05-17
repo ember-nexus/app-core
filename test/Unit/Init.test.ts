@@ -35,7 +35,7 @@ test('should have action registry registered', () => {
   const rootNode = document.createElement('div');
   const serviceResolver = init(rootNode);
 
-  const serviceIdentifier = validateServiceIdentifierFromString('action');
+  const serviceIdentifier = validateServiceIdentifierFromString('global.action-registry');
   expect(serviceResolver.hasService(serviceIdentifier)).toBeTruthy();
   const actionRegistry = serviceResolver.getService(serviceIdentifier) as PriorityRegistry;
   expect(actionRegistry).toBeInstanceOf(PriorityRegistry);
@@ -48,7 +48,7 @@ test('should have setting registry registered', () => {
   const rootNode = document.createElement('div');
   const serviceResolver = init(rootNode);
 
-  const serviceIdentifier = validateServiceIdentifierFromString('setting');
+  const serviceIdentifier = validateServiceIdentifierFromString('global.setting-registry');
   expect(serviceResolver.hasService(serviceIdentifier)).toBeTruthy();
   const settingRegistry = serviceResolver.getService(serviceIdentifier) as Registry;
   expect(settingRegistry).toBeInstanceOf(Registry);
@@ -61,7 +61,7 @@ test('should have icon registry registered', () => {
   const rootNode = document.createElement('div');
   const serviceResolver = init(rootNode);
 
-  const serviceIdentifier = validateServiceIdentifierFromString('icon');
+  const serviceIdentifier = validateServiceIdentifierFromString('global.icon-registry');
   expect(serviceResolver.hasService(serviceIdentifier)).toBeTruthy();
   const iconRegistry = serviceResolver.getService(serviceIdentifier) as Registry;
   expect(iconRegistry).toBeInstanceOf(Registry);

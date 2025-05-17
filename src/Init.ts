@@ -3,12 +3,8 @@ import { Logger } from 'tslog';
 
 import { GetServiceResolverEvent } from './BrowserEvent/index.js';
 import { ServiceResolver } from './Service/index.js';
-import {
-  EventDispatcher,
-  PriorityRegistry,
-  Registry,
-  validateServiceIdentifierFromString,
-} from './Type/Definition/index.js';
+import { EventDispatcher } from './Service/index.js';
+import { PriorityRegistry, Registry, validateServiceIdentifierFromString } from './Type/Definition/index.js';
 import { EventIdentifier } from './Type/Enum/index.js';
 import { ServiceIdentifier } from './Type/Enum/ServiceIdentifier.js';
 

@@ -1,15 +1,15 @@
 import { expect, test } from 'vitest';
 
+import { EventDispatcher } from '../../../src/Service';
 import {
   Event,
-  EventDispatcher,
   EventInterface,
   EventListener,
   OptionalPromise,
   validateEventIdentifierFromString,
   validateEventListenerIdentifierFromString,
-} from '../../../../src/Type/Definition';
-import { testLogger } from '../../TestLogger';
+} from '../../../src/Type/Definition';
+import { testLogger } from '../TestLogger';
 
 function createAnonymousEventListener(calledValue: string, stopsEvent: boolean = false): EventListener {
   return (event: EventInterface): OptionalPromise<void> => {

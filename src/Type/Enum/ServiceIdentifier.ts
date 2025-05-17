@@ -1,10 +1,10 @@
 enum ServiceIdentifier {
   emberNexusWebSDK = 'ember-nexus.web-sdk',
-  eventDispatcher = 'event-dispatcher',
-  logger = 'logger',
-  action = 'action',
-  setting = 'setting',
-  icon = 'icon',
+  eventDispatcher = 'global.event-dispatcher',
+  logger = 'global.logger',
+  action = 'global.action-registry',
+  setting = 'global.setting-registry',
+  icon = 'global.icon-registry',
 }
 
 export { ServiceIdentifier };

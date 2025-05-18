@@ -92,6 +92,7 @@ export default [
       "no-sequences": "error",
       "no-throw-literal": "error",
       "no-var": "error",
+      "no-duplicate-imports": "error",
       "prefer-arrow-callback": "error",
       "prefer-const": "error",
       "require-await": "error",

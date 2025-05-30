@@ -9,7 +9,7 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
  * @see [Ember Nexus API: Get Element Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/element/get-element)
  */
 class GetElementEndpoint {
-  static identifier: ServiceIdentifier.endpointElementGetElementEndpoint;
+  static identifier: ServiceIdentifier = ServiceIdentifier.endpointElementGetElementEndpoint;
 
   constructor(
     private logger: Logger,

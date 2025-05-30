@@ -9,11 +9,13 @@ enum ServiceIdentifier {
 
   // scoped services
   elementParser = 'ember-nexus.app-core.element-parser',
+  collectionParser = 'ember-nexus.app-core.collection-parser',
   apiConfiguration = 'ember-nexus.app-core.api-configuration',
   fetchHelper = 'ember-nexus.app-core.fetch-helper',
 
   // endpoints
   endpointElementGetElementEndpoint = 'ember-nexus.app-core.element.endpoint.get-element-endpoint',
+  endpointElementGetElementChildrenEndpoint = 'ember-nexus.app-core.element.endpoint.get-element-children-endpoint',
 }
 
 export { ServiceIdentifier };

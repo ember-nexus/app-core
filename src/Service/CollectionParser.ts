@@ -14,7 +14,7 @@ import { Collection, Node, Relation } from '../Type/Definition/index.js';
 class CollectionParser {
   constructor(private elementParser: ElementParser) {}
 
-  rawCollectionToCollection(rawCollection: object): Collection {
+  deserializeCollection(rawCollection: object): Collection {
     if (!('id' in rawCollection)) {
       throw new Error("Raw collection must contain property 'id' in order to be parsed to a collection.");
     }

@@ -2,6 +2,7 @@ import { ApiConfiguration } from './ApiConfiguration.js';
 import { Logger } from './Logger.js';
 import { ServiceResolver } from './ServiceResolver.js';
 import {
+  EmberNexusError,
   NetworkError,
   ParseError,
   Response401UnauthorizedError,
@@ -36,8 +37,11 @@ class FetchHelper {
     return new FetchHelper(logger, apiConfiguration);
   }
 
-  rethrowErrorAsNetworkError(err: unknown): never {
-    throw new NetworkError('Network error occurred during fetch.', err);
+  rethrowErrorAsNetworkError(error: unknown): never {
+    if (error instanceof EmberNexusError) {
+      throw error;
+    }
+    throw new NetworkError('Network error occurred during fetch.', error);
   }
 
   logAndThrowError(error: unknown): never {

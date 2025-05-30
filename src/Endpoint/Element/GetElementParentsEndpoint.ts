@@ -59,7 +59,7 @@ class GetElementParentsEndpoint {
         return data;
       })
       .then<Collection>((jsonResponse) => {
-        return this.collectionParser.rawCollectionToCollection(jsonResponse);
+        return this.collectionParser.deserializeCollection(jsonResponse);
       })
       .catch((error) => {
         this.logger.error(error.message, error);

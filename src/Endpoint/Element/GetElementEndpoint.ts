@@ -26,10 +26,12 @@ class GetElementEndpoint {
   }
 
   getElement(elementId: Uuid): Promise<Node | Relation> {
-    const url = this.fetchHelper.buildUrl(`/${elementId}`);
-    this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
-
-    return fetch(url, this.fetchHelper.getDefaultGetOptions())
+    return Promise.resolve()
+      .then(() => {
+        const url = this.fetchHelper.buildUrl(`/${elementId}`);
+        this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
+        return fetch(url, this.fetchHelper.getDefaultGetOptions());
+      })
       .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
       .then((response) => this.fetchHelper.parseJsonResponse(response))
       .then((json) => this.elementParser.deserializeElement(json))

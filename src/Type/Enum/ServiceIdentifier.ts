@@ -19,6 +19,11 @@ enum ServiceIdentifier {
   endpointElementGetElementParentsEndpoint = 'ember-nexus.app-core.element.endpoint.get-element-parents-endpoint',
   endpointElementGetElementRelatedEndpoint = 'ember-nexus.app-core.element.endpoint.get-element-related-endpoint',
   endpointElementGetIndexEndpoint = 'ember-nexus.app-core.element.endpoint.get-index-endpoint',
+  endpointElementDeleteElementEndpoint = 'ember-nexus.app-core.element.endpoint.delete-element-endpoint',
+  endpointElementPostIndexEndpoint = 'ember-nexus.app-core.element.endpoint.post-index-endpoint',
+  endpointElementPostElementEndpoint = 'ember-nexus.app-core.element.endpoint.post-element-endpoint',
+  endpointElementPatchElementEndpoint = 'ember-nexus.app-core.element.endpoint.patch-element-endpoint',
+  endpointElementPutElementEndpoint = 'ember-nexus.app-core.element.endpoint.put-element-endpoint',
 }
 
 export { ServiceIdentifier };

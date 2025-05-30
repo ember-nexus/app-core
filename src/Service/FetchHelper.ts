@@ -11,7 +11,7 @@ import {
   Response429TooManyRequestsError,
   ResponseError,
 } from '../Error/index.js';
-import { validateServiceIdentifierFromString } from '../Type/Definition/index.js';
+import { Uuid, validateServiceIdentifierFromString, validateUuidFromString } from '../Type/Definition/index.js';
 import { HttpRequestMethod, ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
@@ -71,6 +71,58 @@ class FetchHelper {
           throw this.createResponseErrorFromBadResponse(response, data);
         }
         return data as object;
+      });
+  }
+
+  parseEmptyResponse(response: Response): Promise<void> {
+    if (response.ok && response.status === 204) {
+      return Promise.resolve();
+    }
+    const contentType = response.headers.get('Content-Type');
+    if (contentType === null) {
+      return Promise.reject(new ParseError('Response does not contain content type header.'));
+    }
+    if (!contentType.includes('application/problem+json')) {
+      return Promise.reject(
+        new ParseError("Unable to parse response as content type is not 'application/problem+json'."),
+      );
+    }
+
+    return response
+      .json()
+      .catch((err) => {
+        throw new ParseError(`Failed to parse response body as JSON: ${err}`);
+      })
+      .then((data) => {
+        throw this.createResponseErrorFromBadResponse(response, data);
+      });
+  }
+
+  parseLocationResponse(response: Response): Promise<Uuid> {
+    if (response.ok && response.status === 204) {
+      if (response.headers.has('Location')) {
+        const location = response.headers.get('Location') as string;
+        const rawUuid = location.split('/').at(-1) as string;
+        return Promise.resolve(validateUuidFromString(rawUuid));
+      }
+    }
+    const contentType = response.headers.get('Content-Type');
+    if (contentType === null) {
+      return Promise.reject(new ParseError('Response does not contain content type header.'));
+    }
+    if (!contentType.includes('application/problem+json')) {
+      return Promise.reject(
+        new ParseError("Unable to parse response as content type is not 'application/problem+json'."),
+      );
+    }
+
+    return response
+      .json()
+      .catch((err) => {
+        throw new ParseError(`Failed to parse response body as JSON: ${err}`);
+      })
+      .then((data) => {
+        throw this.createResponseErrorFromBadResponse(response, data);
       });
   }
 

@@ -4,7 +4,7 @@ import { ParseError } from '../../Error/index.js';
 /**
  * Type safe variant of string containing service identifier.
  */
-type ServiceIdentifier = Branded<string, 'serviceIdentifier'>;
+type ServiceIdentifier = Branded<string, 'serviceIdentifier'> | string;
 
 const serviceIdentifierRegex = /^([a-z][a-z0-9-]*)(\.([a-z][a-z0-9-]*))*$/;
 

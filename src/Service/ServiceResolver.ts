@@ -9,11 +9,18 @@ class ServiceResolver {
     return this.services.has(serviceIdentifier);
   }
 
-  getService(serviceIdentifier: ServiceIdentifier): null | unknown {
+  getService<T = unknown>(serviceIdentifier: ServiceIdentifier): null | T {
     if (!this.hasService(serviceIdentifier)) {
       return null;
     }
-    return this.services.get(serviceIdentifier);
+    return this.services.get(serviceIdentifier) as T;
+  }
+
+  getServiceOrFail<T = unknown>(serviceIdentifier: ServiceIdentifier): T {
+    if (!this.hasService(serviceIdentifier)) {
+      throw new Error(`Requested service with identifier ${serviceIdentifier} could not be resolved.`);
+    }
+    return this.services.get(serviceIdentifier) as T;
   }
 
   setService(serviceIdentifier: ServiceIdentifier, service: unknown): ServiceResolver {

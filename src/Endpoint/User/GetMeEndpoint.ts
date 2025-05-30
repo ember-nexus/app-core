@@ -44,7 +44,7 @@ class GetMeEndpoint {
         return data;
       })
       .then<Node>((jsonResponse) => {
-        const element = this.elementParser.rawElementToNodeOrRelation(jsonResponse);
+        const element = this.elementParser.deserializeElement(jsonResponse);
         if (element.type !== 'User') {
           throw new LogicError("Expected node to be of type 'User'.");
         }

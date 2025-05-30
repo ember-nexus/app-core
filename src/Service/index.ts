@@ -1,3 +1,4 @@
+export * from './ApiConfiguration.js';
 export * from './CollectionParser.js';
 export * from './ElementParser.js';
 export * from './EmberNexus.js';
@@ -8,4 +9,3 @@ export * from './RawValueToNormalizedValueHelper.js';
 export * from './RequestProblemParser.js';
 export * from './ServiceResolver.js';
 export * from './TokenParser.js';
-export * from './WebSdkConfiguration.js';

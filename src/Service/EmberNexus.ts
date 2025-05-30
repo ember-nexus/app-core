@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import { LRUCache } from 'lru-cache';
 import { Container, Service } from 'typedi';
 
-import { WebSdkConfiguration } from './WebSdkConfiguration.js';
+import { ApiConfiguration } from './ApiConfiguration.js';
 import {
   DeleteElementEndpoint,
   GetElementChildrenEndpoint,
@@ -42,7 +42,7 @@ class EmberNexus {
 
   constructor() {
     this.elementCache = new LRUCache<Uuid, Node | Relation>({
-      max: Container.get(WebSdkConfiguration).getElementCacheMaxEntries(),
+      max: Container.get(ApiConfiguration).getElementCacheMaxEntries(),
     });
   }
 
@@ -106,7 +106,7 @@ class EmberNexus {
    */
   getElementChildren(parentUuid: Uuid, page: number = 1, pageSize: number | null = null): Promise<Collection> {
     if (pageSize === null) {
-      pageSize = Container.get(WebSdkConfiguration).getCollectionPageSize();
+      pageSize = Container.get(ApiConfiguration).getCollectionPageSize();
     }
     return new Promise<Collection>((resolve) => {
       return resolve(
@@ -136,7 +136,7 @@ class EmberNexus {
    */
   getElementParents(childUuid: Uuid, page: number = 1, pageSize: number | null = null): Promise<Collection> {
     if (pageSize === null) {
-      pageSize = Container.get(WebSdkConfiguration).getCollectionPageSize();
+      pageSize = Container.get(ApiConfiguration).getCollectionPageSize();
     }
     return new Promise<Collection>((resolve) => {
       return resolve(Container.get(GetElementParentsEndpoint).getElementParents(childUuid, page, pageSize as number));
@@ -164,7 +164,7 @@ class EmberNexus {
    */
   getElementRelated(centerUuid: Uuid, page: number = 1, pageSize: number | null = null): Promise<Collection> {
     if (pageSize === null) {
-      pageSize = Container.get(WebSdkConfiguration).getCollectionPageSize();
+      pageSize = Container.get(ApiConfiguration).getCollectionPageSize();
     }
     return new Promise<Collection>((resolve) => {
       return resolve(Container.get(GetElementRelatedEndpoint).getElementRelated(centerUuid, page, pageSize as number));
@@ -192,7 +192,7 @@ class EmberNexus {
    */
   getIndex(page: number = 1, pageSize: number | null = null): Promise<Collection> {
     if (pageSize === null) {
-      pageSize = Container.get(WebSdkConfiguration).getCollectionPageSize();
+      pageSize = Container.get(ApiConfiguration).getCollectionPageSize();
     }
     return new Promise<Collection>((resolve) => {
       return resolve(Container.get(GetIndexEndpoint).getIndex(page, pageSize as number));

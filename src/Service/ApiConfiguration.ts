@@ -1,13 +1,12 @@
-import { Service } from 'typedi';
-
 import { Logger } from './Logger.js';
-import { Token } from '../Type/Definition/index.js';
+import { ServiceResolver } from './ServiceResolver.js';
+import { Token, validateServiceIdentifierFromString } from '../Type/Definition/index.js';
+import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Configuration handler.
  */
-@Service()
-class WebSdkConfiguration {
+class ApiConfiguration {
   private token: Token | null;
   private apiHost: string;
   private elementCacheMaxEntries: number;
@@ -22,13 +21,23 @@ class WebSdkConfiguration {
     this.collectionPageSize = 25;
   }
 
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): ApiConfiguration {
+    const logger = serviceResolver.getService<Logger>(validateServiceIdentifierFromString(ServiceIdentifier.logger));
+    if (logger === null) {
+      throw new Error('unable to resolve logger');
+    }
+    return new ApiConfiguration(logger);
+  }
+
   hasToken(): boolean {
     return this.token !== null;
   }
+
   getToken(): Token | null {
     return this.token;
   }
-  setToken(token: Token | null): WebSdkConfiguration {
+
+  setToken(token: Token | null): ApiConfiguration {
     this.token = token;
     return this;
   }
@@ -36,7 +45,8 @@ class WebSdkConfiguration {
   getApiHost(): string {
     return this.apiHost;
   }
-  setApiHost(apiHost: string): WebSdkConfiguration {
+
+  setApiHost(apiHost: string): ApiConfiguration {
     if (apiHost.endsWith('/')) {
       this.logger.warn(
         'Removed trailing slash from API host configuration due to internal requirement. Please check if trailing slash can be directly removed.',
@@ -51,7 +61,7 @@ class WebSdkConfiguration {
     return this.elementCacheMaxEntries;
   }
 
-  setElementCacheMaxEntries(value: number): WebSdkConfiguration {
+  setElementCacheMaxEntries(value: number): ApiConfiguration {
     this.elementCacheMaxEntries = value;
     return this;
   }
@@ -60,7 +70,7 @@ class WebSdkConfiguration {
     return this.collectionCacheMaxEntries;
   }
 
-  setCollectionCacheMaxEntries(value: number): WebSdkConfiguration {
+  setCollectionCacheMaxEntries(value: number): ApiConfiguration {
     this.collectionCacheMaxEntries = value;
     return this;
   }
@@ -69,10 +79,10 @@ class WebSdkConfiguration {
     return this.collectionPageSize;
   }
 
-  setCollectionPageSize(value: number): WebSdkConfiguration {
+  setCollectionPageSize(value: number): ApiConfiguration {
     this.collectionPageSize = value;
     return this;
   }
 }
 
-export { WebSdkConfiguration };
+export { ApiConfiguration };

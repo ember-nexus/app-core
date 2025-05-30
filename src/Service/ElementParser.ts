@@ -11,7 +11,7 @@ import { Node, Relation, validateUuidFromString } from '../Type/Definition/index
  */
 @Service()
 class ElementParser {
-  rawElementToNodeOrRelation(element: object): Node | Relation {
+  deserializeElement(element: object): Node | Relation {
     if (!('id' in element)) {
       throw new Error("Raw element must contain property 'id' in order to be parsed to a node or relation.");
     }

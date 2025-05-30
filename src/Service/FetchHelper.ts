@@ -1,26 +1,77 @@
-import { Container, Service } from 'typedi';
-
+import { ApiConfiguration } from './ApiConfiguration.js';
 import { Logger } from './Logger.js';
-import { WebSdkConfiguration } from './WebSdkConfiguration.js';
+import { ServiceResolver } from './ServiceResolver.js';
 import {
+  NetworkError,
+  ParseError,
   Response401UnauthorizedError,
   Response403ForbiddenError,
   Response404NotFoundError,
   Response429TooManyRequestsError,
   ResponseError,
 } from '../Error/index.js';
-import { HttpRequestMethod } from '../Type/Enum/index.js';
+import { validateServiceIdentifierFromString } from '../Type/Definition/index.js';
+import { HttpRequestMethod, ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Collection of different fetch helper methods.
- *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
- * @internal
  */
-@Service()
 class FetchHelper {
-  constructor(private logger: Logger) {}
+  constructor(
+    private logger: Logger,
+    private apiConfiguration: ApiConfiguration,
+  ) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): FetchHelper {
+    const logger = serviceResolver.getService<Logger>(validateServiceIdentifierFromString(ServiceIdentifier.logger));
+    if (logger === null) {
+      throw new Error('unable to resolve logger');
+    }
+    const apiConfiguration = serviceResolver.getService<ApiConfiguration>(
+      validateServiceIdentifierFromString(ServiceIdentifier.apiConfiguration),
+    );
+    if (apiConfiguration === null) {
+      throw new Error('unable to resolve apiConfiguration');
+    }
+    return new FetchHelper(logger, apiConfiguration);
+  }
+
+  rethrowErrorAsNetworkError(err: unknown): never {
+    throw new NetworkError('Network error occurred during fetch.', err);
+  }
+
+  logAndThrowError(error: unknown): never {
+    const err = error instanceof Error ? error : new Error(String(error));
+    this.logger.error(err.message, err);
+    throw err;
+  }
+
+  parseJsonResponse(response: Response): Promise<object> {
+    const contentType = response.headers.get('Content-Type');
+
+    if (!contentType) {
+      return Promise.reject(new ParseError('Response does not contain a Content-Type header.'));
+    }
+
+    if (
+      !contentType.includes('application/json') &&
+      !contentType.includes('application/problem+json')
+    ) {
+      throw new ParseError(`Unexpected Content-Type: "${contentType}". Expected JSON-compatible format.`);
+    }
+
+    return response
+      .json()
+      .catch((err) => {
+        throw new ParseError(`Failed to parse response body as JSON: ${err}`);
+      })
+      .then((data) => {
+        if (!response.ok) {
+          throw this.createResponseErrorFromBadResponse(response, data);
+        }
+        return data as object;
+      });
+  }
 
   createResponseErrorFromBadResponse(response: Response, data: Record<string, unknown>): ResponseError {
     let errorInstance: ResponseError | null = null;
@@ -57,14 +108,12 @@ class FetchHelper {
   }
 
   addAuthorizationHeader(headers: HeadersInit): void {
-    if (Container.get(WebSdkConfiguration).hasToken()) {
-      // eslint-disable-next-line dot-notation
-      headers['Authorization'] = `Bearer ${Container.get(WebSdkConfiguration).getToken()}`;
+    if (this.apiConfiguration.hasToken()) {
+      headers['Authorization'] = `Bearer ${this.apiConfiguration.getToken()}`;
     }
   }
 
   addAcceptJsonAndProblemJsonHeader(headers: HeadersInit): void {
-    // eslint-disable-next-line dot-notation
     headers['Accept'] = 'application/json, application/problem+json';
   }
 
@@ -139,11 +188,11 @@ class FetchHelper {
   }
 
   buildUrl(url: string): string {
-    return `${Container.get(WebSdkConfiguration).getApiHost()}${url}`;
+    return `${this.apiConfiguration.getApiHost()}${url}`;
   }
 
   runWrappedFetch(url: string, init?: RequestInit | undefined): Promise<Response> {
-    url = `${Container.get(WebSdkConfiguration).getApiHost()}${url}`;
+    url = `${this.apiConfiguration.getApiHost()}${url}`;
     this.logger.debug(`Executing HTTP ${init?.method ?? '-'} request against url ${url} .`);
     return fetch(url, init);
   }

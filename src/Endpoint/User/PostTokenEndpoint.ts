@@ -1,24 +1,29 @@
 import { NetworkError, ParseError } from '../../Error/index.js';
-import { FetchHelper, Logger, TokenParser } from '../../Service/index.js';
+import { FetchHelper, Logger, ServiceResolver, TokenParser } from '../../Service/index.js';
 import { Data, Token, UniqueUserIdentifier } from '../../Type/Definition/index.js';
+import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post token endpoint is used to create new tokens.
  *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
  * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=posttokenendpoint)
  * @see [Ember Nexus API: Create Token Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/post-token)
- *
- * @internal
  */
-
 class PostTokenEndpoint {
+  static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserPostTokenEndpoint;
   constructor(
     private logger: Logger,
     private tokenParser: TokenParser,
     private fetchHelper: FetchHelper,
   ) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): PostTokenEndpoint {
+    return new PostTokenEndpoint(
+      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<TokenParser>(ServiceIdentifier.tokenParser),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+    );
+  }
 
   postToken(uniqueUserIdentifier: UniqueUserIdentifier, password: string, data: Data = {}): Promise<Token> {
     return Promise.resolve()

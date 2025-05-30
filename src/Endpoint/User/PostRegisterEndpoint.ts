@@ -1,23 +1,27 @@
 import { NetworkError, ParseError } from '../../Error/index.js';
-import { FetchHelper, Logger } from '../../Service/index.js';
+import { FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
 import { Data, UniqueUserIdentifier, Uuid, validateUuidFromString } from '../../Type/Definition/index.js';
+import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post register endpoint is used to create new user accounts.
  *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
  * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=postregisterendpoint)
  * @see [Ember Nexus API: Register New Account Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/post-register)
- *
- * @internal
  */
-
 class PostRegisterEndpoint {
+  static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserPostRegisterEndpoint;
   constructor(
     private logger: Logger,
     private fetchHelper: FetchHelper,
   ) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): PostRegisterEndpoint {
+    return new PostRegisterEndpoint(
+      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+    );
+  }
 
   postRegister(uniqueUserIdentifier: UniqueUserIdentifier, password: string, data: Data = {}): Promise<Uuid> {
     return Promise.resolve()

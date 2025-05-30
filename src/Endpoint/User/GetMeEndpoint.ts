@@ -1,24 +1,29 @@
 import { LogicError, NetworkError, ParseError } from '../../Error/index.js';
-import { ElementParser, FetchHelper, Logger } from '../../Service/index.js';
+import { ElementParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
 import { Node } from '../../Type/Definition/index.js';
+import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The get me endpoint retrieves the current user's element.
  *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
  * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=getmeendpoint)
  * @see [Ember Nexus API: Get Me Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/get-me)
- *
- * @internal
  */
-
 class GetMeEndpoint {
+  static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserGetMeEndpoint;
   constructor(
     private logger: Logger,
     private fetchHelper: FetchHelper,
     private elementParser: ElementParser,
   ) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): GetMeEndpoint {
+    return new GetMeEndpoint(
+      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.elementParser),
+    );
+  }
 
   getMe(): Promise<Node> {
     const url = this.fetchHelper.buildUrl(`/me`);

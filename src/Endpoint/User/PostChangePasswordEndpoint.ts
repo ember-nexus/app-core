@@ -1,23 +1,27 @@
 import { NetworkError, ParseError } from '../../Error/index.js';
-import { FetchHelper, Logger } from '../../Service/index.js';
+import { FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
 import { UniqueUserIdentifier } from '../../Type/Definition/index.js';
+import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post change password endpoint is used to change the user's password.
  *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
  * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=postchangepasswordendpoint)
  * @see [Ember Nexus API: Change Password Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/post-change-password)
- *
- * @internal
  */
-
 class PostChangePasswordEndpoint {
+  static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserPostChangePasswordEndpoint;
   constructor(
     private logger: Logger,
     private fetchHelper: FetchHelper,
   ) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): PostChangePasswordEndpoint {
+    return new PostChangePasswordEndpoint(
+      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+    );
+  }
 
   postChangePassword(
     uniqueUserIdentifier: UniqueUserIdentifier,

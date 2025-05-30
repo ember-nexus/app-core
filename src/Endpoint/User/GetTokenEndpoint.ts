@@ -1,24 +1,29 @@
 import { LogicError, NetworkError, ParseError } from '../../Error/index.js';
-import { ElementParser, FetchHelper, Logger } from '../../Service/index.js';
+import { ElementParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
 import { Node } from '../../Type/Definition/index.js';
+import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The get token endpoint retrieves the current session's token element.
  *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
  * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=gettokenendpoint)
  * @see [Ember Nexus API: Get Token Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/get-token)
- *
- * @internal
  */
-
 class GetTokenEndpoint {
+  static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserGetTokenEndpoint;
   constructor(
     private logger: Logger,
     private fetchHelper: FetchHelper,
     private elementParser: ElementParser,
   ) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): GetTokenEndpoint {
+    return new GetTokenEndpoint(
+      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.elementParser),
+    );
+  }
 
   getToken(): Promise<Node> {
     const url = this.fetchHelper.buildUrl(`/token`);

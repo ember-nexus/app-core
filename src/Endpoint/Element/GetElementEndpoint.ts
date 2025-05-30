@@ -1,6 +1,6 @@
-import {ElementParser, FetchHelper, Logger, ServiceResolver} from '../../Service/index.js';
-import {Node, Relation, Uuid} from '../../Type/Definition/index.js';
-import {ServiceIdentifier} from '../../Type/Enum/index.js';
+import { ElementParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { Node, Relation, Uuid } from '../../Type/Definition/index.js';
+import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The get element endpoint retrieves a single element.
@@ -9,24 +9,21 @@ import {ServiceIdentifier} from '../../Type/Enum/index.js';
  * @see [Ember Nexus API: Get Element Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/element/get-element)
  */
 class GetElementEndpoint {
+  static identifier: ServiceIdentifier.endpointElementGetElementEndpoint;
+
   constructor(
     private logger: Logger,
     private fetchHelper: FetchHelper,
     private elementParser: ElementParser,
-  ) {
-  }
+  ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetElementEndpoint {
     return new GetElementEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
-      serviceResolver.getServiceOrFail<ElementParser>(
-        ServiceIdentifier.elementParser,
-      ),
+      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.elementParser),
     );
   }
-
-  static identifier: ServiceIdentifier.endpointElementGetElementEndpoint;
 
   getElement(elementId: Uuid): Promise<Node | Relation> {
     const url = this.fetchHelper.buildUrl(`/${elementId}`);
@@ -38,7 +35,6 @@ class GetElementEndpoint {
       .then((json) => this.elementParser.deserializeElement(json))
       .catch((error) => this.fetchHelper.logAndThrowError(error));
   }
-
 }
 
-export {GetElementEndpoint};
+export { GetElementEndpoint };

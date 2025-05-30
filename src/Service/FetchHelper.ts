@@ -53,10 +53,7 @@ class FetchHelper {
       return Promise.reject(new ParseError('Response does not contain a Content-Type header.'));
     }
 
-    if (
-      !contentType.includes('application/json') &&
-      !contentType.includes('application/problem+json')
-    ) {
+    if (!contentType.includes('application/json') && !contentType.includes('application/problem+json')) {
       throw new ParseError(`Unexpected Content-Type: "${contentType}". Expected JSON-compatible format.`);
     }
 
@@ -109,11 +106,13 @@ class FetchHelper {
 
   addAuthorizationHeader(headers: HeadersInit): void {
     if (this.apiConfiguration.hasToken()) {
+      // eslint-disable-next-line dot-notation
       headers['Authorization'] = `Bearer ${this.apiConfiguration.getToken()}`;
     }
   }
 
   addAcceptJsonAndProblemJsonHeader(headers: HeadersInit): void {
+    // eslint-disable-next-line dot-notation
     headers['Accept'] = 'application/json, application/problem+json';
   }
 

@@ -15,15 +15,15 @@ enum ServiceIdentifier {
   tokenParser = 'ember-nexus.app-core.token-parser',
 
   // endpoints: element
+  endpointElementDeleteElementEndpoint = 'ember-nexus.app-core.endpoint.element.delete-element-endpoint',
   endpointElementGetElementEndpoint = 'ember-nexus.app-core.endpoint.element.get-element-endpoint',
   endpointElementGetElementChildrenEndpoint = 'ember-nexus.app-core.endpoint.element.get-element-children-endpoint',
   endpointElementGetElementParentsEndpoint = 'ember-nexus.app-core.endpoint.element.get-element-parents-endpoint',
   endpointElementGetElementRelatedEndpoint = 'ember-nexus.app-core.endpoint.element.get-element-related-endpoint',
   endpointElementGetIndexEndpoint = 'ember-nexus.app-core.endpoint.element.get-index-endpoint',
-  endpointElementDeleteElementEndpoint = 'ember-nexus.app-core.endpoint.element.delete-element-endpoint',
-  endpointElementPostIndexEndpoint = 'ember-nexus.app-core.endpoint.element.post-index-endpoint',
-  endpointElementPostElementEndpoint = 'ember-nexus.app-core.endpoint.element.post-element-endpoint',
   endpointElementPatchElementEndpoint = 'ember-nexus.app-core.endpoint.element.patch-element-endpoint',
+  endpointElementPostElementEndpoint = 'ember-nexus.app-core.endpoint.element.post-element-endpoint',
+  endpointElementPostIndexEndpoint = 'ember-nexus.app-core.endpoint.element.post-index-endpoint',
   endpointElementPutElementEndpoint = 'ember-nexus.app-core.endpoint.element.put-element-endpoint',
 
   // endpoints: user

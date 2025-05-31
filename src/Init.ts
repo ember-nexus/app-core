@@ -2,8 +2,28 @@ import { EmberNexus } from '@ember-nexus/web-sdk/Service';
 import { Logger } from 'tslog';
 
 import { GetServiceResolverEvent } from './BrowserEvent/index.js';
+import {
+  DeleteElementEndpoint,
+  GetElementChildrenEndpoint,
+  GetElementEndpoint,
+  GetElementParentsEndpoint,
+  GetElementRelatedEndpoint,
+  GetIndexEndpoint,
+  PatchElementEndpoint,
+  PostElementEndpoint,
+  PostIndexEndpoint,
+  PutElementEndpoint,
+} from './Endpoint/Element/index.js';
+import {
+  DeleteTokenEndpoint,
+  GetMeEndpoint,
+  GetTokenEndpoint,
+  PostChangePasswordEndpoint,
+  PostRegisterEndpoint,
+  PostTokenEndpoint,
+} from './Endpoint/User/index.js';
 import { EventDispatcher, ServiceResolver } from './Service/index.js';
-import { PriorityRegistry, Registry, validateServiceIdentifierFromString } from './Type/Definition/index.js';
+import { PriorityRegistry, Registry } from './Type/Definition/index.js';
 import { EventIdentifier, ServiceIdentifier } from './Type/Enum/index.js';
 
 function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): ServiceResolver {
@@ -17,22 +37,47 @@ function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): Serv
   if (emberNexus === null) {
     emberNexus = new EmberNexus();
   }
-  serviceResolver.setService(validateServiceIdentifierFromString(ServiceIdentifier.emberNexusWebSDK), emberNexus);
+  serviceResolver.setService(ServiceIdentifier.emberNexusWebSDK, emberNexus);
 
-  serviceResolver.setService(validateServiceIdentifierFromString(ServiceIdentifier.action), new PriorityRegistry());
+  serviceResolver.setService(ServiceIdentifier.action, new PriorityRegistry());
 
-  serviceResolver.setService(validateServiceIdentifierFromString(ServiceIdentifier.setting), new Registry());
+  serviceResolver.setService(ServiceIdentifier.setting, new Registry());
 
-  serviceResolver.setService(validateServiceIdentifierFromString(ServiceIdentifier.icon), new Registry());
+  serviceResolver.setService(ServiceIdentifier.icon, new Registry());
 
   const logger = new Logger({
     name: 'app-core',
     type: 'pretty',
   });
-  serviceResolver.setService(validateServiceIdentifierFromString(ServiceIdentifier.logger), logger);
+  serviceResolver.setService(ServiceIdentifier.logger, logger);
 
   const eventDispatcher = new EventDispatcher(logger);
-  serviceResolver.setService(validateServiceIdentifierFromString(ServiceIdentifier.eventDispatcher), eventDispatcher);
+  serviceResolver.setService(ServiceIdentifier.eventDispatcher, eventDispatcher);
+
+  const endpoints = [
+    // element endpoints
+    DeleteElementEndpoint,
+    GetElementEndpoint,
+    GetElementChildrenEndpoint,
+    GetElementParentsEndpoint,
+    GetElementRelatedEndpoint,
+    GetIndexEndpoint,
+    PatchElementEndpoint,
+    PostElementEndpoint,
+    PostIndexEndpoint,
+    PutElementEndpoint,
+
+    // user endpoints
+    DeleteTokenEndpoint,
+    GetMeEndpoint,
+    GetTokenEndpoint,
+    PostChangePasswordEndpoint,
+    PostRegisterEndpoint,
+    PostTokenEndpoint,
+  ];
+  for (let i = 0; i < endpoints.length; i++) {
+    serviceResolver.setService(endpoints[i].identifier, endpoints[i].constructFromServiceResolver(serviceResolver));
+  }
 
   return serviceResolver;
 }

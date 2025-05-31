@@ -1,6 +1,6 @@
-import { LogicError, NetworkError, ParseError } from '../../Error/index.js';
+import { LogicError } from '../../Error/index.js';
 import { ElementParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
-import { Node } from '../../Type/Definition/index.js';
+import { Element, Node } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -26,39 +26,24 @@ class GetTokenEndpoint {
   }
 
   getToken(): Promise<Node> {
-    const url = this.fetchHelper.buildUrl(`/token`);
-    this.logger.debug(`Executing HTTP GET request against url ${url} .`);
-    return fetch(url, this.fetchHelper.getDefaultGetOptions())
-      .catch((networkError) => {
-        throw new NetworkError(`Experienced generic network error during fetching resource.`, networkError);
+    return Promise.resolve()
+      .then(() => {
+        const url = this.fetchHelper.buildUrl(`/token`);
+        this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
+        return fetch(url, this.fetchHelper.getDefaultGetOptions());
       })
-      .then(async (response: Response) => {
-        const contentType = response.headers.get('Content-Type');
-        if (contentType === null) {
-          throw new ParseError('Response does not contain content type header.');
-        }
-        if (!(contentType.includes('application/json') || contentType.includes('application/problem+json'))) {
-          throw new ParseError(
-            "Unable to parse response as content type is neither 'application/json' nor 'application/problem+json'.",
-          );
-        }
-        const data = await response.json();
-        if (!response.ok) {
-          throw this.fetchHelper.createResponseErrorFromBadResponse(response, data);
-        }
-        return data;
-      })
-      .then<Node>((jsonResponse) => {
-        const element = this.elementParser.deserializeElement(jsonResponse);
-        if (element.type !== 'Token') {
-          throw new LogicError("Expected node to be of type 'Token'.");
-        }
-        return element;
-      })
-      .catch((error) => {
-        this.logger.error(error.message, error);
-        throw error;
-      });
+      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
+      .then((response) => this.fetchHelper.parseJsonResponse(response))
+      .then((json) => this.elementParser.deserializeElement(json))
+      .then((element) => this.validateElementIsTokenNode(element))
+      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  }
+
+  validateElementIsTokenNode(element: Element): Element {
+    if (element.type !== 'Token') {
+      throw new LogicError("Expected node to be of type 'Token'.");
+    }
+    return element;
   }
 }
 

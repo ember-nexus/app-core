@@ -18,7 +18,7 @@ class PostChangePasswordEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostChangePasswordEndpoint {
     return new PostChangePasswordEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

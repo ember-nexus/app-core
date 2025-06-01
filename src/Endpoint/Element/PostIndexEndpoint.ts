@@ -18,7 +18,7 @@ class PostIndexEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostIndexEndpoint {
     return new PostIndexEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

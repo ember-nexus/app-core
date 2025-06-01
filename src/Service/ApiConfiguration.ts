@@ -1,12 +1,14 @@
 import { Logger } from './Logger.js';
 import { ServiceResolver } from './ServiceResolver.js';
-import { Token, validateServiceIdentifierFromString } from '../Type/Definition/index.js';
+import { Token } from '../Type/Definition/index.js';
 import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Configuration handler.
  */
 class ApiConfiguration {
+  static identifier: ServiceIdentifier = ServiceIdentifier.serviceApiConfiguration;
+
   private token: Token | null;
   private apiHost: string;
   private elementCacheMaxEntries: number;
@@ -22,10 +24,7 @@ class ApiConfiguration {
   }
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): ApiConfiguration {
-    const logger = serviceResolver.getService<Logger>(validateServiceIdentifierFromString(ServiceIdentifier.logger));
-    if (logger === null) {
-      throw new Error('unable to resolve logger');
-    }
+    const logger = serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger);
     return new ApiConfiguration(logger);
   }
 

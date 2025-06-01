@@ -18,7 +18,7 @@ class PostRegisterEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostRegisterEndpoint {
     return new PostRegisterEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

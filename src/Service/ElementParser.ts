@@ -1,16 +1,17 @@
-import { Service } from 'typedi';
-
 import { Node, Relation, validateUuidFromString } from '../Type/Definition/index.js';
+import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Class which helps to parse elements.
- *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
- * @internal
  */
-@Service()
 class ElementParser {
+  static identifier: ServiceIdentifier = ServiceIdentifier.serviceElementParser;
+  constructor() {}
+
+  static constructFromServiceResolver(): ElementParser {
+    return new ElementParser();
+  }
+
   deserializeElement(element: object): Node | Relation {
     if (!('id' in element)) {
       throw new Error("Raw element must contain property 'id' in order to be parsed to a node or relation.");

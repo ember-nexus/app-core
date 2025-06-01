@@ -11,29 +11,24 @@ import {
   Response429TooManyRequestsError,
   ResponseError,
 } from '../Error/index.js';
-import { Uuid, validateServiceIdentifierFromString, validateUuidFromString } from '../Type/Definition/index.js';
+import { Uuid, validateUuidFromString } from '../Type/Definition/index.js';
 import { HttpRequestMethod, ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Collection of different fetch helper methods.
  */
 class FetchHelper {
+  static identifier: ServiceIdentifier = ServiceIdentifier.serviceFetchHelper;
   constructor(
     private logger: Logger,
     private apiConfiguration: ApiConfiguration,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): FetchHelper {
-    const logger = serviceResolver.getService<Logger>(validateServiceIdentifierFromString(ServiceIdentifier.logger));
-    if (logger === null) {
-      throw new Error('unable to resolve logger');
-    }
-    const apiConfiguration = serviceResolver.getService<ApiConfiguration>(
-      validateServiceIdentifierFromString(ServiceIdentifier.apiConfiguration),
+    const logger = serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger);
+    const apiConfiguration = serviceResolver.getServiceOrFail<ApiConfiguration>(
+      ServiceIdentifier.serviceApiConfiguration,
     );
-    if (apiConfiguration === null) {
-      throw new Error('unable to resolve apiConfiguration');
-    }
     return new FetchHelper(logger, apiConfiguration);
   }
 

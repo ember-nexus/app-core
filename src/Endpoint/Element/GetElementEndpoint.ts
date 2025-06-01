@@ -20,8 +20,8 @@ class GetElementEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetElementEndpoint {
     return new GetElementEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
-      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.elementParser),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
+      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.serviceElementParser),
     );
   }
 

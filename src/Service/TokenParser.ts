@@ -1,16 +1,16 @@
-import { Service } from 'typedi';
-
 import { Token, validateTokenFromString } from '../Type/Definition/index.js';
+import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Class which helps to parse tokens.
- *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
- * @internal
  */
-@Service()
 class TokenParser {
+  static identifier: ServiceIdentifier = ServiceIdentifier.serviceTokenParser;
+  constructor() {}
+
+  static constructFromServiceResolver(): TokenParser {
+    return new TokenParser();
+  }
   rawTokenToToken(token: object): Token {
     if (!('type' in token)) {
       throw new Error("Raw token must contain property 'type' in order to be parsed to a token.");

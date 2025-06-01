@@ -23,8 +23,8 @@ class GetElementParentsEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetElementParentsEndpoint {
     return new GetElementParentsEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
-      serviceResolver.getServiceOrFail<CollectionParser>(ServiceIdentifier.collectionParser),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
+      serviceResolver.getServiceOrFail<CollectionParser>(ServiceIdentifier.serviceCollectionParser),
     );
   }
 

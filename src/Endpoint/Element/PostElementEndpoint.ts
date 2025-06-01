@@ -18,7 +18,7 @@ class PostElementEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostElementEndpoint {
     return new PostElementEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

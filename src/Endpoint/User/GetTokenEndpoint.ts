@@ -20,8 +20,8 @@ class GetTokenEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetTokenEndpoint {
     return new GetTokenEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
-      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.elementParser),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
+      serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.serviceElementParser),
     );
   }
 

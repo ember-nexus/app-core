@@ -18,7 +18,7 @@ class DeleteElementEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): DeleteElementEndpoint {
     return new DeleteElementEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

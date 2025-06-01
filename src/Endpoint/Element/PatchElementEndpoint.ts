@@ -18,7 +18,7 @@ class PatchElementEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PatchElementEndpoint {
     return new PatchElementEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

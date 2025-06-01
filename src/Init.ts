@@ -22,7 +22,15 @@ import {
   PostRegisterEndpoint,
   PostTokenEndpoint,
 } from './Endpoint/User/index.js';
-import { EventDispatcher, ServiceResolver } from './Service/index.js';
+import {
+  ApiConfiguration,
+  CollectionParser,
+  ElementParser,
+  EventDispatcher,
+  FetchHelper,
+  ServiceResolver,
+  TokenParser,
+} from './Service/index.js';
 import { PriorityRegistry, Registry } from './Type/Definition/index.js';
 import { EventIdentifier, ServiceIdentifier } from './Type/Enum/index.js';
 
@@ -54,7 +62,14 @@ function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): Serv
   const eventDispatcher = new EventDispatcher(logger);
   serviceResolver.setService(ServiceIdentifier.eventDispatcher, eventDispatcher);
 
-  const endpoints = [
+  const services = [
+    // services
+    ElementParser,
+    CollectionParser,
+    TokenParser,
+    ApiConfiguration,
+    FetchHelper,
+
     // element endpoints
     DeleteElementEndpoint,
     GetElementEndpoint,
@@ -75,8 +90,8 @@ function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): Serv
     PostRegisterEndpoint,
     PostTokenEndpoint,
   ];
-  for (let i = 0; i < endpoints.length; i++) {
-    serviceResolver.setService(endpoints[i].identifier, endpoints[i].constructFromServiceResolver(serviceResolver));
+  for (let i = 0; i < services.length; i++) {
+    serviceResolver.setService(services[i].identifier, services[i].constructFromServiceResolver(serviceResolver));
   }
 
   return serviceResolver;

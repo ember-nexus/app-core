@@ -19,7 +19,7 @@ class PutElementEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PutElementEndpoint {
     return new PutElementEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

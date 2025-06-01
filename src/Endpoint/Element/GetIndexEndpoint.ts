@@ -23,8 +23,8 @@ class GetIndexEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetIndexEndpoint {
     return new GetIndexEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
-      serviceResolver.getServiceOrFail<CollectionParser>(ServiceIdentifier.collectionParser),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
+      serviceResolver.getServiceOrFail<CollectionParser>(ServiceIdentifier.serviceCollectionParser),
     );
   }
 

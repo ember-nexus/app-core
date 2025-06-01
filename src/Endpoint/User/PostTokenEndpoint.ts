@@ -19,8 +19,8 @@ class PostTokenEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostTokenEndpoint {
     return new PostTokenEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<TokenParser>(ServiceIdentifier.tokenParser),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<TokenParser>(ServiceIdentifier.serviceTokenParser),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

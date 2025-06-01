@@ -1,18 +1,19 @@
-import { Service } from 'typedi';
-
 import { ElementParser } from './ElementParser.js';
+import { ServiceResolver } from './ServiceResolver.js';
 import { Collection, Node, Relation } from '../Type/Definition/index.js';
+import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 /**
  * Class which helps to parse collections.
- *
- * **⚠️ Warning**: This is an internal class. You should not use it directly.
- *
- * @internal
  */
-@Service()
 class CollectionParser {
+  static identifier: ServiceIdentifier = ServiceIdentifier.serviceCollectionParser;
   constructor(private elementParser: ElementParser) {}
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): CollectionParser {
+    const elementParser = serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.serviceElementParser);
+    return new CollectionParser(elementParser);
+  }
 
   deserializeCollection(rawCollection: object): Collection {
     if (!('id' in rawCollection)) {

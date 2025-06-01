@@ -17,7 +17,7 @@ class DeleteTokenEndpoint {
   static constructFromServiceResolver(serviceResolver: ServiceResolver): DeleteTokenEndpoint {
     return new DeleteTokenEndpoint(
       serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
-      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.fetchHelper),
+      serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }
 

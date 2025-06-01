@@ -8,11 +8,15 @@ enum ServiceIdentifier {
   icon = 'global.icon-registry',
 
   // scoped services
-  elementParser = 'ember-nexus.app-core.element-parser',
-  collectionParser = 'ember-nexus.app-core.collection-parser',
-  apiConfiguration = 'ember-nexus.app-core.api-configuration',
-  fetchHelper = 'ember-nexus.app-core.fetch-helper',
-  tokenParser = 'ember-nexus.app-core.token-parser',
+
+  // services
+  serviceFetchHelper = 'ember-nexus.app-core.service.fetch-helper-service',
+  serviceApiConfiguration = 'ember-nexus.app-core.service.api-configuration-service',
+  serviceElementParser = 'ember-nexus.app-core.service.element-parser-service',
+  serviceCollectionParser = 'ember-nexus.app-core.service.collection-parser-service',
+  serviceRawValueToNormalizedValueHelper = 'ember-nexus.app-core.service.raw-value-to-normalized-value-helper-service',
+  serviceRequestProblemParser = 'ember-nexus.app-core.service.request-problem-parser-service',
+  serviceTokenParser = 'ember-nexus.app-core.service.token-parser-service',
 
   // endpoints: element
   endpointElementDeleteElementEndpoint = 'ember-nexus.app-core.endpoint.element.delete-element-endpoint',

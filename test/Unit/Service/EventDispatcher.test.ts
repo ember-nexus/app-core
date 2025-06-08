@@ -9,7 +9,7 @@ import {
   validateEventIdentifierFromString,
   validateEventListenerIdentifierFromString,
 } from '../../../src/Type/Definition';
-import { testLogger } from '../TestLogger';
+import { TestLogger } from '../TestLogger';
 
 function createAnonymousEventListener(calledValue: string, stopsEvent: boolean = false): EventListener {
   return (event: EventInterface): OptionalPromise<void> => {
@@ -23,7 +23,7 @@ function createAnonymousEventListener(calledValue: string, stopsEvent: boolean =
 }
 
 function getEventDispatcher(): EventDispatcher {
-  return new EventDispatcher(testLogger);
+  return new EventDispatcher(new TestLogger());
 }
 
 test('event dispatcher can be created', () => {

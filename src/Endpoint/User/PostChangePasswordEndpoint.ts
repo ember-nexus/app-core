@@ -1,4 +1,6 @@
-import { FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
+import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { UniqueUserIdentifier } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -11,13 +13,13 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class PostChangePasswordEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserPostChangePasswordEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostChangePasswordEndpoint {
     return new PostChangePasswordEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }

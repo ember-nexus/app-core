@@ -1,4 +1,6 @@
-import { ElementParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
+import { ElementParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Node, Relation, Uuid } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -12,14 +14,14 @@ class GetElementEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointElementGetElementEndpoint;
 
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
     private elementParser: ElementParser,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetElementEndpoint {
     return new GetElementEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
       serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.serviceElementParser),
     );

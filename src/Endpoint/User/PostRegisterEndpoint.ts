@@ -1,4 +1,6 @@
-import { FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
+import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Data, UniqueUserIdentifier, Uuid } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -11,13 +13,13 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class PostRegisterEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserPostRegisterEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostRegisterEndpoint {
     return new PostRegisterEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }

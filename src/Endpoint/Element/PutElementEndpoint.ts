@@ -1,4 +1,6 @@
-import { FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
+import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Data, Uuid } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -12,13 +14,13 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class PutElementEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointElementPutElementEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PutElementEndpoint {
     return new PutElementEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }

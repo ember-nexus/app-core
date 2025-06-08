@@ -94,7 +94,7 @@ class FetchHelper {
   }
 
   parseLocationResponse(response: Response): Promise<Uuid> {
-    if (response.ok && response.status === 204) {
+    if (response.ok && (response.status === 201 || response.status === 204)) {
       if (response.headers.has('Location')) {
         const location = response.headers.get('Location') as string;
         const rawUuid = location.split('/').at(-1) as string;

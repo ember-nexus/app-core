@@ -1,4 +1,6 @@
-import { FetchHelper, Logger, ServiceResolver, TokenParser } from '../../Service/index.js';
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
+import { FetchHelper, ServiceResolver, TokenParser } from '../../Service/index.js';
 import { Data, Token, UniqueUserIdentifier } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -11,14 +13,14 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class PostTokenEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserPostTokenEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private tokenParser: TokenParser,
     private fetchHelper: FetchHelper,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): PostTokenEndpoint {
     return new PostTokenEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<TokenParser>(ServiceIdentifier.serviceTokenParser),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );

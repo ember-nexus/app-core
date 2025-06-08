@@ -1,5 +1,7 @@
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
 import { LogicError } from '../../Error/index.js';
-import { ElementParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { ElementParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Element, Node } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -12,14 +14,14 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class GetMeEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointUserGetMeEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
     private elementParser: ElementParser,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetMeEndpoint {
     return new GetMeEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
       serviceResolver.getServiceOrFail<ElementParser>(ServiceIdentifier.serviceElementParser),
     );

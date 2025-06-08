@@ -1,5 +1,5 @@
-import { FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
-import { Uuid } from '../../Type/Definition/index.js';
+import { FetchHelper, ServiceResolver } from '../../Service/index.js';
+import { LoggerInterface, Uuid } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -11,13 +11,13 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class DeleteElementEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointElementDeleteElementEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): DeleteElementEndpoint {
     return new DeleteElementEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
     );
   }

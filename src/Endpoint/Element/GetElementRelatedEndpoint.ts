@@ -1,5 +1,7 @@
+import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
+
 import { ValidationError } from '../../Error/index.js';
-import { CollectionParser, FetchHelper, Logger, ServiceResolver } from '../../Service/index.js';
+import { CollectionParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Collection, Uuid } from '../../Type/Definition/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -15,14 +17,14 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 class GetElementRelatedEndpoint {
   static identifier: ServiceIdentifier = ServiceIdentifier.endpointElementGetElementRelatedEndpoint;
   constructor(
-    private logger: Logger,
+    private logger: LoggerInterface,
     private fetchHelper: FetchHelper,
     private collectionParser: CollectionParser,
   ) {}
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): GetElementRelatedEndpoint {
     return new GetElementRelatedEndpoint(
-      serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger),
+      serviceResolver.getServiceOrFail<LoggerInterface>(ServiceIdentifier.logger),
       serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper),
       serviceResolver.getServiceOrFail<CollectionParser>(ServiceIdentifier.serviceCollectionParser),
     );

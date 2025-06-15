@@ -34,9 +34,14 @@ test('PostElementEndpoint should handle 204 response', async () => {
       hello: 'world',
     },
   };
-  const uuid = await postElementEndpoint.postElement('8341cc07-5c67-4699-9a6b-47b95f6ea9a0', element);
+  const parsedResponse = await postElementEndpoint.postElement('8341cc07-5c67-4699-9a6b-47b95f6ea9a0', element);
 
+  const uuid = parsedResponse.data;
   expect(uuid).to.equal('58473dde-e4ec-46fc-89c0-183af3205e51');
+
+  const response = parsedResponse.response;
+  expect(response.status).to.equal(204);
+
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP POST request against URL: http://mock-api/8341cc07-5c67-4699-9a6b-47b95f6ea9a0',
   );

@@ -2,6 +2,7 @@ import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Data, Uuid } from '../../Type/Definition/index.js';
+import { EmptyResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -24,20 +25,23 @@ class PatchElementEndpoint {
     );
   }
 
-  patchElement(elementId: Uuid, data: Data): Promise<void> {
-    return Promise.resolve()
-      .then(() => {
-        // @todo what exactly will change?
-        this.logger.warn(
-          'The endpoint patch element will be changed in the next major version, expect changed interfaces.',
-        );
-        const url = this.fetchHelper.buildUrl(`/${elementId}`);
-        this.logger.debug(`Executing HTTP PATCH request against URL: ${url}`);
-        return fetch(url, this.fetchHelper.getDefaultPatchOptions(JSON.stringify(data)));
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseEmptyResponse(response))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  async patchElement(elementId: Uuid, data: Data): Promise<EmptyResponse> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/${elementId}`);
+      this.logger.debug(`Executing HTTP PATCH request against URL: ${url}`);
+
+      const response = await fetch(url, this.fetchHelper.getDefaultPatchOptions(JSON.stringify(data))).catch((error) =>
+        this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      await this.fetchHelper.parseEmptyResponse(response);
+
+      return {
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

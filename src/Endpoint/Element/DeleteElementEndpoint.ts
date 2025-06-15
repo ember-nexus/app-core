@@ -1,5 +1,6 @@
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { LoggerInterface, Uuid } from '../../Type/Definition/index.js';
+import { EmptyResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -22,16 +23,23 @@ class DeleteElementEndpoint {
     );
   }
 
-  deleteElement(elementId: Uuid): Promise<void> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/${elementId}`);
-        this.logger.debug(`Executing HTTP DELETE request against URL: ${url}`);
-        return fetch(url, this.fetchHelper.getDefaultDeleteOptions());
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseEmptyResponse(response))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  async deleteElement(elementId: Uuid): Promise<EmptyResponse> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/${elementId}`);
+      this.logger.debug(`Executing HTTP DELETE request against URL: ${url}`);
+
+      const response = await fetch(url, this.fetchHelper.getDefaultDeleteOptions()).catch((error) =>
+        this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      await this.fetchHelper.parseEmptyResponse(response);
+
+      return {
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

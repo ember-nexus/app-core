@@ -69,28 +69,22 @@ class FetchHelper {
     return data as object;
   }
 
-  parseEmptyResponse(response: Response): Promise<void> {
+  async parseEmptyResponse(response: Response): Promise<void> {
     if (response.ok && response.status === 204) {
-      return Promise.resolve();
+      return;
     }
     const contentType = response.headers.get('Content-Type');
     if (contentType === null) {
-      return Promise.reject(new ParseError('Response does not contain content type header.'));
+      throw new ParseError('Response does not contain content type header.');
     }
     if (!contentType.includes('application/problem+json')) {
-      return Promise.reject(
-        new ParseError("Unable to parse response as content type is not 'application/problem+json'."),
-      );
+      throw new ParseError("Unable to parse response as content type is not 'application/problem+json'.");
     }
 
-    return response
-      .json()
-      .catch((err) => {
-        throw new ParseError(`Failed to parse response body as JSON: ${err}`);
-      })
-      .then((data) => {
-        throw this.createResponseErrorFromBadResponse(response, data);
-      });
+    const data = await response.json().catch((err) => {
+      throw new ParseError(`Failed to parse response body as JSON: ${err}`);
+    });
+    throw this.createResponseErrorFromBadResponse(response, data);
   }
 
   parseLocationResponse(response: Response): Promise<Uuid> {

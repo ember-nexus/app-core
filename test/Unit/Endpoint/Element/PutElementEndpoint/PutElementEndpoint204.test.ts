@@ -28,7 +28,9 @@ test('PutElementEndpoint should handle 204 response', async () => {
   const data: Data = {
     new: 'Data',
   };
-  await putElementEndpoint.putElement('7156f0af-53ce-4025-937a-9d7abc76a1a8', data);
+  const emptyResponse = await putElementEndpoint.putElement('7156f0af-53ce-4025-937a-9d7abc76a1a8', data);
+
+  expect(emptyResponse.response.status).to.equal(204);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP PUT request against URL: http://mock-api/7156f0af-53ce-4025-937a-9d7abc76a1a8',

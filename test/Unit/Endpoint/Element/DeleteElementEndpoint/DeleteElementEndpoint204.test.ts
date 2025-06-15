@@ -26,7 +26,9 @@ test('DeleteElementEndpoint should handle 204 response', async () => {
   const debugLoggerSpy = vi.spyOn(logger, 'debug');
 
   const deleteElementEndpoint = new DeleteElementEndpoint(logger, fetchHelper);
-  await deleteElementEndpoint.deleteElement('52965378-8305-43bf-a637-b24d0d29c1c9');
+  const emptyResponse = await deleteElementEndpoint.deleteElement('52965378-8305-43bf-a637-b24d0d29c1c9');
+
+  expect(emptyResponse.response.status).to.equal(204);
 
   expect(buildUrlSpy).toHaveBeenCalledExactlyOnceWith('/52965378-8305-43bf-a637-b24d0d29c1c9');
   expect(getDefaultDeleteOptionsSpy).toHaveBeenCalledOnce();

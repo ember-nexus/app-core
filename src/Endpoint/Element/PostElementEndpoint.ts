@@ -2,6 +2,7 @@ import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { NodeWithOptionalId, Uuid } from '../../Type/Definition/index.js';
+import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -24,16 +25,24 @@ class PostElementEndpoint {
     );
   }
 
-  postElement(parentId: Uuid, element: NodeWithOptionalId): Promise<Uuid> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/${parentId}`);
-        this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
-        return fetch(url, this.fetchHelper.getDefaultPostOptions(JSON.stringify(element)));
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseLocationResponse(response))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  async postElement(parentId: Uuid, element: NodeWithOptionalId): Promise<ParsedResponse<Uuid>> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/${parentId}`);
+      this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
+
+      const response = await fetch(url, this.fetchHelper.getDefaultPostOptions(JSON.stringify(element))).catch(
+        (error) => this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      const uuid = await this.fetchHelper.parseLocationResponse(response);
+
+      return {
+        data: uuid,
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

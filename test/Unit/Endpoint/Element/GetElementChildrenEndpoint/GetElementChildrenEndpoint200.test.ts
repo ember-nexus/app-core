@@ -87,11 +87,20 @@ test('GetElementChildrenEndpoint should handle collection response', async () =>
   const debugLoggerSpy = vi.spyOn(logger, 'debug');
 
   const getElementChildrenEndpoint = new GetElementChildrenEndpoint(logger, fetchHelper, collectionParser);
-  const collection = await getElementChildrenEndpoint.getElementChildren('07212e8a-14cc-4f45-a3e9-1179080bbd61');
+  const parsedResponse = await getElementChildrenEndpoint.getElementChildren('07212e8a-14cc-4f45-a3e9-1179080bbd61');
+
+  if (!('data' in parsedResponse)) {
+    throw new Error('Expected parsed response to contain data attribute.');
+  }
+
+  const collection = parsedResponse.data;
 
   expect(collection).to.have.keys('id', 'links', 'totalNodes', 'nodes', 'relations');
   expect(Object.keys(collection.nodes)).to.have.lengthOf(2);
   expect(Object.keys(collection.relations)).to.have.lengthOf(2);
+
+  const response = parsedResponse.response;
+  expect(response.status).to.equal(200);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/07212e8a-14cc-4f45-a3e9-1179080bbd61/children?page=1&pageSize=25',

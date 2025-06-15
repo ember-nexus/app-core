@@ -1,6 +1,7 @@
 import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
+import { EmptyResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -23,16 +24,23 @@ class DeleteTokenEndpoint {
     );
   }
 
-  deleteToken(): Promise<void> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/token`);
-        this.logger.debug(`Executing HTTP DELETE request against URL: ${url}`);
-        return fetch(url, this.fetchHelper.getDefaultDeleteOptions());
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseEmptyResponse(response))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  async deleteToken(): Promise<EmptyResponse> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/token`);
+      this.logger.debug(`Executing HTTP DELETE request against URL: ${url}`);
+
+      const response = await fetch(url, this.fetchHelper.getDefaultDeleteOptions()).catch((error) =>
+        this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      await this.fetchHelper.parseEmptyResponse(response);
+
+      return {
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

@@ -26,7 +26,9 @@ test('DeleteTokenEndpoint should handle 204 response', async () => {
   const debugLoggerSpy = vi.spyOn(logger, 'debug');
 
   const deleteElementEndpoint = new DeleteTokenEndpoint(logger, fetchHelper);
-  await deleteElementEndpoint.deleteToken();
+  const emptyResponse = await deleteElementEndpoint.deleteToken();
+
+  expect(emptyResponse.response.status).to.equal(204);
 
   expect(buildUrlSpy).toHaveBeenCalledExactlyOnceWith('/token');
   expect(getDefaultDeleteOptionsSpy).toHaveBeenCalledOnce();

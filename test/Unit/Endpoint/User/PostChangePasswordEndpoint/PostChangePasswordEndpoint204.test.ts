@@ -25,7 +25,13 @@ test('PostChangePasswordEndpoint should handle node response', async () => {
   const debugLoggerSpy = vi.spyOn(logger, 'debug');
 
   const postChangePasswordEndpoint = new PostChangePasswordEndpoint(logger, fetchHelper);
-  await postChangePasswordEndpoint.postChangePassword('test@localhost.dev' as UniqueUserIdentifier, '1234', '4321');
+  const emptyResponse = await postChangePasswordEndpoint.postChangePassword(
+    'test@localhost.dev' as UniqueUserIdentifier,
+    '1234',
+    '4321',
+  );
+
+  expect(emptyResponse.response.status).to.equal(204);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP POST request against URL: http://mock-api/change-password',

@@ -2,6 +2,7 @@ import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Data, UniqueUserIdentifier, Uuid } from '../../Type/Definition/index.js';
+import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -24,26 +25,35 @@ class PostRegisterEndpoint {
     );
   }
 
-  postRegister(uniqueUserIdentifier: UniqueUserIdentifier, password: string, data: Data = {}): Promise<Uuid> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/register`);
-        this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
-        return fetch(
-          url,
-          this.fetchHelper.getDefaultPostOptions(
-            JSON.stringify({
-              type: 'User',
-              uniqueUserIdentifier: uniqueUserIdentifier,
-              password: password,
-              data: data,
-            }),
-          ),
-        );
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseLocationResponse(response))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  async postRegister(
+    uniqueUserIdentifier: UniqueUserIdentifier,
+    password: string,
+    data: Data = {},
+  ): Promise<ParsedResponse<Uuid>> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/register`);
+      this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
+
+      const payload = {
+        type: 'User',
+        uniqueUserIdentifier: uniqueUserIdentifier,
+        password: password,
+        data: data,
+      };
+
+      const response = await fetch(url, this.fetchHelper.getDefaultPostOptions(JSON.stringify(payload))).catch(
+        (error) => this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      const uuid = await this.fetchHelper.parseLocationResponse(response);
+
+      return {
+        data: uuid,
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

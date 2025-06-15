@@ -27,9 +27,13 @@ test('PostRegisterEndpoint should handle node response', async () => {
   const debugLoggerSpy = vi.spyOn(logger, 'debug');
 
   const postRegisterEndpoint = new PostRegisterEndpoint(logger, fetchHelper);
-  const userUuid = await postRegisterEndpoint.postRegister('test@localhost.dev' as UniqueUserIdentifier, '1234');
+  const parsedResponse = await postRegisterEndpoint.postRegister('test@localhost.dev' as UniqueUserIdentifier, '1234');
 
-  expect(userUuid as string).to.equal('a5f95955-1d24-43db-8832-f365e6a96dfa');
+  const uuid = parsedResponse.data;
+  expect(uuid).to.equal('a5f95955-1d24-43db-8832-f365e6a96dfa');
+
+  const response = parsedResponse.response;
+  expect(response.status).to.equal(201);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP POST request against URL: http://mock-api/register',

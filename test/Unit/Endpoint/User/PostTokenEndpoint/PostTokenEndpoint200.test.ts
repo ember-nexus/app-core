@@ -37,9 +37,14 @@ test('PostTokenEndpoint should handle node response', async () => {
   const data: Data = {
     some: 'data',
   };
-  const token = await postTokenEndpoint.postToken('test@localhost.dev' as UniqueUserIdentifier, '1234', data);
+  const parsedResponse = await postTokenEndpoint.postToken('test@localhost.dev' as UniqueUserIdentifier, '1234', data);
 
+  const token = parsedResponse.data;
   expect(token).to.equal('secret-token:ERgAAnWl0CY8bQs0m11nZ3');
+
+  const response = parsedResponse.response;
+  expect(response.status).to.equal(200);
+
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP POST request against URL: http://mock-api/token',
   );

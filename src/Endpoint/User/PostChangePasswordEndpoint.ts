@@ -2,6 +2,7 @@ import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { UniqueUserIdentifier } from '../../Type/Definition/index.js';
+import { EmptyResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -24,30 +25,34 @@ class PostChangePasswordEndpoint {
     );
   }
 
-  postChangePassword(
+  async postChangePassword(
     uniqueUserIdentifier: UniqueUserIdentifier,
     currentPassword: string,
     newPassword: string,
-  ): Promise<void> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/change-password`);
-        this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
-        return fetch(
-          url,
-          this.fetchHelper.getDefaultPostOptions(
-            JSON.stringify({
-              type: 'ActionChangePassword',
-              currentPassword: currentPassword,
-              newPassword: newPassword,
-              uniqueUserIdentifier: uniqueUserIdentifier,
-            }),
-          ),
-        );
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseEmptyResponse(response))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  ): Promise<EmptyResponse> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/change-password`);
+      this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
+
+      const payload = {
+        type: 'ActionChangePassword',
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        uniqueUserIdentifier: uniqueUserIdentifier,
+      };
+
+      const response = await fetch(url, this.fetchHelper.getDefaultPostOptions(JSON.stringify(payload))).catch(
+        (error) => this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      await this.fetchHelper.parseEmptyResponse(response);
+
+      return {
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

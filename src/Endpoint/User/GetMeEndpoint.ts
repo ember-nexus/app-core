@@ -2,7 +2,8 @@ import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { LogicError } from '../../Error/index.js';
 import { ElementParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Element, Node } from '../../Type/Definition/index.js';
+import { Node } from '../../Type/Definition/index.js';
+import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -27,25 +28,29 @@ class GetMeEndpoint {
     );
   }
 
-  getMe(): Promise<Node> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/me`);
-        this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
-        return fetch(url, this.fetchHelper.getDefaultGetOptions());
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseJsonResponse(response))
-      .then((json) => this.elementParser.deserializeElement(json))
-      .then((element) => this.validateElementIsUserNode(element))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
-  }
+  async getMe(): Promise<ParsedResponse<Node>> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/me`);
+      this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
 
-  validateElementIsUserNode(element: Element): Element {
-    if (element.type !== 'User') {
-      throw new LogicError("Expected node to be of type 'User'.");
+      const response = await fetch(url, this.fetchHelper.getDefaultGetOptions()).catch((error) =>
+        this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      const rawData = await this.fetchHelper.parseJsonResponse(response);
+      const element = this.elementParser.deserializeElement(rawData);
+
+      if (element.type !== 'User') {
+        throw new LogicError("Expected node to be of type 'User'.");
+      }
+
+      return {
+        data: element,
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
     }
-    return element;
   }
 }
 

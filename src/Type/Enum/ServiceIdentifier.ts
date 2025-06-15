@@ -17,6 +17,7 @@ enum ServiceIdentifier {
   serviceRawValueToNormalizedValueHelper = 'ember-nexus.app-core.service.raw-value-to-normalized-value-helper-service',
   serviceRequestProblemParser = 'ember-nexus.app-core.service.request-problem-parser-service',
   serviceTokenParser = 'ember-nexus.app-core.service.token-parser-service',
+  serviceApiWrapper = 'ember-nexus.app-core.service.api-wrapper',
 
   // endpoints: element
   endpointElementDeleteElementEndpoint = 'ember-nexus.app-core.endpoint.element.delete-element-endpoint',

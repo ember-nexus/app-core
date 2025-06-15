@@ -77,9 +77,9 @@ class EmberNexus {
       return resolve(
         Container.get(GetElementEndpoint)
           .getElement(elementUuid)
-          .then((element) => {
-            this.elementCache.set(elementUuid, element);
-            return element;
+          .then((elementResponse) => {
+            this.elementCache.set(elementUuid, elementResponse.data);
+            return elementResponse.data;
           }),
       );
     });

@@ -10,27 +10,16 @@ import { buildEndpointServiceResolver } from '../../EndpointHelper';
 
 const mockServer = setupServer(
   http.get('http://mock-api/b1e85bf9-6a79-4e50-ae5a-ed49beac8cb5', () => {
-    return HttpResponse.json(
-      {
-        type: 'Data',
-        id: 'b1e85bf9-6a79-4e50-ae5a-ed49beac8cb5',
-        data: {
-          created: '2023-10-06T20:27:56+00:00',
-          updated: '2023-10-06T20:27:56+00:00',
-          name: 'Test Data',
-        },
+    return new HttpResponse(null, {
+      status: 304,
+      headers: {
+        ETag: '"TMfc6KdsY3a"',
       },
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-        },
-      },
-    );
+    });
   }),
 );
 
-test('GetElementEndpoint should handle node response', async () => {
+test('GetElementEndpoint should handle not modified response', async () => {
   mockServer.listen();
   const serviceResolver = buildEndpointServiceResolver();
   const fetchHelper = serviceResolver.getServiceOrFail<FetchHelper>(ServiceIdentifier.serviceFetchHelper);
@@ -41,22 +30,12 @@ test('GetElementEndpoint should handle node response', async () => {
   const getElementEndpoint = new GetElementEndpoint(logger, fetchHelper, elementParser);
   const parsedResponse = await getElementEndpoint.getElement('b1e85bf9-6a79-4e50-ae5a-ed49beac8cb5');
 
-  if (!('data' in parsedResponse)) {
-    throw new Error('Expected parsed response to contain data attribute.');
+  if ('data' in parsedResponse) {
+    throw new Error('Expected parsed response to not contain data attribute.');
   }
 
-  const node = parsedResponse.data;
-
-  expect(node).to.have.keys('id', 'type', 'data');
-  expect(node).to.not.have.keys('start', 'end');
-  expect(node.id).to.equal('b1e85bf9-6a79-4e50-ae5a-ed49beac8cb5');
-  expect(node.type).to.equal('Data');
-  expect(node.data.created).to.be.instanceof(Date);
-  expect(node.data.updated).to.be.instanceof(Date);
-  expect(Object.keys(node.data)).to.have.lengthOf(3);
-
   const response = parsedResponse.response;
-  expect(response.status).to.equal(200);
+  expect(response.status).to.equal(304);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/b1e85bf9-6a79-4e50-ae5a-ed49beac8cb5',

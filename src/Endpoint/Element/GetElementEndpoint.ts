@@ -2,6 +2,7 @@ import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 
 import { ElementParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
 import { Node, Relation, Uuid } from '../../Type/Definition/index.js';
+import { NotModifiedResponse, ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
@@ -27,17 +28,29 @@ class GetElementEndpoint {
     );
   }
 
-  getElement(elementId: Uuid): Promise<Node | Relation> {
-    return Promise.resolve()
-      .then(() => {
-        const url = this.fetchHelper.buildUrl(`/${elementId}`);
-        this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
-        return fetch(url, this.fetchHelper.getDefaultGetOptions());
-      })
-      .catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error))
-      .then((response) => this.fetchHelper.parseJsonResponse(response))
-      .then((json) => this.elementParser.deserializeElement(json))
-      .catch((error) => this.fetchHelper.logAndThrowError(error));
+  async getElement(elementId: Uuid, etag?: string): Promise<ParsedResponse<Node | Relation> | NotModifiedResponse> {
+    try {
+      const url = this.fetchHelper.buildUrl(`/${elementId}`);
+      this.logger.debug(`Executing HTTP GET request against URL: ${url}`);
+
+      const response = await fetch(url, this.fetchHelper.getDefaultGetOptions(etag)).catch((error) =>
+        this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
+
+      if (response.status === 304) {
+        return { response: response } as NotModifiedResponse;
+      }
+
+      const rawData = await this.fetchHelper.parseJsonResponse(response);
+      const element = this.elementParser.deserializeElement(rawData);
+
+      return {
+        data: element,
+        response: response,
+      };
+    } catch (error) {
+      this.fetchHelper.logAndThrowError(error);
+    }
   }
 }
 

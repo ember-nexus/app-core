@@ -45,7 +45,7 @@ class FetchHelper {
     throw err;
   }
 
-  parseJsonResponse(response: Response): Promise<object> {
+  async parseJsonResponse(response: Response): Promise<object> {
     const contentType = response.headers.get('Content-Type');
 
     if (!contentType) {
@@ -53,20 +53,20 @@ class FetchHelper {
     }
 
     if (!contentType.includes('application/json') && !contentType.includes('application/problem+json')) {
-      throw new ParseError(`Unexpected Content-Type: "${contentType}". Expected JSON-compatible format.`);
+      return Promise.reject(
+        new ParseError(`Unexpected Content-Type: "${contentType}". Expected JSON-compatible format.`),
+      );
     }
 
-    return response
-      .json()
-      .catch((err) => {
-        throw new ParseError(`Failed to parse response body as JSON: ${err}`);
-      })
-      .then((data) => {
-        if (!response.ok) {
-          throw this.createResponseErrorFromBadResponse(response, data);
-        }
-        return data as object;
-      });
+    const data = await response.json().catch((err) => {
+      throw new ParseError(`Failed to parse response body as JSON: ${err}`);
+    });
+
+    if (!response.ok) {
+      throw this.createResponseErrorFromBadResponse(response, data);
+    }
+
+    return data as object;
   }
 
   parseEmptyResponse(response: Response): Promise<void> {
@@ -167,19 +167,27 @@ class FetchHelper {
     headers['Accept'] = 'application/json, application/problem+json';
   }
 
+  addIfNoneMatchHeader(headers: HeadersInit, etag: string): void {
+    headers['If-None-Match'] = etag;
+  }
+
   addContentTypeJsonHeader(headers: HeadersInit): void {
     headers['Content-Type'] = 'application/json';
   }
 
-  getDefaultGetOptions(): RequestInit {
+  getDefaultGetOptions(etag?: string): RequestInit {
     const headers = {};
     this.addAuthorizationHeader(headers);
     this.addAcceptJsonAndProblemJsonHeader(headers);
+    if (etag !== undefined) {
+      this.addIfNoneMatchHeader(headers, etag);
+    }
     return {
       method: HttpRequestMethod.GET,
       headers: headers,
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
+      cache: 'no-store',
     };
   }
 

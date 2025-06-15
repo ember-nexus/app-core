@@ -3,6 +3,13 @@ import { Logger } from 'tslog';
 
 import { GetServiceResolverEvent } from './BrowserEvent/index.js';
 import {
+  ElementCache,
+  ElementChildrenCache,
+  ElementParentsCache,
+  ElementRelatedCache,
+  IndexCache,
+} from './Cache/index.js';
+import {
   DeleteElementEndpoint,
   GetElementChildrenEndpoint,
   GetElementEndpoint,
@@ -89,6 +96,13 @@ function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): Serv
     PostChangePasswordEndpoint,
     PostRegisterEndpoint,
     PostTokenEndpoint,
+
+    // caches
+    ElementCache,
+    ElementChildrenCache,
+    ElementParentsCache,
+    ElementRelatedCache,
+    IndexCache,
   ];
   for (let i = 0; i < services.length; i++) {
     serviceResolver.setService(services[i].identifier, services[i].constructFromServiceResolver(serviceResolver));

@@ -1,4 +1,5 @@
 export * as BrowserEvent from './BrowserEvent/index.js';
+export * as Cache from './Cache/index.js';
 export * as Endpoint from './Endpoint/index.js';
 export * as Error from './Error/index.js';
 export * as EventSystem from './EventSystem/index.js';

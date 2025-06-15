@@ -38,6 +38,13 @@ enum ServiceIdentifier {
   endpointUserPostChangePasswordEndpoint = 'ember-nexus.app-core.endpoint.user.post-change-password-endpoint',
   endpointUserPostRegisterEndpoint = 'ember-nexus.app-core.endpoint.user.post-register-endpoint',
   endpointUserPostTokenEndpoint = 'ember-nexus.app-core.endpoint.user.post-token-endpoint',
+
+  // cache
+  cacheElement = 'ember-nexus.app-core.cache.element-cache',
+  cacheElementChildren = 'ember-nexus.app-core.cache.element-children-cache',
+  cacheElementParents = 'ember-nexus.app-core.cache.element-parents-cache',
+  cacheElementRelated = 'ember-nexus.app-core.cache.element-related-cache',
+  cacheIndex = 'ember-nexus.app-core.cache.index-cache',
 }
 
 export { ServiceIdentifier };

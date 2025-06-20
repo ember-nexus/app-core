@@ -37,7 +37,7 @@ test('GetElementParentsEndpoint should handle not modified response', async () =
   }
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(304);
+  expect(response.status).toEqual(304);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/519fb22b-6b0c-403a-947f-eec3f9ac9209/parents?page=1&pageSize=25',

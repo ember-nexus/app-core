@@ -100,7 +100,7 @@ test('GetElementChildrenEndpoint should handle collection response', async () =>
   expect(Object.keys(collection.relations)).to.have.lengthOf(2);
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(200);
+  expect(response.status).toEqual(200);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/07212e8a-14cc-4f45-a3e9-1179080bbd61/children?page=1&pageSize=25',

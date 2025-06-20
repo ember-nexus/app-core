@@ -35,7 +35,7 @@ test('GetElementEndpoint should handle not modified response', async () => {
   }
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(304);
+  expect(response.status).toEqual(304);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/b1e85bf9-6a79-4e50-ae5a-ed49beac8cb5',

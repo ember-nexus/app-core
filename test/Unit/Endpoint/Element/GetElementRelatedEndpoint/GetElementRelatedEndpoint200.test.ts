@@ -100,7 +100,7 @@ test('GetElementRelatedEndpoint should handle collection response', async () => 
   expect(Object.keys(collection.relations)).to.have.lengthOf(2);
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(200);
+  expect(response.status).toEqual(200);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/def7d22b-9ad1-4256-9c80-e1d1bd401dd7/related?page=1&pageSize=25',

@@ -31,7 +31,7 @@ test('PostChangePasswordEndpoint should handle node response', async () => {
     '4321',
   );
 
-  expect(emptyResponse.response.status).to.equal(204);
+  expect(emptyResponse.response.status).toEqual(204);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP POST request against URL: http://mock-api/change-password',

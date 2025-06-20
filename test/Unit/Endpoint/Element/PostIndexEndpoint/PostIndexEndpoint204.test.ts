@@ -37,10 +37,10 @@ test('PostIndexEndpoint should handle 204 response', async () => {
   const parsedResponse = await postIndexEndpoint.postIndex(element);
 
   const uuid = parsedResponse.data;
-  expect(uuid).to.equal('455a89b9-4ec7-4b02-b023-bcfbcbba9a9f');
+  expect(uuid).toEqual('455a89b9-4ec7-4b02-b023-bcfbcbba9a9f');
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(204);
+  expect(response.status).toEqual(204);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith('Executing HTTP POST request against URL: http://mock-api/');
   mockServer.close();

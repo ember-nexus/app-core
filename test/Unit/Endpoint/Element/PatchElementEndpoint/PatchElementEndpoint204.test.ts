@@ -30,7 +30,7 @@ test('PatchElementEndpoint should handle 204 response', async () => {
   };
   const emptyResponse = await patchElementEndpoint.patchElement('0050c1f6-8be7-4615-bd3a-82d0f85d1f2d', data);
 
-  expect(emptyResponse.response.status).to.equal(204);
+  expect(emptyResponse.response.status).toEqual(204);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP PATCH request against URL: http://mock-api/0050c1f6-8be7-4615-bd3a-82d0f85d1f2d',

@@ -4,7 +4,7 @@ import { CacheEntry } from './CacheEntry.js';
 import { LogicError } from '../Error/index.js';
 import { ParsedResponse } from '../Type/Definition/Response/index.js';
 
-class Cache<T> {
+abstract class Cache<T> {
   protected cache: LRUCache<string, CacheEntry<T>>;
 
   public has(key: string): boolean {
@@ -17,6 +17,11 @@ class Cache<T> {
 
   public set(key: string, value: CacheEntry<T>): this {
     this.cache.set(key, value);
+    return this;
+  }
+
+  public delete(key: string): this {
+    this.cache.delete(key);
     return this;
   }
 
@@ -53,8 +58,8 @@ class Cache<T> {
     return this;
   }
 
-  public refresh(_key: string): this {
-    // todo implement refresh
+  public refresh(key: string): this {
+    console.log(key);
     return this;
   }
 }

@@ -48,13 +48,13 @@ test('GetMeEndpoint should handle node response', async () => {
   const node = parsedResponse.data;
   expect(node).to.have.keys('id', 'type', 'data');
   expect(node).to.not.have.keys('start', 'end');
-  expect(node.type).to.equal('User');
+  expect(node.type).toEqual('User');
   expect(node.data.created).to.be.instanceof(Date);
   expect(node.data.updated).to.be.instanceof(Date);
   expect(Object.keys(node.data)).to.have.lengthOf(7);
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(200);
+  expect(response.status).toEqual(200);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith('Executing HTTP GET request against URL: http://mock-api/me');
   mockServer.close();

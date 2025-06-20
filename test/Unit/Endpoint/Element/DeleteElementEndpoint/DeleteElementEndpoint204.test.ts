@@ -28,7 +28,7 @@ test('DeleteElementEndpoint should handle 204 response', async () => {
   const deleteElementEndpoint = new DeleteElementEndpoint(logger, fetchHelper);
   const emptyResponse = await deleteElementEndpoint.deleteElement('52965378-8305-43bf-a637-b24d0d29c1c9');
 
-  expect(emptyResponse.response.status).to.equal(204);
+  expect(emptyResponse.response.status).toEqual(204);
 
   expect(buildUrlSpy).toHaveBeenCalledExactlyOnceWith('/52965378-8305-43bf-a637-b24d0d29c1c9');
   expect(getDefaultDeleteOptionsSpy).toHaveBeenCalledOnce();

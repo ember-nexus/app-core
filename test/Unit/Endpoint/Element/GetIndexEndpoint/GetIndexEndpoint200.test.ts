@@ -79,7 +79,7 @@ test('GetIndexEndpoint should handle collection response', async () => {
   expect(Object.keys(collection.relations)).to.have.lengthOf(0);
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(200);
+  expect(response.status).toEqual(200);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP GET request against URL: http://mock-api/?page=1&pageSize=25',

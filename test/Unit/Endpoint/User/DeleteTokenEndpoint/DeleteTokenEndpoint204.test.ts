@@ -28,7 +28,7 @@ test('DeleteTokenEndpoint should handle 204 response', async () => {
   const deleteElementEndpoint = new DeleteTokenEndpoint(logger, fetchHelper);
   const emptyResponse = await deleteElementEndpoint.deleteToken();
 
-  expect(emptyResponse.response.status).to.equal(204);
+  expect(emptyResponse.response.status).toEqual(204);
 
   expect(buildUrlSpy).toHaveBeenCalledExactlyOnceWith('/token');
   expect(getDefaultDeleteOptionsSpy).toHaveBeenCalledOnce();

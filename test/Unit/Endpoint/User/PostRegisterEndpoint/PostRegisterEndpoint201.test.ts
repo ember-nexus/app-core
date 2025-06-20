@@ -30,10 +30,10 @@ test('PostRegisterEndpoint should handle node response', async () => {
   const parsedResponse = await postRegisterEndpoint.postRegister('test@localhost.dev' as UniqueUserIdentifier, '1234');
 
   const uuid = parsedResponse.data;
-  expect(uuid).to.equal('a5f95955-1d24-43db-8832-f365e6a96dfa');
+  expect(uuid).toEqual('a5f95955-1d24-43db-8832-f365e6a96dfa');
 
   const response = parsedResponse.response;
-  expect(response.status).to.equal(201);
+  expect(response.status).toEqual(201);
 
   expect(debugLoggerSpy).toHaveBeenCalledExactlyOnceWith(
     'Executing HTTP POST request against URL: http://mock-api/register',

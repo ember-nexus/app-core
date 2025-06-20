@@ -2,7 +2,7 @@ import { expect, test } from 'vitest';
 
 import { IndexCache } from '../../../src/Cache';
 
-test('service identifier', () => {
+test('IndexCache provides correct service identifier', () => {
   expect(IndexCache.identifier).toEqual('ember-nexus.app-core.cache.index-cache');
 });
 

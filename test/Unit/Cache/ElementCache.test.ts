@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import { ElementCache } from '../../../src/Cache';
 import { Collection } from '../../../src/Type/Definition/index.js';
 
-test('service identifier', () => {
+test('ElementCache provides correct service identifier', () => {
   expect(ElementCache.identifier).toEqual('ember-nexus.app-core.cache.element-cache');
 });
 

@@ -6,14 +6,27 @@ import {
   IndexCache,
 } from '../Cache/index.js';
 import {
+  DeleteElementEndpoint,
   GetElementChildrenEndpoint,
   GetElementEndpoint,
   GetElementParentsEndpoint,
   GetElementRelatedEndpoint,
   GetIndexEndpoint,
+  PatchElementEndpoint,
+  PostElementEndpoint,
+  PostIndexEndpoint,
+  PutElementEndpoint,
 } from '../Endpoint/Element/index.js';
 import { ServiceResolver } from '../Service/index.js';
-import { Collection, Node, Relation, Uuid } from '../Type/Definition/index.js';
+import {
+  Collection,
+  Data,
+  Node,
+  NodeWithOptionalId,
+  Relation,
+  RelationWithOptionalId,
+  Uuid,
+} from '../Type/Definition/index.js';
 import { ParsedResponse } from '../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../Type/Enum/index.js';
 
@@ -26,6 +39,11 @@ class ApiWrapper {
     private getElementParentsEndpoint: GetElementParentsEndpoint,
     private getElementRelatedEndpoint: GetElementRelatedEndpoint,
     private getIndexEndpoint: GetIndexEndpoint,
+    private postIndexEndpoint: PostIndexEndpoint,
+    private postElementEndpoint: PostElementEndpoint,
+    private putElementEndpoint: PutElementEndpoint,
+    private patchElementEndpoint: PatchElementEndpoint,
+    private deleteElementEndpoint: DeleteElementEndpoint,
     private elementCache: ElementCache,
     private elementChildrenCache: ElementChildrenCache,
     private elementParentsCache: ElementParentsCache,
@@ -46,6 +64,11 @@ class ApiWrapper {
         ServiceIdentifier.endpointElementGetElementRelatedEndpoint,
       ),
       serviceResolver.getServiceOrFail<GetIndexEndpoint>(ServiceIdentifier.endpointElementGetIndexEndpoint),
+      serviceResolver.getServiceOrFail<PostIndexEndpoint>(ServiceIdentifier.endpointElementPostIndexEndpoint),
+      serviceResolver.getServiceOrFail<PostElementEndpoint>(ServiceIdentifier.endpointElementPostElementEndpoint),
+      serviceResolver.getServiceOrFail<PutElementEndpoint>(ServiceIdentifier.endpointElementPutElementEndpoint),
+      serviceResolver.getServiceOrFail<PatchElementEndpoint>(ServiceIdentifier.endpointElementPatchElementEndpoint),
+      serviceResolver.getServiceOrFail<DeleteElementEndpoint>(ServiceIdentifier.endpointElementDeleteElementEndpoint),
       serviceResolver.getServiceOrFail<ElementCache>(ServiceIdentifier.cacheElement),
       serviceResolver.getServiceOrFail<ElementChildrenCache>(ServiceIdentifier.cacheElementChildren),
       serviceResolver.getServiceOrFail<ElementParentsCache>(ServiceIdentifier.cacheElementParents),
@@ -245,6 +268,31 @@ class ApiWrapper {
     this.indexCache.setFromParsedResponse(cacheKey, parsedResponse);
     this.elementCache.setFromCollection(parsedResponse.data);
     return parsedResponse.data;
+  }
+
+  public async postIndex(element: NodeWithOptionalId | RelationWithOptionalId): Promise<Uuid> {
+    const parsedResponse = await this.postIndexEndpoint.postIndex(element);
+    return parsedResponse.data;
+  }
+
+  public async postElement(parentId: Uuid, element: NodeWithOptionalId): Promise<Uuid> {
+    const parsedResponse = await this.postElementEndpoint.postElement(parentId, element);
+    return parsedResponse.data;
+  }
+
+  public async putElement(elementId: Uuid, data: Data): Promise<void> {
+    await this.putElementEndpoint.putElement(elementId, data);
+    this.elementCache.delete(ElementCache.createCacheKey(elementId));
+  }
+
+  public async patchElement(elementId: Uuid, data: Data): Promise<void> {
+    await this.patchElementEndpoint.patchElement(elementId, data);
+    this.elementCache.delete(ElementCache.createCacheKey(elementId));
+  }
+
+  public async deleteElement(elementId: Uuid): Promise<void> {
+    await this.deleteElementEndpoint.deleteElement(elementId);
+    this.elementCache.delete(ElementCache.createCacheKey(elementId));
   }
 }
 

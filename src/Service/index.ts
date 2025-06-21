@@ -2,7 +2,6 @@ export * from './ApiConfiguration.js';
 export * from './ApiWrapper.js';
 export * from './CollectionParser.js';
 export * from './ElementParser.js';
-export * from './EmberNexus.js';
 export * from './EventDispatcher.js';
 export * from './FetchHelper.js';
 export * from './Logger.js';

@@ -54,11 +54,18 @@ class ApiWrapper {
     );
   }
 
-  public async getElement(elementId: Uuid, forceLoad?: boolean): Promise<Node | Relation> {
+  public async getElement(
+    elementId: Uuid,
+    {
+      forceLoad = false,
+    }: {
+      forceLoad?: boolean;
+    } = {},
+  ): Promise<Node | Relation> {
     const cacheKey = ElementCache.createCacheKey(elementId);
     const cacheEntry = this.elementCache.get(cacheKey);
 
-    if (cacheEntry && forceLoad !== true) {
+    if (cacheEntry && !forceLoad) {
       return cacheEntry.data;
     }
 
@@ -79,14 +86,20 @@ class ApiWrapper {
 
   public async getElementChildren(
     parentId: Uuid,
-    page: number = 1,
-    pageSize: number = 25,
-    forceLoad?: boolean,
+    {
+      page = 1,
+      pageSize = 25,
+      forceLoad = false,
+    }: {
+      page?: number;
+      pageSize?: number;
+      forceLoad?: boolean;
+    } = {},
   ): Promise<Collection> {
     const cacheKey = ElementChildrenCache.createCacheKey(parentId, page, pageSize);
     const cacheEntry = this.elementChildrenCache.get(cacheKey);
 
-    if (cacheEntry && forceLoad !== true) {
+    if (cacheEntry && !forceLoad) {
       return cacheEntry.data;
     }
 
@@ -118,14 +131,20 @@ class ApiWrapper {
 
   public async getElementParents(
     childId: Uuid,
-    page: number = 1,
-    pageSize: number = 25,
-    forceLoad?: boolean,
+    {
+      page = 1,
+      pageSize = 25,
+      forceLoad = false,
+    }: {
+      page?: number;
+      pageSize?: number;
+      forceLoad?: boolean;
+    } = {},
   ): Promise<Collection> {
     const cacheKey = ElementParentsCache.createCacheKey(childId, page, pageSize);
     const cacheEntry = this.elementParentsCache.get(cacheKey);
 
-    if (cacheEntry && forceLoad !== true) {
+    if (cacheEntry && !forceLoad) {
       return cacheEntry.data;
     }
 
@@ -152,14 +171,20 @@ class ApiWrapper {
 
   public async getElementRelated(
     centerId: Uuid,
-    page: number = 1,
-    pageSize: number = 25,
-    forceLoad?: boolean,
+    {
+      page = 1,
+      pageSize = 25,
+      forceLoad = false,
+    }: {
+      page?: number;
+      pageSize?: number;
+      forceLoad?: boolean;
+    } = {},
   ): Promise<Collection> {
     const cacheKey = ElementRelatedCache.createCacheKey(centerId, page, pageSize);
     const cacheEntry = this.elementRelatedCache.get(cacheKey);
 
-    if (cacheEntry && forceLoad !== true) {
+    if (cacheEntry && !forceLoad) {
       return cacheEntry.data;
     }
 
@@ -189,11 +214,19 @@ class ApiWrapper {
     return parsedResponse.data;
   }
 
-  public async getIndex(page: number = 1, pageSize: number = 25, forceLoad?: boolean): Promise<Collection> {
+  public async getIndex({
+    page = 1,
+    pageSize = 25,
+    forceLoad = false,
+  }: {
+    page?: number;
+    pageSize?: number;
+    forceLoad?: boolean;
+  } = {}): Promise<Collection> {
     const cacheKey = IndexCache.createCacheKey(page, pageSize);
     const cacheEntry = this.indexCache.get(cacheKey);
 
-    if (cacheEntry && forceLoad !== true) {
+    if (cacheEntry && !forceLoad) {
       return cacheEntry.data;
     }
 

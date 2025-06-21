@@ -23,6 +23,19 @@
   const serviceResolver = EmberNexusAppCore.init(document.getElementById('ember-nexus-app-core'));
   window.sr = serviceResolver;
   console.log(serviceResolver);
+
+  window.api = serviceResolver.getServiceOrFail(EmberNexusAppCore.Service.ApiWrapper.identifier);
+  console.log(window.api);
+
+  const config = serviceResolver.getServiceOrFail(EmberNexusAppCore.Service.ApiConfiguration.identifier);
+  config.setApiHost('https://reference-dataset.ember-nexus.dev');
+
+  const token = await window.api.postToken('user@ownership-model.general.localhost.dev', '1234');
+  config.setToken(token);
+
+  console.log("app core is now initialized - you can execute further API requests");
+
+  console.log(await window.api.getIndex());
 </script>
 </body>
 </html>

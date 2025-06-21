@@ -31,6 +31,7 @@ import {
 } from './Endpoint/User/index.js';
 import {
   ApiConfiguration,
+  ApiWrapper,
   CollectionParser,
   ElementParser,
   EventDispatcher,
@@ -103,6 +104,9 @@ function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): Serv
     ElementParentsCache,
     ElementRelatedCache,
     IndexCache,
+
+    // high level services
+    ApiWrapper,
   ];
   for (let i = 0; i < services.length; i++) {
     serviceResolver.setService(services[i].identifier, services[i].constructFromServiceResolver(serviceResolver));

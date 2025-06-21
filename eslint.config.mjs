@@ -2,16 +2,16 @@ import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import prettier from "eslint-plugin-prettier";
 import _import from "eslint-plugin-import";
 import {fixupPluginRules} from "@eslint/compat";
-import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
 import {fileURLToPath} from "node:url";
 import js from "@eslint/js";
-import {FlatCompat} from "@eslint/eslintrc";
 import tseslint from "@eslint/js";
+import {FlatCompat} from "@eslint/eslintrc";
 import pluginPromise from 'eslint-plugin-promise';
 import compat from "eslint-plugin-compat";
-import vitest from "@vitest/eslint-plugin";
+import perfectionist from 'eslint-plugin-perfectionist';
+import globals from "globals";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -43,14 +43,14 @@ export default [
       "@typescript-eslint": typescriptEslint,
       prettier,
       import: fixupPluginRules(_import),
-      vitest,
+      perfectionist,
     },
 
     languageOptions: {
       globals: {
         ...Object.fromEntries(Object.entries(globals.browser).map(([key]) => [key, "off"])),
         ...globals.node,
-        ...vitest.environments.env.globals
+        ...globals.browser
       },
 
       parser: tsParser,
@@ -71,8 +71,6 @@ export default [
     },
     rules: {
       ...js.configs.recommended.rules,
-      ...vitest.configs.recommended.rules,
-      "no-undef": "off",
       "no-unused-vars": "off",
       "no-template-curly-in-string": "error",
       "no-use-before-define": "error",
@@ -92,7 +90,6 @@ export default [
       "no-sequences": "error",
       "no-throw-literal": "error",
       "no-var": "error",
-      "no-duplicate-imports": "error",
       "prefer-arrow-callback": "error",
       "prefer-const": "error",
       "require-await": "error",
@@ -135,7 +132,9 @@ export default [
       "promise/no-new-statics": "error",
       "promise/no-return-in-finally": "warn",
       "promise/valid-params": "warn",
-      "promise/no-multiple-resolved": "error"
+      "promise/no-multiple-resolved": "error",
+      'perfectionist/sort-exports': 'error',
+      // 'perfectionist/sort-named-imports': 'error'
     },
   },
   {

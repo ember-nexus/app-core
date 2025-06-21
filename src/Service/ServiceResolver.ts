@@ -6,23 +6,30 @@ class ServiceResolver {
   constructor() {}
 
   hasService(serviceIdentifier: ServiceIdentifier): boolean {
-    return this.services.has(serviceIdentifier);
+    return this.services.has(String(serviceIdentifier));
   }
 
-  getService(serviceIdentifier: ServiceIdentifier): null | unknown {
-    if (!this.hasService(serviceIdentifier)) {
+  getService<T = unknown>(serviceIdentifier: ServiceIdentifier): null | T {
+    if (!this.hasService(String(serviceIdentifier))) {
       return null;
     }
-    return this.services.get(serviceIdentifier);
+    return this.services.get(String(serviceIdentifier)) as T;
+  }
+
+  getServiceOrFail<T = unknown>(serviceIdentifier: ServiceIdentifier): T {
+    if (!this.hasService(String(serviceIdentifier))) {
+      throw new Error(`Requested service with identifier ${String(serviceIdentifier)} could not be resolved.`);
+    }
+    return this.services.get(String(serviceIdentifier)) as T;
   }
 
   setService(serviceIdentifier: ServiceIdentifier, service: unknown): ServiceResolver {
-    this.services.set(serviceIdentifier, service);
+    this.services.set(String(serviceIdentifier), service);
     return this;
   }
 
   deleteService(serviceIdentifier: ServiceIdentifier): ServiceResolver {
-    this.services.delete(serviceIdentifier);
+    this.services.delete(String(serviceIdentifier));
     return this;
   }
 

@@ -161,3 +161,17 @@ test('getIndex with forceLoad and outdated cache results in new API call', async
   expect(response).toEqual(collection);
   expect(indexCache.get('1-25')?.etag).toEqual('new-etag');
 });
+
+test('getIndex to expose errors', async () => {
+  const getIndexEndpoint = mock<GetIndexEndpoint>();
+  when(() => getIndexEndpoint.getIndex(1, 25))
+    .thenReject(new Error('some error'))
+    .once();
+
+  const apiWrapper = createApiWrapper({
+    indexCache: new IndexCache(),
+    getIndexEndpoint,
+  });
+
+  await expect(() => apiWrapper.getIndex()).rejects.toThrowError('some error');
+});

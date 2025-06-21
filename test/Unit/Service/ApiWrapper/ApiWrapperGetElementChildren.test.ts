@@ -195,3 +195,19 @@ test('getElementChildren with forceLoad and outdated cache results in new API ca
   expect(response).toEqual(collection);
   expect(elementChildrenCache.get('ef562bea-70df-4b23-8955-6e28e2de6e81-1-25')?.etag).toEqual('new-etag');
 });
+
+test('getElementChildren to expose errors', async () => {
+  const getElementChildrenEndpoint = mock<GetElementChildrenEndpoint>();
+  when(() => getElementChildrenEndpoint.getElementChildren('9fb2ca19-3ef7-493e-8674-7caa9650dfa7', 1, 25))
+    .thenReject(new Error('some error'))
+    .once();
+
+  const apiWrapper = createApiWrapper({
+    elementChildrenCache: new ElementChildrenCache(),
+    getElementChildrenEndpoint,
+  });
+
+  await expect(() => apiWrapper.getElementChildren('9fb2ca19-3ef7-493e-8674-7caa9650dfa7')).rejects.toThrowError(
+    'some error',
+  );
+});

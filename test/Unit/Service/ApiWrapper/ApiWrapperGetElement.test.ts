@@ -107,3 +107,17 @@ test('getElement with forceLoad and outdated cache results in new API call', asy
   expect(response).toEqual(element);
   expect(elementCache.get('910774f3-03e7-47a7-b062-f6ea9945c39d')?.etag).toEqual('new-etag');
 });
+
+test('getElement to expose errors', async () => {
+  const getElementEndpoint = mock<GetElementEndpoint>();
+  when(() => getElementEndpoint.getElement('9fb2ca19-3ef7-493e-8674-7caa9650dfa7'))
+    .thenReject(new Error('some error'))
+    .once();
+
+  const apiWrapper = createApiWrapper({
+    elementCache: new ElementCache(),
+    getElementEndpoint,
+  });
+
+  await expect(() => apiWrapper.getElement('9fb2ca19-3ef7-493e-8674-7caa9650dfa7')).rejects.toThrowError('some error');
+});

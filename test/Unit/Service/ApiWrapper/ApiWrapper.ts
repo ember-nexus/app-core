@@ -40,12 +40,12 @@ function createApiWrapper(services: {
   putElementEndpoint?: PutElementEndpoint;
   patchElementEndpoint?: PatchElementEndpoint;
   deleteElementEndpoint?: DeleteElementEndpoint;
-  postRegisterEndpoint: PostRegisterEndpoint;
-  postChangePasswordEndpoint: PostChangePasswordEndpoint;
-  getMeEndpoint: GetMeEndpoint;
-  postTokenEndpoint: PostTokenEndpoint;
-  getTokenEndpoint: GetTokenEndpoint;
-  deleteTokenEndpoint: DeleteTokenEndpoint;
+  postRegisterEndpoint?: PostRegisterEndpoint;
+  postChangePasswordEndpoint?: PostChangePasswordEndpoint;
+  getMeEndpoint?: GetMeEndpoint;
+  postTokenEndpoint?: PostTokenEndpoint;
+  getTokenEndpoint?: GetTokenEndpoint;
+  deleteTokenEndpoint?: DeleteTokenEndpoint;
   elementCache?: ElementCache;
   elementChildrenCache?: ElementChildrenCache;
   elementParentsCache?: ElementParentsCache;

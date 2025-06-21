@@ -195,3 +195,19 @@ test('getElementRelated with forceLoad and outdated cache results in new API cal
   expect(response).toEqual(collection);
   expect(elementRelatedCache.get('b87c3bfd-0321-46a6-845a-48a69eac2c53-1-25')?.etag).toEqual('new-etag');
 });
+
+test('getElementRelated to expose errors', async () => {
+  const getElementRelatedEndpoint = mock<GetElementRelatedEndpoint>();
+  when(() => getElementRelatedEndpoint.getElementRelated('fbe56b00-2cb0-40e3-bac0-fabe3f8fe250', 1, 25))
+    .thenReject(new Error('some error'))
+    .once();
+
+  const apiWrapper = createApiWrapper({
+    elementRelatedCache: new ElementRelatedCache(),
+    getElementRelatedEndpoint,
+  });
+
+  await expect(() => apiWrapper.getElementRelated('fbe56b00-2cb0-40e3-bac0-fabe3f8fe250')).rejects.toThrowError(
+    'some error',
+  );
+});

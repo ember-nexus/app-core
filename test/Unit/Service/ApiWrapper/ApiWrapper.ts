@@ -19,6 +19,14 @@ import {
   PostIndexEndpoint,
   PutElementEndpoint,
 } from '../../../../src/Endpoint/Element';
+import {
+  DeleteTokenEndpoint,
+  GetMeEndpoint,
+  GetTokenEndpoint,
+  PostChangePasswordEndpoint,
+  PostRegisterEndpoint,
+  PostTokenEndpoint,
+} from '../../../../src/Endpoint/User';
 import { ApiWrapper } from '../../../../src/Service';
 
 function createApiWrapper(services: {
@@ -32,6 +40,12 @@ function createApiWrapper(services: {
   putElementEndpoint?: PutElementEndpoint;
   patchElementEndpoint?: PatchElementEndpoint;
   deleteElementEndpoint?: DeleteElementEndpoint;
+  postRegisterEndpoint: PostRegisterEndpoint;
+  postChangePasswordEndpoint: PostChangePasswordEndpoint;
+  getMeEndpoint: GetMeEndpoint;
+  postTokenEndpoint: PostTokenEndpoint;
+  getTokenEndpoint: GetTokenEndpoint;
+  deleteTokenEndpoint: DeleteTokenEndpoint;
   elementCache?: ElementCache;
   elementChildrenCache?: ElementChildrenCache;
   elementParentsCache?: ElementParentsCache;
@@ -49,6 +63,12 @@ function createApiWrapper(services: {
     services.putElementEndpoint ?? mock<PutElementEndpoint>(),
     services.patchElementEndpoint ?? mock<PatchElementEndpoint>(),
     services.deleteElementEndpoint ?? mock<DeleteElementEndpoint>(),
+    services.postRegisterEndpoint ?? mock<PostRegisterEndpoint>(),
+    services.postChangePasswordEndpoint ?? mock<PostChangePasswordEndpoint>(),
+    services.getMeEndpoint ?? mock<GetMeEndpoint>(),
+    services.postTokenEndpoint ?? mock<PostTokenEndpoint>(),
+    services.getTokenEndpoint ?? mock<GetTokenEndpoint>(),
+    services.deleteTokenEndpoint ?? mock<DeleteTokenEndpoint>(),
     services.elementCache ?? mock<ElementCache>(),
     services.elementChildrenCache ?? mock<ElementChildrenCache>(),
     services.elementParentsCache ?? mock<ElementParentsCache>(),

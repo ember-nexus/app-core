@@ -17,6 +17,14 @@ import {
   PostIndexEndpoint,
   PutElementEndpoint,
 } from '../Endpoint/Element/index.js';
+import {
+  DeleteTokenEndpoint,
+  GetMeEndpoint,
+  GetTokenEndpoint,
+  PostChangePasswordEndpoint,
+  PostRegisterEndpoint,
+  PostTokenEndpoint,
+} from '../Endpoint/User/index.js';
 import { ServiceResolver } from '../Service/index.js';
 import {
   Collection,
@@ -25,6 +33,8 @@ import {
   NodeWithOptionalId,
   Relation,
   RelationWithOptionalId,
+  Token,
+  UniqueUserIdentifier,
   Uuid,
 } from '../Type/Definition/index.js';
 import { ParsedResponse } from '../Type/Definition/Response/index.js';
@@ -44,6 +54,12 @@ class ApiWrapper {
     private putElementEndpoint: PutElementEndpoint,
     private patchElementEndpoint: PatchElementEndpoint,
     private deleteElementEndpoint: DeleteElementEndpoint,
+    private postRegisterEndpoint: PostRegisterEndpoint,
+    private postChangePasswordEndpoint: PostChangePasswordEndpoint,
+    private getMeEndpoint: GetMeEndpoint,
+    private postTokenEndpoint: PostTokenEndpoint,
+    private getTokenEndpoint: GetTokenEndpoint,
+    private deleteTokenEndpoint: DeleteTokenEndpoint,
     private elementCache: ElementCache,
     private elementChildrenCache: ElementChildrenCache,
     private elementParentsCache: ElementParentsCache,
@@ -69,6 +85,14 @@ class ApiWrapper {
       serviceResolver.getServiceOrFail<PutElementEndpoint>(ServiceIdentifier.endpointElementPutElementEndpoint),
       serviceResolver.getServiceOrFail<PatchElementEndpoint>(ServiceIdentifier.endpointElementPatchElementEndpoint),
       serviceResolver.getServiceOrFail<DeleteElementEndpoint>(ServiceIdentifier.endpointElementDeleteElementEndpoint),
+      serviceResolver.getServiceOrFail<PostRegisterEndpoint>(ServiceIdentifier.endpointUserPostRegisterEndpoint),
+      serviceResolver.getServiceOrFail<PostChangePasswordEndpoint>(
+        ServiceIdentifier.endpointUserPostChangePasswordEndpoint,
+      ),
+      serviceResolver.getServiceOrFail<GetMeEndpoint>(ServiceIdentifier.endpointUserGetMeEndpoint),
+      serviceResolver.getServiceOrFail<PostTokenEndpoint>(ServiceIdentifier.endpointUserPostTokenEndpoint),
+      serviceResolver.getServiceOrFail<GetTokenEndpoint>(ServiceIdentifier.endpointUserGetTokenEndpoint),
+      serviceResolver.getServiceOrFail<DeleteTokenEndpoint>(ServiceIdentifier.endpointUserDeleteTokenEndpoint),
       serviceResolver.getServiceOrFail<ElementCache>(ServiceIdentifier.cacheElement),
       serviceResolver.getServiceOrFail<ElementChildrenCache>(ServiceIdentifier.cacheElementChildren),
       serviceResolver.getServiceOrFail<ElementParentsCache>(ServiceIdentifier.cacheElementParents),
@@ -293,6 +317,50 @@ class ApiWrapper {
   public async deleteElement(elementId: Uuid): Promise<void> {
     await this.deleteElementEndpoint.deleteElement(elementId);
     this.elementCache.delete(ElementCache.createCacheKey(elementId));
+  }
+
+  public async postRegister(
+    uniqueUserIdentifier: UniqueUserIdentifier,
+    password: string,
+    data: Data = {},
+  ): Promise<Uuid> {
+    const parsedResponse = await this.postRegisterEndpoint.postRegister(uniqueUserIdentifier, password, data);
+    return parsedResponse.data;
+  }
+
+  public async postChangePassword(
+    uniqueUserIdentifier: UniqueUserIdentifier,
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<void> {
+    await this.postChangePasswordEndpoint.postChangePassword(uniqueUserIdentifier, currentPassword, newPassword);
+  }
+
+  public async getMe(): Promise<Node> {
+    const parsedResponse = await this.getMeEndpoint.getMe();
+    const node = parsedResponse.data;
+    this.elementCache.setFromDataEtag(ElementCache.createCacheKey(node.id), node);
+    return node;
+  }
+
+  public async postToken(
+    uniqueUserIdentifier: UniqueUserIdentifier,
+    password: string,
+    data: Data = {},
+  ): Promise<Token> {
+    const parsedResponse = await this.postTokenEndpoint.postToken(uniqueUserIdentifier, password, data);
+    return parsedResponse.data;
+  }
+
+  public async getToken(): Promise<Node> {
+    const parsedResponse = await this.getTokenEndpoint.getToken();
+    const node = parsedResponse.data;
+    this.elementCache.setFromDataEtag(ElementCache.createCacheKey(node.id), node);
+    return node;
+  }
+
+  public async deleteToken(): Promise<void> {
+    await this.deleteTokenEndpoint.deleteToken();
   }
 }
 

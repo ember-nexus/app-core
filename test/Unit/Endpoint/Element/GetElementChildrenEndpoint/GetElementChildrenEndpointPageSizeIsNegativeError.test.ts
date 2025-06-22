@@ -1,9 +1,9 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 import { expect, test, vi } from 'vitest';
 
 import { GetElementChildrenEndpoint } from '../../../../../src/Endpoint/Element';
 import { ValidationError } from '../../../../../src/Error';
 import { CollectionParser, FetchHelper } from '../../../../../src/Service';
+import { LoggerInterface } from '../../../../../src/Type/Definition';
 import { ServiceIdentifier } from '../../../../../src/Type/Enum';
 import { buildEndpointServiceResolver } from '../../EndpointHelper';
 

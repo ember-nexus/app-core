@@ -1,14 +1,11 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { UniqueUserIdentifier } from '../../Type/Definition/index.js';
+import { LoggerInterface, UniqueUserIdentifier } from '../../Type/Definition/index.js';
 import { EmptyResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post change password endpoint is used to change the user's password.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=postchangepasswordendpoint)
  * @see [Ember Nexus API: Change Password Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/post-change-password)
  */
 class PostChangePasswordEndpoint {

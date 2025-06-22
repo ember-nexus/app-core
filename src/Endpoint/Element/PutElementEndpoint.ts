@@ -1,14 +1,11 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Data, Uuid } from '../../Type/Definition/index.js';
+import { Data, LoggerInterface, Uuid } from '../../Type/Definition/index.js';
 import { EmptyResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The put element endpoint replaces a single element.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/element?id=putelementendpoint)
  * @see [Ember Nexus API: Replace Element Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/element/put-element)
  */
 

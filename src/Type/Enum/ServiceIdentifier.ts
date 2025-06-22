@@ -14,8 +14,6 @@ enum ServiceIdentifier {
   serviceApiConfiguration = 'ember-nexus.app-core.service.api-configuration-service',
   serviceElementParser = 'ember-nexus.app-core.service.element-parser-service',
   serviceCollectionParser = 'ember-nexus.app-core.service.collection-parser-service',
-  serviceRawValueToNormalizedValueHelper = 'ember-nexus.app-core.service.raw-value-to-normalized-value-helper-service',
-  serviceRequestProblemParser = 'ember-nexus.app-core.service.request-problem-parser-service',
   serviceTokenParser = 'ember-nexus.app-core.service.token-parser-service',
   serviceApiWrapper = 'ember-nexus.app-core.service.api-wrapper',
 

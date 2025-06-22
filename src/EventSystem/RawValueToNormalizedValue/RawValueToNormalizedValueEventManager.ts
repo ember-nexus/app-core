@@ -1,5 +1,3 @@
-import { Service } from 'typedi';
-
 import { EventManager } from '../EventManager.js';
 import { RawValueToNormalizedValueEvent } from './Event/index.js';
 import {
@@ -7,10 +5,6 @@ import {
   GenericRawValueToNormalizedValueEventListener,
 } from './EventListener/index.js';
 
-/**
- * Event manager for RawValueToNormalizedValueEvent.
- */
-@Service()
 class RawValueToNormalizedValueEventManager extends EventManager<RawValueToNormalizedValueEvent> {
   constructor(
     dateTimeRawValueToNormalizedValueEventListener: DateTimeRawValueToNormalizedValueEventListener,

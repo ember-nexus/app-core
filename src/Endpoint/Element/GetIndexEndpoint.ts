@@ -1,8 +1,6 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { ValidationError } from '../../Error/index.js';
 import { CollectionParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Collection } from '../../Type/Definition/index.js';
+import { Collection, LoggerInterface } from '../../Type/Definition/index.js';
 import { NotModifiedResponse, ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
@@ -12,7 +10,6 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
  * The root-level nodes are paginated. No relations are returned, as relations always require a starting node and can
  * therefore never be root-level elements.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/element?id=getindexendpoint)
  * @see [Ember Nexus API: Get Index Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/element/get-index)
  */
 class GetIndexEndpoint {

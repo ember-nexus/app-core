@@ -6,7 +6,6 @@ import { ServiceIdentifier } from '../../Type/Enum/index.js';
 /**
  * The delete element endpoint deletes a single element.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/element?id=deleteelementendpoint)
  * @see [Ember Nexus API: Delete Element Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/element/delete-element)
  */
 class DeleteElementEndpoint {

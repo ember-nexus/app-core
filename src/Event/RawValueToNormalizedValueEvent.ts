@@ -1,45 +1,25 @@
-import { StoppableEvent } from '../Type/Definition/index.js';
+import { Event } from '../Type/Definition/index.js';
+import { EventIdentifier } from '../Type/Enum/index.js';
 
-class RawValueToNormalizedValueEvent implements StoppableEvent {
+class RawValueToNormalizedValueEvent extends Event {
+  static identifier: EventIdentifier = EventIdentifier.RawValueToNormalizedValueEvent;
+
   private normalizedValue: unknown = null;
-  private propagationStopped: boolean = false;
 
-  constructor(private rawValue: unknown) {}
-
-  /**
-   * @inheritDoc
-   */
-  isPropagationStopped(): boolean {
-    return this.propagationStopped;
+  constructor(private rawValue: unknown) {
+    super(RawValueToNormalizedValueEvent.identifier);
   }
 
-  /**
-   * @inheritDoc
-   */
-  stopPropagation(): RawValueToNormalizedValueEvent {
-    this.propagationStopped = true;
-    return this;
-  }
-
-  /**
-   * Returns the raw value set during the event's creation.
-   */
   getRawValue(): unknown {
     return this.rawValue;
   }
 
-  /**
-   * Returns the normalized value, i.e. the JavaScript representation.
-   */
   getNormalizedValue(): unknown {
     return this.normalizedValue;
   }
 
-  /**
-   * Sets the normalized value, i.e. the JavaScript representation.
-   * @param normalizedValue Normalized value.
-   */
-  setNormalizedValue(normalizedValue: unknown): RawValueToNormalizedValueEvent {
+  setNormalizedValue(normalizedValue: unknown): this {
+    if (this.isPropagationStopped()) return this;
     this.normalizedValue = normalizedValue;
     return this;
   }

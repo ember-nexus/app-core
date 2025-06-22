@@ -4,7 +4,7 @@ import { ParseError } from '../../Error/index.js';
 /**
  * Type safe variant of string containing event identifier.
  */
-type EventIdentifier = Branded<string, 'eventIdentifier'>;
+type EventIdentifier = Branded<string, 'eventIdentifier'> | string;
 
 const eventIdentifierRegex = /^([a-z][a-z0-9-]*)(\.([a-z][a-z0-9-]*))*$/;
 

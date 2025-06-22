@@ -1,49 +1,25 @@
-import { StoppableEvent } from '../Type/Definition/index.js';
+import { Event } from '../Type/Definition/index.js';
+import { EventIdentifier } from '../Type/Enum/index.js';
 
-/**
- * Event object for converting JavaScript variables and especially objects to a representation which can be sent to
- * Ember Nexus API.
- */
-class NormalizedValueToRawValueEvent implements StoppableEvent {
+class NormalizedValueToRawValueEvent extends Event {
+  static identifier: EventIdentifier = EventIdentifier.NormalizedValueToRawValueEvent;
+
   private rawValue: unknown = null;
-  private propagationStopped: boolean = false;
 
-  constructor(private normalizedValue: unknown) {}
-
-  /**
-   * @inheritDoc
-   */
-  isPropagationStopped(): boolean {
-    return this.propagationStopped;
+  constructor(private normalizedValue: unknown) {
+    super(NormalizedValueToRawValueEvent.identifier);
   }
 
-  /**
-   * @inheritDoc
-   */
-  stopPropagation(): NormalizedValueToRawValueEvent {
-    this.propagationStopped = true;
-    return this;
-  }
-
-  /**
-   * Returns the normalized data set during the event's creation.
-   */
   getNormalizedValue(): unknown {
     return this.normalizedValue;
   }
 
-  /**
-   * Returns the raw value which Ember Nexus API can understand.
-   */
   getRawValue(): unknown {
     return this.rawValue;
   }
 
-  /**
-   * Sets the raw value which Ember Nexus API can understand.
-   * @param rawValue Raw value.
-   */
-  setRawValue(rawValue: unknown): NormalizedValueToRawValueEvent {
+  setRawValue(rawValue: unknown): this {
+    if (this.isPropagationStopped()) return this;
     this.rawValue = rawValue;
     return this;
   }

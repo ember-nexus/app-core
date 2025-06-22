@@ -61,9 +61,6 @@ function init(rootNode: HTMLElement): ServiceResolver {
   });
   serviceResolver.setService(ServiceIdentifier.logger, logger);
 
-  const eventDispatcher = new EventDispatcher(logger);
-  serviceResolver.setService(ServiceIdentifier.eventDispatcher, eventDispatcher);
-
   const services = [
     // services
     ElementParser,
@@ -100,6 +97,7 @@ function init(rootNode: HTMLElement): ServiceResolver {
     IndexCache,
 
     // high level services
+    EventDispatcher,
     ApiWrapper,
   ];
   for (let i = 0; i < services.length; i++) {

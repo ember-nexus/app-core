@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 
-import { EventSystemListener } from '../../../Type/Definition/index.js';
 import { NormalizedValueToRawValueEvent } from '../Event/index.js';
+import { EventSystemListener } from '../Type/Definition/index.js';
 
 class DateTimeNormalizedValueToRawValueEventListener implements EventSystemListener<NormalizedValueToRawValueEvent> {
   triggerOnEvent(event: NormalizedValueToRawValueEvent): void {

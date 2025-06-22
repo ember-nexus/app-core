@@ -1,5 +1,5 @@
-import { EventSystemListener } from '../../../Type/Definition/index.js';
 import { RawValueToNormalizedValueEvent } from '../Event/index.js';
+import { EventSystemListener } from '../Type/Definition/index.js';
 
 class GenericRawValueToNormalizedValueEventListener implements EventSystemListener<RawValueToNormalizedValueEvent> {
   triggerOnEvent(event: RawValueToNormalizedValueEvent): void {

@@ -1,3 +1,5 @@
+import { Logger } from './Logger.js';
+import { ServiceResolver } from './ServiceResolver.js';
 import {
   EventDispatcherInterface,
   EventInterface,
@@ -6,6 +8,7 @@ import {
   LoggerInterface,
   getEventListenerIdentifiersFromEventIdentifier,
 } from '../Type/Definition/index.js';
+import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 type EventDispatcherEntry = {
   priority: number;
@@ -13,11 +16,17 @@ type EventDispatcherEntry = {
 };
 
 class EventDispatcher implements EventDispatcherInterface {
-  private readonly entries: Map<string, EventDispatcherEntry[]> = new Map();
-  private logger: LoggerInterface;
+  static identifier: ServiceIdentifier = ServiceIdentifier.eventDispatcher;
 
-  public constructor(logger: LoggerInterface) {
-    this.logger = logger;
+  private eventListenerDictionary: Map<string, EventDispatcherEntry[]>;
+
+  public constructor(private logger: LoggerInterface) {
+    this.eventListenerDictionary = new Map();
+  }
+
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): EventDispatcher {
+    const logger = serviceResolver.getServiceOrFail<Logger>(ServiceIdentifier.logger);
+    return new EventDispatcher(logger);
   }
 
   async dispatchEvent(event: EventInterface): Promise<void> {
@@ -29,7 +38,7 @@ class EventDispatcher implements EventDispatcherInterface {
     const eventListenerIdentifiersToNotify = getEventListenerIdentifiersFromEventIdentifier(event.getIdentifier());
     for (let i = 0; i < eventListenerIdentifiersToNotify.length; ++i) {
       const eventListenerIdentifier = eventListenerIdentifiersToNotify[i];
-      const eventListeners = this.entries.get(eventListenerIdentifier);
+      const eventListeners = this.eventListenerDictionary.get(eventListenerIdentifier);
       if (eventListeners === undefined) {
         continue;
       }
@@ -61,10 +70,10 @@ class EventDispatcher implements EventDispatcherInterface {
     }
 
     let eventListenersList: EventDispatcherEntry[];
-    if (!this.entries.has(eventListenerIdentifier)) {
+    if (!this.eventListenerDictionary.has(eventListenerIdentifier)) {
       eventListenersList = [];
     } else {
-      eventListenersList = this.entries.get(eventListenerIdentifier)!;
+      eventListenersList = this.eventListenerDictionary.get(eventListenerIdentifier)!;
     }
 
     // find correct index in list to add entry to
@@ -86,12 +95,12 @@ class EventDispatcher implements EventDispatcherInterface {
     const insertAt = result === -1 ? left : result;
 
     eventListenersList.splice(insertAt, 0, { priority: priority, eventListener: eventListener });
-    this.entries.set(eventListenerIdentifier, eventListenersList);
+    this.eventListenerDictionary.set(eventListenerIdentifier, eventListenersList);
     return this;
   }
 
   removeListener(eventListenerIdentifier: EventListenerIdentifier, eventListener: EventListener): this {
-    const eventListenersList = this.entries.get(eventListenerIdentifier);
+    const eventListenersList = this.eventListenerDictionary.get(eventListenerIdentifier);
     if (!eventListenersList) {
       return this;
     }
@@ -102,18 +111,18 @@ class EventDispatcher implements EventDispatcherInterface {
       }
     }
     if (eventListenersList.length === 0) {
-      this.entries.delete(eventListenerIdentifier);
+      this.eventListenerDictionary.delete(eventListenerIdentifier);
     }
     return this;
   }
 
   getListeners(eventListenerIdentifier: EventListenerIdentifier): EventListener[] {
-    const entries = this.entries.get(eventListenerIdentifier);
-    return entries ? entries.map((entry) => entry.eventListener) : [];
+    const eventListenerDictionary = this.eventListenerDictionary.get(eventListenerIdentifier);
+    return eventListenerDictionary ? eventListenerDictionary.map((entry) => entry.eventListener) : [];
   }
 
   hasListeners(eventListenerIdentifier: EventListenerIdentifier): boolean {
-    return this.entries.has(eventListenerIdentifier);
+    return this.eventListenerDictionary.has(eventListenerIdentifier);
   }
 }
 

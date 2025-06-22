@@ -1,4 +1,3 @@
-import { EmberNexus } from '@ember-nexus/web-sdk/Service';
 import { Logger } from 'tslog';
 
 import { GetServiceResolverEvent } from './BrowserEvent/index.js';
@@ -42,18 +41,13 @@ import {
 import { PriorityRegistry, Registry } from './Type/Definition/index.js';
 import { EventIdentifier, ServiceIdentifier } from './Type/Enum/index.js';
 
-function init(rootNode: HTMLElement, emberNexus: EmberNexus | null = null): ServiceResolver {
+function init(rootNode: HTMLElement): ServiceResolver {
   const serviceResolver = new ServiceResolver();
 
   rootNode.addEventListener(EventIdentifier.GetServiceResolver, (event: GetServiceResolverEvent) => {
     event.setServiceResolver(serviceResolver);
     event.stopPropagation();
   });
-
-  if (emberNexus === null) {
-    emberNexus = new EmberNexus();
-  }
-  serviceResolver.setService(ServiceIdentifier.emberNexusWebSDK, emberNexus);
 
   serviceResolver.setService(ServiceIdentifier.action, new PriorityRegistry());
 

@@ -1,10 +1,10 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
 import { GetElementEndpoint } from '../../../../../src/Endpoint/Element';
 import { ElementParser, FetchHelper } from '../../../../../src/Service';
+import { LoggerInterface } from '../../../../../src/Type/Definition';
 import { ServiceIdentifier } from '../../../../../src/Type/Enum';
 import { buildEndpointServiceResolver } from '../../EndpointHelper';
 

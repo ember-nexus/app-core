@@ -1,14 +1,11 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Data, UniqueUserIdentifier, Uuid } from '../../Type/Definition/index.js';
+import { Data, LoggerInterface, UniqueUserIdentifier, Uuid } from '../../Type/Definition/index.js';
 import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post register endpoint is used to create new user accounts.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=postregisterendpoint)
  * @see [Ember Nexus API: Register New Account Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/post-register)
  */
 class PostRegisterEndpoint {

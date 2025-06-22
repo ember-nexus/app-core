@@ -1,14 +1,11 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { NodeWithOptionalId, RelationWithOptionalId, Uuid } from '../../Type/Definition/index.js';
+import { LoggerInterface, NodeWithOptionalId, RelationWithOptionalId, Uuid } from '../../Type/Definition/index.js';
 import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post index endpoint creates a single element.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/element?id=postindexendpoint)
  * @see [Ember Nexus API: Create Root Level Element Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/element/post-index)
  */
 class PostIndexEndpoint {

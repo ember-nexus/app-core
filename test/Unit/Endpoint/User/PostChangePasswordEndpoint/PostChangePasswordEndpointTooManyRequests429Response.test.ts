@@ -1,4 +1,3 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
 import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
@@ -6,6 +5,7 @@ import { expect, test, vi } from 'vitest';
 import { PostChangePasswordEndpoint } from '../../../../../src/Endpoint/User';
 import { Response429TooManyRequestsError } from '../../../../../src/Error';
 import { FetchHelper } from '../../../../../src/Service';
+import { LoggerInterface } from '../../../../../src/Type/Definition';
 import { UniqueUserIdentifier } from '../../../../../src/Type/Definition';
 import { ServiceIdentifier } from '../../../../../src/Type/Enum';
 import { buildEndpointServiceResolver } from '../../EndpointHelper';

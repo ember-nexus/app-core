@@ -1,15 +1,12 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { LogicError } from '../../Error/index.js';
 import { ElementParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Node } from '../../Type/Definition/index.js';
+import { LoggerInterface, Node } from '../../Type/Definition/index.js';
 import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The get me endpoint retrieves the current user's element.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=getmeendpoint)
  * @see [Ember Nexus API: Get Me Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/get-me)
  */
 class GetMeEndpoint {

@@ -1,8 +1,6 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { ValidationError } from '../../Error/index.js';
 import { CollectionParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Collection, Uuid } from '../../Type/Definition/index.js';
+import { Collection, LoggerInterface, Uuid } from '../../Type/Definition/index.js';
 import { NotModifiedResponse, ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 

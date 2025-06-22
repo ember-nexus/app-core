@@ -1,15 +1,12 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { LogicError } from '../../Error/index.js';
 import { ElementParser, FetchHelper, ServiceResolver } from '../../Service/index.js';
-import { Node } from '../../Type/Definition/index.js';
+import { LoggerInterface, Node } from '../../Type/Definition/index.js';
 import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The get token endpoint retrieves the current session's token element.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=gettokenendpoint)
  * @see [Ember Nexus API: Get Token Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/get-token)
  */
 class GetTokenEndpoint {

@@ -1,14 +1,11 @@
-import { LoggerInterface } from '@ember-nexus/web-sdk/Type/Definition';
-
 import { FetchHelper, ServiceResolver, TokenParser } from '../../Service/index.js';
-import { Data, Token, UniqueUserIdentifier } from '../../Type/Definition/index.js';
+import { Data, LoggerInterface, Token, UniqueUserIdentifier } from '../../Type/Definition/index.js';
 import { ParsedResponse } from '../../Type/Definition/Response/index.js';
 import { ServiceIdentifier } from '../../Type/Enum/index.js';
 
 /**
  * The post token endpoint is used to create new tokens.
  *
- * @see [Further documentation](https://ember-nexus.github.io/web-sdk/#/endpoints/user?id=posttokenendpoint)
  * @see [Ember Nexus API: Create Token Endpoint](https://ember-nexus.github.io/api/#/api-endpoints/user/post-token)
  */
 class PostTokenEndpoint {

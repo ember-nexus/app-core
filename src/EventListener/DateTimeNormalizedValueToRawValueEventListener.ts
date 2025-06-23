@@ -15,6 +15,9 @@ class DateTimeNormalizedValueToRawValueEventListener implements EventListener<No
   }
 
   onEvent(event: NormalizedValueToRawValueEvent): void {
+    if (event.getIdentifier() !== DateTimeNormalizedValueToRawValueEventListener.eventListenerTarget) {
+      return;
+    }
     const normalizedValue = event.getNormalizedValue();
     if (!(normalizedValue instanceof Date)) {
       return;

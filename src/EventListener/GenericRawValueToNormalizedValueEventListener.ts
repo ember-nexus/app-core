@@ -13,6 +13,9 @@ class GenericRawValueToNormalizedValueEventListener implements EventListener<Raw
   }
 
   onEvent(event: RawValueToNormalizedValueEvent): void {
+    if (event.getIdentifier() !== GenericRawValueToNormalizedValueEventListener.eventListenerTarget) {
+      return;
+    }
     const rawValue = event.getRawValue();
     if (
       Array.isArray(rawValue) ||

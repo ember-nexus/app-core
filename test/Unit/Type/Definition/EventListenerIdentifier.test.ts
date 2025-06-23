@@ -1,48 +1,48 @@
 import { expect, test } from 'vitest';
 
 import {
-  getEventListenerIdentifiersFromEventIdentifier,
+  getEventListenerTargetsFromEventIdentifier,
   validateEventIdentifierFromString,
-  validateEventListenerIdentifierFromString,
+  validateEventListenerTargetFromString,
 } from '../../../../src/Type/Definition';
 
-test('should validate correct event listener identifier', () => {
-  expect(validateEventListenerIdentifierFromString('root')).toBeTruthy();
-  expect(validateEventListenerIdentifierFromString('root.child')).toBeTruthy();
-  expect(validateEventListenerIdentifierFromString('root.child.*')).toBeTruthy();
-  expect(validateEventListenerIdentifierFromString('root.*')).toBeTruthy();
-  expect(validateEventListenerIdentifierFromString('*')).toBeTruthy();
+test('should validate correct event listener target', () => {
+  expect(validateEventListenerTargetFromString('root')).toBeTruthy();
+  expect(validateEventListenerTargetFromString('root.child')).toBeTruthy();
+  expect(validateEventListenerTargetFromString('root.child.*')).toBeTruthy();
+  expect(validateEventListenerTargetFromString('root.*')).toBeTruthy();
+  expect(validateEventListenerTargetFromString('*')).toBeTruthy();
 });
 
-test('should throw error on wrong event listener identifier', () => {
-  expect(() => validateEventListenerIdentifierFromString('Uppercase')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+test('should throw error on wrong event listener target', () => {
+  expect(() => validateEventListenerTargetFromString('Uppercase')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('multiple.glob.*.*')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('multiple.glob.*.*')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('*.glob.at.start')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('*.glob.at.start')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('glob.*.in.middle')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('glob.*.in.middle')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('123132.numbers')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('123132.numbers')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('trailing.dot.')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('trailing.dot.')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('.leading.dot')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('.leading.dot')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
-  expect(() => validateEventListenerIdentifierFromString('double..dots')).toThrowError(
-    'Passed variable is not a valid event listener identifier.',
+  expect(() => validateEventListenerTargetFromString('double..dots')).toThrowError(
+    'Passed variable is not a valid event listener target.',
   );
 });
 
-test('expect getEventListenerIdentifiersFromEventIdentifier to build correct identifiers in correct ordering', () => {
-  const eventListenerIdentifiers = getEventListenerIdentifiersFromEventIdentifier(
+test('expect getEventListenerIdentifiersFromEventIdentifier to build correct targets in correct ordering', () => {
+  const eventListenerIdentifiers = getEventListenerTargetsFromEventIdentifier(
     validateEventIdentifierFromString('a.b.c.d.e.f'),
   );
   expect(eventListenerIdentifiers).toHaveLength(7);
@@ -55,17 +55,15 @@ test('expect getEventListenerIdentifiersFromEventIdentifier to build correct ide
   expect(eventListenerIdentifiers[6]).toEqual('*');
 });
 
-test('expect getEventListenerIdentifiersFromEventIdentifier to always return at least two event listener identifiers', () => {
-  const eventListenerIdentifiers = getEventListenerIdentifiersFromEventIdentifier(
-    validateEventIdentifierFromString('a'),
-  );
+test('expect getEventListenerIdentifiersFromEventIdentifier to always return at least two event listener targets', () => {
+  const eventListenerIdentifiers = getEventListenerTargetsFromEventIdentifier(validateEventIdentifierFromString('a'));
   expect(eventListenerIdentifiers).toHaveLength(2);
   expect(eventListenerIdentifiers[0]).toEqual('a');
   expect(eventListenerIdentifiers[1]).toEqual('*');
 });
 
-test('expect getEventListenerIdentifiersFromEventIdentifier to always return three event listener identifiers with single dot in event identifier', () => {
-  const eventListenerIdentifiers = getEventListenerIdentifiersFromEventIdentifier(
+test('expect getEventListenerIdentifiersFromEventIdentifier to always return three event listener targets with single dot in event target', () => {
+  const eventListenerIdentifiers = getEventListenerTargetsFromEventIdentifier(
     validateEventIdentifierFromString('aaa.bbb'),
   );
   expect(eventListenerIdentifiers).toHaveLength(3);

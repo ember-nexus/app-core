@@ -2,14 +2,24 @@ import { expect, test } from 'vitest';
 
 import { EventDispatcher } from '../../../src/Service';
 import {
-  Event,
+  Event, EventIdentifier,
   EventInterface,
   EventListener,
   OptionalPromise,
   validateEventIdentifierFromString,
-  validateEventListenerIdentifierFromString,
+  validateEventListenerTargetFromString,
 } from '../../../src/Type/Definition';
 import { TestLogger } from '../TestLogger';
+
+class TestEvent extends Event{
+  constructor(identifier: EventIdentifier) {
+    super(identifier);
+  }
+}
+
+class TestEventListener implements EventListener<TestEvent>{
+  public context: Record<string, any> = {};
+}
 
 function createAnonymousEventListener(calledValue: string, stopsEvent: boolean = false): EventListener {
   return (event: EventInterface): OptionalPromise<void> => {
@@ -29,7 +39,7 @@ function getEventDispatcher(): EventDispatcher {
 test('event dispatcher can be created', () => {
   const eventDispatcher = getEventDispatcher();
   expect(eventDispatcher).toBeTruthy();
-  expect(eventDispatcher.hasListeners(validateEventListenerIdentifierFromString('some-identifier'))).toBeFalsy();
+  expect(eventDispatcher.hasListeners(validateEventListenerTargetFromString('some-identifier'))).toBeFalsy();
 });
 
 test('dispatching event without corresponding event listener works', () => {
@@ -51,7 +61,7 @@ test('dispatching event with single sync event listener works', async () => {
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('event'), { called: [] });
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
+    validateEventListenerTargetFromString('event'),
     createAnonymousEventListener('sync listener', true),
   );
 
@@ -64,7 +74,7 @@ test('dispatching event with single async event listener works', async () => {
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('event'), { called: [] });
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
+    validateEventListenerTargetFromString('event'),
     (event: EventInterface): OptionalPromise<void> => {
       return Promise.resolve().then(() => {
         const called = event.getContextValue('called') as string[];
@@ -85,17 +95,17 @@ test('priority of event listeners is respected', async () => {
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('event'), { called: [] });
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
+    validateEventListenerTargetFromString('event'),
     createAnonymousEventListener('low prio'),
     0,
   );
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
+    validateEventListenerTargetFromString('event'),
     createAnonymousEventListener('medium prio'),
     100,
   );
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
+    validateEventListenerTargetFromString('event'),
     createAnonymousEventListener('high prio'),
     200,
   );
@@ -108,18 +118,9 @@ test('priority of event listeners is respected', async () => {
 test('indirect registration priority of event listeners is respected', async () => {
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('event'), { called: [] });
-  eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
-    createAnonymousEventListener('first'),
-  );
-  eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
-    createAnonymousEventListener('second'),
-  );
-  eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('event'),
-    createAnonymousEventListener('third'),
-  );
+  eventDispatcher.addListener(validateEventListenerTargetFromString('event'), createAnonymousEventListener('first'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('event'), createAnonymousEventListener('second'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('event'), createAnonymousEventListener('third'));
 
   await eventDispatcher.dispatchEvent(event);
   expect(event.isPropagationStopped()).toBeFalsy();
@@ -129,16 +130,10 @@ test('indirect registration priority of event listeners is respected', async () 
 test('priority of event listener identifiers is respected', async () => {
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('a.b.c'), { called: [] });
-  eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('a.b.c'),
-    createAnonymousEventListener('first'),
-  );
-  eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('a.b.*'),
-    createAnonymousEventListener('second'),
-  );
-  eventDispatcher.addListener(validateEventListenerIdentifierFromString('a.*'), createAnonymousEventListener('third'));
-  eventDispatcher.addListener(validateEventListenerIdentifierFromString('*'), createAnonymousEventListener('fourth'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('a.b.c'), createAnonymousEventListener('first'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('a.b.*'), createAnonymousEventListener('second'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('a.*'), createAnonymousEventListener('third'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('*'), createAnonymousEventListener('fourth'));
 
   await eventDispatcher.dispatchEvent(event);
   expect(event.isPropagationStopped()).toBeFalsy();
@@ -148,16 +143,13 @@ test('priority of event listener identifiers is respected', async () => {
 test('stoppable stops priority chain', async () => {
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('a.b.c'), { called: [] });
+  eventDispatcher.addListener(validateEventListenerTargetFromString('a.b.c'), createAnonymousEventListener('first'));
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('a.b.c'),
-    createAnonymousEventListener('first'),
-  );
-  eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('a.b.*'),
+    validateEventListenerTargetFromString('a.b.*'),
     createAnonymousEventListener('second', true),
   );
-  eventDispatcher.addListener(validateEventListenerIdentifierFromString('a.*'), createAnonymousEventListener('third'));
-  eventDispatcher.addListener(validateEventListenerIdentifierFromString('*'), createAnonymousEventListener('fourth'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('a.*'), createAnonymousEventListener('third'));
+  eventDispatcher.addListener(validateEventListenerTargetFromString('*'), createAnonymousEventListener('fourth'));
 
   await eventDispatcher.dispatchEvent(event);
   expect(event.isPropagationStopped()).toBeTruthy();
@@ -168,19 +160,19 @@ test('exception in chain does not crash event dispatcher as a whole', async () =
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('test'), { called: [] });
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('test'),
+    validateEventListenerTargetFromString('test'),
     createAnonymousEventListener('first'),
     250,
   );
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('test'),
+    validateEventListenerTargetFromString('test'),
     (): OptionalPromise<void> => {
       throw new Error('some error');
     },
     200,
   );
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('test'),
+    validateEventListenerTargetFromString('test'),
     createAnonymousEventListener('third'),
     150,
   );
@@ -194,12 +186,12 @@ test('error in promise in chain does not crash event dispatcher as a whole', asy
   const eventDispatcher = getEventDispatcher();
   const event = new Event(validateEventIdentifierFromString('test'), { called: [] });
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('test'),
+    validateEventListenerTargetFromString('test'),
     createAnonymousEventListener('first'),
     250,
   );
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('test'),
+    validateEventListenerTargetFromString('test'),
     (): OptionalPromise<void> => {
       return new Promise((_resolve, reject) => {
         reject(new Error('Some error'));
@@ -208,7 +200,7 @@ test('error in promise in chain does not crash event dispatcher as a whole', asy
     200,
   );
   eventDispatcher.addListener(
-    validateEventListenerIdentifierFromString('test'),
+    validateEventListenerTargetFromString('test'),
     createAnonymousEventListener('third'),
     150,
   );
@@ -221,12 +213,12 @@ test('error in promise in chain does not crash event dispatcher as a whole', asy
 test('get listeners returns empty array if no listeners are found', () => {
   const eventDispatcher = getEventDispatcher();
 
-  const eventListeners = eventDispatcher.getListeners(validateEventListenerIdentifierFromString('i.do.not.exist'));
+  const eventListeners = eventDispatcher.getListeners(validateEventListenerTargetFromString('i.do.not.exist'));
   expect(eventListeners).toHaveLength(0);
 });
 
 test('get listeners returns registered event listeners', () => {
-  const eventListenerIdentifier = validateEventListenerIdentifierFromString('event');
+  const eventListenerIdentifier = validateEventListenerTargetFromString('event');
   const eventDispatcher = getEventDispatcher();
   const firstEventListener = createAnonymousEventListener('first');
   eventDispatcher.addListener(eventListenerIdentifier, firstEventListener);
@@ -240,8 +232,8 @@ test('get listeners returns registered event listeners', () => {
 });
 
 test('get listeners does not return event listener with different identifier', () => {
-  const eventListenerIdentifier = validateEventListenerIdentifierFromString('event');
-  const otherEventListenerIdentifier = validateEventListenerIdentifierFromString('other');
+  const eventListenerIdentifier = validateEventListenerTargetFromString('event');
+  const otherEventListenerIdentifier = validateEventListenerTargetFromString('other');
   const eventDispatcher = getEventDispatcher();
   const firstEventListener = createAnonymousEventListener('first');
   eventDispatcher.addListener(eventListenerIdentifier, firstEventListener);
@@ -255,7 +247,7 @@ test('get listeners does not return event listener with different identifier', (
 
 test('has listeners works', () => {
   const eventDispatcher = getEventDispatcher();
-  const eventListenerIdentifier = validateEventListenerIdentifierFromString('event');
+  const eventListenerIdentifier = validateEventListenerTargetFromString('event');
   const eventListener = createAnonymousEventListener('some listener');
 
   expect(eventDispatcher.hasListeners(eventListenerIdentifier)).toBeFalsy();
@@ -267,7 +259,7 @@ test('has listeners works', () => {
 
 test('remove listener does nothing if no event listeners were defined', () => {
   const eventDispatcher = getEventDispatcher();
-  const eventListenerIdentifier = validateEventListenerIdentifierFromString('event');
+  const eventListenerIdentifier = validateEventListenerTargetFromString('event');
   const eventListener = createAnonymousEventListener('some listener');
 
   expect(eventDispatcher.removeListener(eventListenerIdentifier, eventListener)).toBeTruthy();
@@ -275,7 +267,7 @@ test('remove listener does nothing if no event listeners were defined', () => {
 
 test('remove listener does nothing if the deleted event listener is not found', () => {
   const eventDispatcher = getEventDispatcher();
-  const eventListenerIdentifier = validateEventListenerIdentifierFromString('event');
+  const eventListenerIdentifier = validateEventListenerTargetFromString('event');
   const eventListener = createAnonymousEventListener('some listener');
   const otherEventListener = createAnonymousEventListener('other listener');
   eventDispatcher.addListener(eventListenerIdentifier, otherEventListener);
@@ -285,7 +277,7 @@ test('remove listener does nothing if the deleted event listener is not found', 
 
 test('remove listener does remove registered event listener', () => {
   const eventDispatcher = getEventDispatcher();
-  const eventListenerIdentifier = validateEventListenerIdentifierFromString('event');
+  const eventListenerIdentifier = validateEventListenerTargetFromString('event');
   const eventListener = createAnonymousEventListener('some listener');
 
   eventDispatcher.addListener(eventListenerIdentifier, eventListener);

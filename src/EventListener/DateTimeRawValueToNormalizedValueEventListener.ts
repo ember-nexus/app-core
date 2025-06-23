@@ -1,10 +1,20 @@
 import { RawValueToNormalizedValueEvent } from '../Event/index.js';
-import { EventSystemListener } from '../Type/Definition/index.js';
+import { EventListener, EventListenerTarget } from '../Type/Definition/index.js';
+import { EventIdentifier } from '../Type/Enum/index.js';
 
-class DateTimeRawValueToNormalizedValueEventListener implements EventSystemListener<RawValueToNormalizedValueEvent> {
+class DateTimeRawValueToNormalizedValueEventListener implements EventListener<RawValueToNormalizedValueEvent> {
+  static eventListenerTarget: EventListenerTarget = EventIdentifier.RawValueToNormalizedValueEvent;
+  static priority: number = 50;
+
   static readonly dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/;
 
-  triggerOnEvent(event: RawValueToNormalizedValueEvent): void {
+  constructor() {}
+
+  static constructFromServiceResolver(): DateTimeRawValueToNormalizedValueEventListener {
+    return new DateTimeRawValueToNormalizedValueEventListener();
+  }
+
+  onEvent(event: RawValueToNormalizedValueEvent): void {
     const rawValue = event.getRawValue();
     if (typeof rawValue !== 'string') {
       return;

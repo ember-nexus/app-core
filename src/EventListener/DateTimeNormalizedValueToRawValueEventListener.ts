@@ -1,10 +1,20 @@
 import { DateTime } from 'luxon';
 
 import { NormalizedValueToRawValueEvent } from '../Event/index.js';
-import { EventSystemListener } from '../Type/Definition/index.js';
+import { EventListener, EventListenerTarget } from '../Type/Definition/index.js';
+import { EventIdentifier } from '../Type/Enum/index.js';
 
-class DateTimeNormalizedValueToRawValueEventListener implements EventSystemListener<NormalizedValueToRawValueEvent> {
-  triggerOnEvent(event: NormalizedValueToRawValueEvent): void {
+class DateTimeNormalizedValueToRawValueEventListener implements EventListener<NormalizedValueToRawValueEvent> {
+  static eventListenerTarget: EventListenerTarget = EventIdentifier.NormalizedValueToRawValueEvent;
+  static priority: number = 50;
+
+  constructor() {}
+
+  static constructFromServiceResolver(): DateTimeNormalizedValueToRawValueEventListener {
+    return new DateTimeNormalizedValueToRawValueEventListener();
+  }
+
+  onEvent(event: NormalizedValueToRawValueEvent): void {
     const normalizedValue = event.getNormalizedValue();
     if (!(normalizedValue instanceof Date)) {
       return;

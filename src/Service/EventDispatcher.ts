@@ -4,9 +4,9 @@ import {
   EventDispatcherInterface,
   EventInterface,
   EventListener,
-  EventListenerIdentifier,
+  EventListenerTarget,
   LoggerInterface,
-  getEventListenerIdentifiersFromEventIdentifier,
+  getEventListenerTargetsFromEventIdentifier,
 } from '../Type/Definition/index.js';
 import { ServiceIdentifier } from '../Type/Enum/index.js';
 
@@ -18,10 +18,10 @@ type EventDispatcherEntry = {
 class EventDispatcher implements EventDispatcherInterface {
   static identifier: ServiceIdentifier = ServiceIdentifier.eventDispatcher;
 
-  private eventListenerDictionary: Map<string, EventDispatcherEntry[]>;
+  private eventListenerTargets: Map<EventListenerTarget, EventDispatcherEntry[]>;
 
   public constructor(private logger: LoggerInterface) {
-    this.eventListenerDictionary = new Map();
+    this.eventListenerTargets = new Map();
   }
 
   static constructFromServiceResolver(serviceResolver: ServiceResolver): EventDispatcher {
@@ -35,19 +35,19 @@ class EventDispatcher implements EventDispatcherInterface {
       this.logger.debug(`Stopped event propagation because it is already stopped.`, { event: event });
       return undefined;
     }
-    const eventListenerIdentifiersToNotify = getEventListenerIdentifiersFromEventIdentifier(event.getIdentifier());
-    for (let i = 0; i < eventListenerIdentifiersToNotify.length; ++i) {
-      const eventListenerIdentifier = eventListenerIdentifiersToNotify[i];
-      const eventListeners = this.eventListenerDictionary.get(eventListenerIdentifier);
+    const eventListenerTargetsToNotify = getEventListenerTargetsFromEventIdentifier(event.getIdentifier());
+    for (let i = 0; i < eventListenerTargetsToNotify.length; ++i) {
+      const eventListenerTarget = eventListenerTargetsToNotify[i];
+      const eventListeners = this.eventListenerTargets.get(eventListenerTarget);
       if (eventListeners === undefined) {
         continue;
       }
-      this.logger.debug(`Iterating over resolved event listeners of identifier ${eventListenerIdentifier}`, {
+      this.logger.debug(`Iterating over resolved event listeners of identifier ${eventListenerTarget}`, {
         event: event,
       });
       for (let j = eventListeners.length - 1; j >= 0; j--) {
         try {
-          await Promise.resolve(eventListeners[j].eventListener(event));
+          await Promise.resolve(eventListeners[j].eventListener.onEvent(event));
         } catch (e: unknown) {
           this.logger.error(`Event handler threw exception, dispatcher continues with next event listener.`, {
             event: event,
@@ -64,27 +64,27 @@ class EventDispatcher implements EventDispatcherInterface {
     return undefined;
   }
 
-  addListener(eventListenerIdentifier: EventListenerIdentifier, eventListener: EventListener, priority?: number): this {
+  addListener(eventListenerTarget: EventListenerTarget, eventListener: EventListener, priority?: number): this {
     if (priority === undefined) {
       priority = 0;
     }
 
-    let eventListenersList: EventDispatcherEntry[];
-    if (!this.eventListenerDictionary.has(eventListenerIdentifier)) {
-      eventListenersList = [];
+    let eventListeners: EventDispatcherEntry[];
+    if (!this.eventListenerTargets.has(eventListenerTarget)) {
+      eventListeners = [];
     } else {
-      eventListenersList = this.eventListenerDictionary.get(eventListenerIdentifier)!;
+      eventListeners = this.eventListenerTargets.get(eventListenerTarget)!;
     }
 
     // find correct index in list to add entry to
     let left = 0;
-    let right = eventListenersList.length - 1;
+    let right = eventListeners.length - 1;
     let result = -1;
 
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
 
-      if (eventListenersList[mid].priority >= priority) {
+      if (eventListeners[mid].priority >= priority) {
         result = mid; // Found a candidate, but keep searching in the left half
         right = mid - 1;
       } else {
@@ -94,35 +94,35 @@ class EventDispatcher implements EventDispatcherInterface {
 
     const insertAt = result === -1 ? left : result;
 
-    eventListenersList.splice(insertAt, 0, { priority: priority, eventListener: eventListener });
-    this.eventListenerDictionary.set(eventListenerIdentifier, eventListenersList);
+    eventListeners.splice(insertAt, 0, { priority: priority, eventListener: eventListener });
+    this.eventListenerTargets.set(eventListenerTarget, eventListeners);
     return this;
   }
 
-  removeListener(eventListenerIdentifier: EventListenerIdentifier, eventListener: EventListener): this {
-    const eventListenersList = this.eventListenerDictionary.get(eventListenerIdentifier);
-    if (!eventListenersList) {
+  removeListener(eventListenerTarget: EventListenerTarget, eventListener: EventListener): this {
+    const eventListeners = this.eventListenerTargets.get(eventListenerTarget);
+    if (!eventListeners) {
       return this;
     }
-    for (let i = 0; i < eventListenersList.length; ++i) {
-      if (eventListenersList[i].eventListener === eventListener) {
-        eventListenersList.splice(i, 1);
+    for (let i = 0; i < eventListeners.length; ++i) {
+      if (eventListeners[i].eventListener === eventListener) {
+        eventListeners.splice(i, 1);
         break;
       }
     }
-    if (eventListenersList.length === 0) {
-      this.eventListenerDictionary.delete(eventListenerIdentifier);
+    if (eventListeners.length === 0) {
+      this.eventListenerTargets.delete(eventListenerTarget);
     }
     return this;
   }
 
-  getListeners(eventListenerIdentifier: EventListenerIdentifier): EventListener[] {
-    const eventListenerDictionary = this.eventListenerDictionary.get(eventListenerIdentifier);
-    return eventListenerDictionary ? eventListenerDictionary.map((entry) => entry.eventListener) : [];
+  getListeners(eventListenerTarget: EventListenerTarget): EventListener[] {
+    const eventListeners = this.eventListenerTargets.get(eventListenerTarget);
+    return eventListeners ? eventListeners.map((entry) => entry.eventListener) : [];
   }
 
-  hasListeners(eventListenerIdentifier: EventListenerIdentifier): boolean {
-    return this.eventListenerDictionary.has(eventListenerIdentifier);
+  hasListeners(eventListenerTarget: EventListenerTarget): boolean {
+    return this.eventListenerTargets.has(eventListenerTarget);
   }
 }
 

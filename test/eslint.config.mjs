@@ -14,17 +14,20 @@ import perfectionist from 'eslint-plugin-perfectionist';
 import globals from "globals";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.resolve(path.dirname(__filename), '../');
 const flatCompat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
   allConfig: js.configs.all
 });
 
+const files = [
+  __dirname + '/src/**/*.ts'
+];
+
+console.log(files);
+
 export default [
-  {
-    ignores: ["dist/*", "**/*.js"],
-  },
   pluginPromise.configs['flat/recommended'],
   compat.configs["flat/recommended"],
   ...flatCompat.plugins('require-extensions'),
@@ -34,10 +37,10 @@ export default [
     "plugin:prettier/recommended",
   ).map(config => ({
     ...config,
-    files: ["**/*.ts"],
+    files: files,
   })),
   {
-    files: ["**/*.ts"],
+    files: files,
 
     plugins: {
       "@typescript-eslint": typescriptEslint,
@@ -58,14 +61,14 @@ export default [
       sourceType: "module",
 
       parserOptions: {
-        project: "tsconfig.test.json",
+        project: "test/tsconfig.cs.json",
       },
     },
 
     settings: {
       "import/resolver": {
         typescript: {
-          project: "./tsconfig.test.json",
+          project: "test/tsconfig.cs.json",
         },
       },
     },
@@ -138,7 +141,7 @@ export default [
     },
   },
   {
-    files: ["src/**/*.ts"],
+    files: files,
     rules: {
       "require-extensions/require-extensions": 'error',
       "require-extensions/require-index": 'error'

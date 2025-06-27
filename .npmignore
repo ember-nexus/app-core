@@ -2,6 +2,7 @@ docs
 test
 src
 .github
+.local
 node_modules
 coverage
 .editorconfig

@@ -1,11 +1,11 @@
 import { expect, test, vi } from 'vitest';
 
-import { GetElementParentsEndpoint } from '../../../../../src/Endpoint/Element';
-import { ValidationError } from '../../../../../src/Error';
-import { CollectionParser, FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { GetElementParentsEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { ValidationError } from '../../../../../src/Error/index.js';
+import { CollectionParser, FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 test('GetElementParentsEndpoint should throw error if page is too small', async () => {
   const serviceResolver = buildEndpointServiceResolver();

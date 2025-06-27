@@ -1,6 +1,6 @@
 import { Logger } from 'tslog';
 
-import type { LoggerInterface } from '../src/Type/Definition';
+import type { LoggerInterface } from '../src/Type/Definition/index.js';
 
 const testLogger = new Logger({
   name: 'app-core',

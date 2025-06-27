@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { ElementRelatedCache } from '../../../src/Cache';
+import { ElementRelatedCache } from '../../../src/Cache/index.js';
 
 test('ElementRelatedCache provides correct service identifier', () => {
   expect(ElementRelatedCache.identifier).toEqual('ember-nexus.app-core.cache.element-related-cache');

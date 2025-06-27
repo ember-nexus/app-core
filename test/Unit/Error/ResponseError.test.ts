@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { ResponseError } from '../../../src/Error';
+import { ResponseError } from '../../../src/Error/index.js';
 
 test('ResponseError with only constructor being set', () => {
   const responseError = new ResponseError();

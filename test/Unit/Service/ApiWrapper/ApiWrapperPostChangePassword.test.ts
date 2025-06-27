@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { PostChangePasswordEndpoint } from '../../../../src/Endpoint/User';
-import { createUniqueUserIdentifierFromString } from '../../../../src/Type/Definition';
+import { createApiWrapper } from './ApiWrapper.js';
+import { PostChangePasswordEndpoint } from '../../../../src/Endpoint/User/index.js';
+import { createUniqueUserIdentifierFromString } from '../../../../src/Type/Definition/index.js';
 
 test('postChangePassword results in API call', async () => {
   const userIdentifier = createUniqueUserIdentifierFromString('email@localhost.dev');

@@ -4,7 +4,7 @@ import {
   getEventListenerTargetsFromEventIdentifier,
   validateEventIdentifierFromString,
   validateEventListenerTargetFromString,
-} from '../../../../src/Type/Definition';
+} from '../../../../src/Type/Definition/index.js';
 
 test('should validate correct event listener target', () => {
   expect(validateEventListenerTargetFromString('root')).toBeTruthy();

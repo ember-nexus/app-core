@@ -1,4 +1,4 @@
-import { LoggerInterface } from '../../src/Type/Definition';
+import { LoggerInterface } from '../../src/Type/Definition/index.js';
 
 class TestLogger implements LoggerInterface {
   private debugCalls: unknown[][] = [];

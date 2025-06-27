@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { ElementParentsCache } from '../../../src/Cache';
+import { ElementParentsCache } from '../../../src/Cache/index.js';
 
 test('ElementParentsCache provides correct service identifier', () => {
   expect(ElementParentsCache.identifier).toEqual('ember-nexus.app-core.cache.element-parents-cache');

@@ -7,7 +7,7 @@ import {
   ElementParentsCache,
   ElementRelatedCache,
   IndexCache,
-} from '../../../../src/Cache';
+} from '../../../../src/Cache/index.js';
 import {
   DeleteElementEndpoint,
   GetElementChildrenEndpoint,
@@ -19,7 +19,7 @@ import {
   PostElementEndpoint,
   PostIndexEndpoint,
   PutElementEndpoint,
-} from '../../../../src/Endpoint/Element';
+} from '../../../../src/Endpoint/Element/index.js';
 import {
   DeleteTokenEndpoint,
   GetMeEndpoint,
@@ -27,9 +27,9 @@ import {
   PostChangePasswordEndpoint,
   PostRegisterEndpoint,
   PostTokenEndpoint,
-} from '../../../../src/Endpoint/User';
-import { ApiWrapper } from '../../../../src/Service';
-import { buildEndpointServiceResolver } from '../../Endpoint/EndpointHelper';
+} from '../../../../src/Endpoint/User/index.js';
+import { ApiWrapper } from '../../../../src/Service/index.js';
+import { buildEndpointServiceResolver } from '../../Endpoint/EndpointHelper.js';
 
 test('create ApiWrapper from ServiceResolver', () => {
   const serviceResolver = buildEndpointServiceResolver();

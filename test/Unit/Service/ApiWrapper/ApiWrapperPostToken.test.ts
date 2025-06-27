@@ -1,9 +1,12 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { PostTokenEndpoint } from '../../../../src/Endpoint/User';
-import { createUniqueUserIdentifierFromString, validateTokenFromString } from '../../../../src/Type/Definition';
+import { createApiWrapper } from './ApiWrapper.js';
+import { PostTokenEndpoint } from '../../../../src/Endpoint/User/index.js';
+import {
+  createUniqueUserIdentifierFromString,
+  validateTokenFromString,
+} from '../../../../src/Type/Definition/index.js';
 
 test('postToken results in API call', async () => {
   const userIdentifier = createUniqueUserIdentifierFromString('email@localhost.dev');

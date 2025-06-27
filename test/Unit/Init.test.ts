@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 
-import { init } from '../../src';
-import { GetServiceResolverEvent } from '../../src/BrowserEvent';
-import { PriorityRegistry, Registry, validateServiceIdentifierFromString } from '../../src/Type/Definition';
+import { GetServiceResolverEvent } from '../../src/BrowserEvent/index.js';
+import { init } from '../../src/index.js';
+import { PriorityRegistry, Registry, validateServiceIdentifierFromString } from '../../src/Type/Definition/index.js';
 
 /**
  * @vitest-environment jsdom

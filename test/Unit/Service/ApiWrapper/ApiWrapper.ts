@@ -6,7 +6,7 @@ import {
   ElementParentsCache,
   ElementRelatedCache,
   IndexCache,
-} from '../../../../src/Cache';
+} from '../../../../src/Cache/index.js';
 import {
   DeleteElementEndpoint,
   GetElementChildrenEndpoint,
@@ -18,7 +18,7 @@ import {
   PostElementEndpoint,
   PostIndexEndpoint,
   PutElementEndpoint,
-} from '../../../../src/Endpoint/Element';
+} from '../../../../src/Endpoint/Element/index.js';
 import {
   DeleteTokenEndpoint,
   GetMeEndpoint,
@@ -26,8 +26,8 @@ import {
   PostChangePasswordEndpoint,
   PostRegisterEndpoint,
   PostTokenEndpoint,
-} from '../../../../src/Endpoint/User';
-import { ApiWrapper } from '../../../../src/Service';
+} from '../../../../src/Endpoint/User/index.js';
+import { ApiWrapper } from '../../../../src/Service/index.js';
 
 function createApiWrapper(services: {
   getElementEndpoint?: GetElementEndpoint;

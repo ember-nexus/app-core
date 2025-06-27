@@ -2,9 +2,9 @@ import { DateTime } from 'luxon';
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { RawValueToNormalizedValueEvent } from '../../../src/Event';
-import { DateTimeRawValueToNormalizedValueEventListener } from '../../../src/EventListener';
-import { EventInterface } from '../../../src/Type/Definition';
+import { RawValueToNormalizedValueEvent } from '../../../src/Event/index.js';
+import { DateTimeRawValueToNormalizedValueEventListener } from '../../../src/EventListener/index.js';
+import { EventInterface } from '../../../src/Type/Definition/index.js';
 
 test('DateTimeRawValueToNormalizedValueEventListener provides correct event listener target', () => {
   expect(DateTimeRawValueToNormalizedValueEventListener.eventListenerTarget).toEqual(

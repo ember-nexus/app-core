@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { ElementCache, ElementParentsCache } from '../../../../src/Cache';
-import { GetElementParentsEndpoint } from '../../../../src/Endpoint/Element';
+import { createApiWrapper } from './ApiWrapper.js';
+import { ElementCache, ElementParentsCache } from '../../../../src/Cache/index.js';
+import { GetElementParentsEndpoint } from '../../../../src/Endpoint/Element/index.js';
 
 test('getElementParents with no cache results in API call', async () => {
   const collection = {

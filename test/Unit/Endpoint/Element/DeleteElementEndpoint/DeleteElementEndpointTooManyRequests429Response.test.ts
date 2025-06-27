@@ -2,12 +2,12 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { DeleteElementEndpoint } from '../../../../../src/Endpoint/Element';
-import { Response429TooManyRequestsError } from '../../../../../src/Error/Response429TooManyRequestsError';
-import { FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { DeleteElementEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { Response429TooManyRequestsError } from '../../../../../src/Error/Response429TooManyRequestsError.js';
+import { FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.delete('http://mock-api/c653fae2-7f18-4bc9-abfb-929e60b57d72', () => {

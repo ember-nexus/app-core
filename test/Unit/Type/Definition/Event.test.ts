@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { Event, EventIdentifier, validateEventIdentifierFromString } from '../../../../src/Type/Definition';
+import { Event, EventIdentifier, validateEventIdentifierFromString } from '../../../../src/Type/Definition/index.js';
 
 class TestEvent extends Event {
   constructor(identifier: EventIdentifier) {

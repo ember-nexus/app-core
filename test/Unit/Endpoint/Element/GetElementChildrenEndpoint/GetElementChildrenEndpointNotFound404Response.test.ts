@@ -2,12 +2,12 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { GetElementChildrenEndpoint } from '../../../../../src/Endpoint/Element';
-import { Response404NotFoundError } from '../../../../../src/Error';
-import { CollectionParser, FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { GetElementChildrenEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { Response404NotFoundError } from '../../../../../src/Error/index.js';
+import { CollectionParser, FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.get('http://mock-api/f260b7e6-f228-4787-a6c7-41f0915e7e56/children', () => {

@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { ElementCache } from '../../../../src/Cache';
-import { DeleteElementEndpoint } from '../../../../src/Endpoint/Element';
+import { createApiWrapper } from './ApiWrapper.js';
+import { ElementCache } from '../../../../src/Cache/index.js';
+import { DeleteElementEndpoint } from '../../../../src/Endpoint/Element/index.js';
 
 test('deleteElement results in API call', async () => {
   const deleteElementEndpoint = mock<DeleteElementEndpoint>();

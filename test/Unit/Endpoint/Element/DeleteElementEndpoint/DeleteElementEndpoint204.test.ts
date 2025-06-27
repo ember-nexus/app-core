@@ -2,11 +2,11 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { DeleteElementEndpoint } from '../../../../../src/Endpoint/Element';
-import { FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { DeleteElementEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.delete('http://mock-api/52965378-8305-43bf-a637-b24d0d29c1c9', () => {

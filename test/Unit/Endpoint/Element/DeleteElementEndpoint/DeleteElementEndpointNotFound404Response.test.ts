@@ -2,12 +2,12 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { DeleteElementEndpoint } from '../../../../../src/Endpoint/Element';
-import { Response404NotFoundError } from '../../../../../src/Error/Response404NotFoundError';
-import { FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { DeleteElementEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { Response404NotFoundError } from '../../../../../src/Error/Response404NotFoundError.js';
+import { FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.delete('http://mock-api/c1978476-d672-4bd0-b8ab-c32701d56a28', () => {

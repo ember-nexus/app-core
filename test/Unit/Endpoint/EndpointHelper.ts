@@ -5,9 +5,9 @@ import {
   FetchHelper,
   ServiceResolver,
   TokenParser,
-} from '../../../src/Service';
-import { ServiceIdentifier } from '../../../src/Type/Enum';
-import { TestLogger } from '../TestLogger';
+} from '../../../src/Service/index.js';
+import { ServiceIdentifier } from '../../../src/Type/Enum/index.js';
+import { TestLogger } from '../TestLogger.js';
 
 function buildEndpointServiceResolver(): ServiceResolver {
   const serviceResolver = new ServiceResolver();

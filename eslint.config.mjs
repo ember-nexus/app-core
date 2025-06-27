@@ -14,7 +14,7 @@ import perfectionist from 'eslint-plugin-perfectionist';
 import globals from "globals";
 
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.resolve(path.dirname(__filename), '../');
+const __dirname = path.dirname(__filename);
 const flatCompat = new FlatCompat({
   baseDirectory: __dirname,
   recommendedConfig: js.configs.recommended,
@@ -22,10 +22,8 @@ const flatCompat = new FlatCompat({
 });
 
 const files = [
-  __dirname + '/src/**/*.ts'
+  "**/*.ts"
 ];
-
-console.log(files);
 
 export default [
   pluginPromise.configs['flat/recommended'],
@@ -61,14 +59,14 @@ export default [
       sourceType: "module",
 
       parserOptions: {
-        project: "test/tsconfig.cs.json",
+        project: "tsconfig.test.json",
       },
     },
 
     settings: {
       "import/resolver": {
         typescript: {
-          project: "test/tsconfig.cs.json",
+          project: "./tsconfig.test.json",
         },
       },
     },
@@ -138,13 +136,8 @@ export default [
       "promise/no-multiple-resolved": "error",
       'perfectionist/sort-exports': 'error',
       // 'perfectionist/sort-named-imports': 'error'
-    },
-  },
-  {
-    files: files,
-    rules: {
       "require-extensions/require-extensions": 'error',
       "require-extensions/require-index": 'error'
-    }
-  },
+    },
+  }
 ];

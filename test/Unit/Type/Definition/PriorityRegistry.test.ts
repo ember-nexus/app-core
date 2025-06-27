@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { PriorityRegistry } from '../../../../src/Type/Definition';
+import { PriorityRegistry } from '../../../../src/Type/Definition/index.js';
 
 test('should return null on missing entry', () => {
   const registry = new PriorityRegistry<string>();

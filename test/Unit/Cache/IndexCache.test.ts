@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { IndexCache } from '../../../src/Cache';
+import { IndexCache } from '../../../src/Cache/index.js';
 
 test('IndexCache provides correct service identifier', () => {
   expect(IndexCache.identifier).toEqual('ember-nexus.app-core.cache.index-cache');

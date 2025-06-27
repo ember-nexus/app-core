@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { PostIndexEndpoint } from '../../../../src/Endpoint/Element';
-import { NodeWithOptionalId, validateUuidFromString } from '../../../../src/Type/Definition';
+import { createApiWrapper } from './ApiWrapper.js';
+import { PostIndexEndpoint } from '../../../../src/Endpoint/Element/index.js';
+import { NodeWithOptionalId, validateUuidFromString } from '../../../../src/Type/Definition/index.js';
 
 test('postIndex results in API call', async () => {
   const element: NodeWithOptionalId = {

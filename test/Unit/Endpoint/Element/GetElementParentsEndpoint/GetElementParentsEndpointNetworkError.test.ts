@@ -2,12 +2,12 @@ import { http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { GetElementParentsEndpoint } from '../../../../../src/Endpoint/Element';
-import { NetworkError } from '../../../../../src/Error';
-import { CollectionParser, FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { GetElementParentsEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { NetworkError } from '../../../../../src/Error/index.js';
+import { CollectionParser, FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.get('http://mock-api/206114e7-5708-426b-ba25-015d1acada72/parents', () => {

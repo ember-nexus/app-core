@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { validateEventIdentifierFromString } from '../../../../src/Type/Definition';
+import { validateEventIdentifierFromString } from '../../../../src/Type/Definition/index.js';
 
 test('should validate correct event identifier', () => {
   expect(validateEventIdentifierFromString('root')).toBeTruthy();

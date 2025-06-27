@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { PostChangePasswordEndpoint } from '../../../../../src/Endpoint/User';
+import { PostChangePasswordEndpoint } from '../../../../../src/Endpoint/User/index.js';
 
 test('PostChangePasswordEndpoint provides correct service identifier', () => {
   expect(PostChangePasswordEndpoint.identifier).toEqual(

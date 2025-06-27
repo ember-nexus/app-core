@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { NormalizedValueToRawValueEvent } from '../../../src/Event';
+import { NormalizedValueToRawValueEvent } from '../../../src/Event/index.js';
 
 test('NormalizedValueToRawValueEvent provides correct event identifier', () => {
   expect(NormalizedValueToRawValueEvent.identifier).toEqual('ember-nexus.app-core.event.normalized-value-to-raw-value');

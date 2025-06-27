@@ -2,12 +2,12 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { PostTokenEndpoint } from '../../../../../src/Endpoint/User';
-import { Response401UnauthorizedError } from '../../../../../src/Error';
-import { FetchHelper, TokenParser } from '../../../../../src/Service';
-import { Data, LoggerInterface, UniqueUserIdentifier } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { PostTokenEndpoint } from '../../../../../src/Endpoint/User/index.js';
+import { Response401UnauthorizedError } from '../../../../../src/Error/index.js';
+import { FetchHelper, TokenParser } from '../../../../../src/Service/index.js';
+import { Data, LoggerInterface, UniqueUserIdentifier } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.post('http://mock-api/token', () => {

@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { RawValueToNormalizedValueEvent } from '../../../src/Event';
-import { GenericRawValueToNormalizedValueEventListener } from '../../../src/EventListener';
-import { EventInterface } from '../../../src/Type/Definition';
+import { RawValueToNormalizedValueEvent } from '../../../src/Event/index.js';
+import { GenericRawValueToNormalizedValueEventListener } from '../../../src/EventListener/index.js';
+import { EventInterface } from '../../../src/Type/Definition/index.js';
 
 test('GenericRawValueToNormalizedValueEventListener provides correct event listener target', () => {
   expect(GenericRawValueToNormalizedValueEventListener.eventListenerTarget).toEqual(

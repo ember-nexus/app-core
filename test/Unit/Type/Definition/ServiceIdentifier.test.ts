@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { validateServiceIdentifierFromString } from '../../../../src/Type/Definition';
+import { validateServiceIdentifierFromString } from '../../../../src/Type/Definition/index.js';
 
 test('should validate correct service identifier', () => {
   expect(validateServiceIdentifierFromString('root')).toBeTruthy();

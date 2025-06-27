@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { validateTokenFromString } from '../../../../src/Type/Definition';
+import { validateTokenFromString } from '../../../../src/Type/Definition/index.js';
 
 test('should validate correct token', () => {
   expect(validateTokenFromString('secret-token:123')).toBeTruthy();

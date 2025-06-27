@@ -29,4 +29,4 @@ abstract class Event implements EventInterface {
   }
 }
 
-export { EventInterface, Event };
+export { Event, EventInterface };

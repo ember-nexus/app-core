@@ -15,4 +15,4 @@ function validateUuidFromString(uuid: string): Uuid {
   return uuid as Uuid;
 }
 
-export { Uuid, validateUuidFromString, uuidv4Regex };
+export { Uuid, uuidv4Regex, validateUuidFromString };

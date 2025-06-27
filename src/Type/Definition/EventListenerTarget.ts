@@ -30,7 +30,7 @@ function getEventListenerTargetsFromEventIdentifier(eventIdentifier: EventIdenti
 
 export {
   EventListenerTarget,
-  validateEventListenerTargetFromString,
   eventListenerTargetRegex,
   getEventListenerTargetsFromEventIdentifier,
+  validateEventListenerTargetFromString,
 };

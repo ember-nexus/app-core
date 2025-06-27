@@ -14,4 +14,4 @@ function validateTokenFromString(token: string): Token {
   return token as Token;
 }
 
-export { Token, validateTokenFromString, tokenRegex };
+export { Token, tokenRegex, validateTokenFromString };

@@ -15,4 +15,4 @@ function validateEventIdentifierFromString(eventIdentifier: string): EventIdenti
   return eventIdentifier as EventIdentifier;
 }
 
-export { EventIdentifier, validateEventIdentifierFromString, eventIdentifierRegex };
+export { EventIdentifier, eventIdentifierRegex, validateEventIdentifierFromString };

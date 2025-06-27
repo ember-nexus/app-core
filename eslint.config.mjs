@@ -112,6 +112,7 @@ export default [
       'no-use-before-define': 'error',
       'no-var': 'error',
       'perfectionist/sort-exports': 'error',
+      'perfectionist/sort-named-exports': 'error',
       'prefer-arrow-callback': 'error',
       'prefer-const': 'error',
       'promise/always-return': 'error',

@@ -1,5 +1,5 @@
 import { ServiceResolver } from '../Service/index.js';
-import { EventIdentifier } from '../Type/Enum/index.js';
+import { BrowserEventIdentifier } from '../Type/Enum/index.js';
 import { customEventDefaultInit } from '../Type/Partial/index.js';
 
 type GetServiceResolverEventDetails = {
@@ -7,7 +7,7 @@ type GetServiceResolverEventDetails = {
 };
 
 class GetServiceResolverEvent extends CustomEvent<GetServiceResolverEventDetails> {
-  public static type = EventIdentifier.GetServiceResolver;
+  public static type = BrowserEventIdentifier.GetServiceResolver;
   constructor() {
     super(GetServiceResolverEvent.type, {
       ...customEventDefaultInit,

@@ -28,6 +28,7 @@ import {
   PostRegisterEndpoint,
   PostTokenEndpoint,
 } from './Endpoint/User/index.js';
+import { initEventListener } from './EventListener/index.js';
 import {
   ApiConfiguration,
   ApiWrapper,
@@ -39,12 +40,12 @@ import {
   TokenParser,
 } from './Service/index.js';
 import { PriorityRegistry, Registry } from './Type/Definition/index.js';
-import { EventIdentifier, ServiceIdentifier } from './Type/Enum/index.js';
+import { BrowserEventIdentifier, ServiceIdentifier } from './Type/Enum/index.js';
 
 function init(rootNode: HTMLElement): ServiceResolver {
   const serviceResolver = new ServiceResolver();
 
-  rootNode.addEventListener(EventIdentifier.GetServiceResolver, (event: GetServiceResolverEvent) => {
+  rootNode.addEventListener(BrowserEventIdentifier.GetServiceResolver, (event: GetServiceResolverEvent) => {
     event.setServiceResolver(serviceResolver);
     event.stopPropagation();
   });
@@ -61,11 +62,9 @@ function init(rootNode: HTMLElement): ServiceResolver {
   });
   serviceResolver.setService(ServiceIdentifier.logger, logger);
 
-  const eventDispatcher = new EventDispatcher(logger);
-  serviceResolver.setService(ServiceIdentifier.eventDispatcher, eventDispatcher);
-
   const services = [
     // services
+    EventDispatcher,
     ElementParser,
     CollectionParser,
     TokenParser,
@@ -100,11 +99,15 @@ function init(rootNode: HTMLElement): ServiceResolver {
     IndexCache,
 
     // high level services
+    EventDispatcher,
     ApiWrapper,
   ];
   for (let i = 0; i < services.length; i++) {
     serviceResolver.setService(services[i].identifier, services[i].constructFromServiceResolver(serviceResolver));
   }
+
+  // event listeners
+  initEventListener(serviceResolver);
 
   return serviceResolver;
 }

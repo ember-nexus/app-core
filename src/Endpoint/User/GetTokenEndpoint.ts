@@ -35,7 +35,7 @@ class GetTokenEndpoint {
       );
 
       const rawData = await this.fetchHelper.parseJsonResponse(response);
-      const element = this.elementParser.deserializeElement(rawData);
+      const element = await this.elementParser.deserializeElement(rawData);
 
       if (element.type !== 'Token') {
         throw new LogicError("Expected node to be of type 'Token'.");

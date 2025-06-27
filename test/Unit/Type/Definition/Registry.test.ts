@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { Registry } from '../../../../src/Type/Definition';
+import { Registry } from '../../../../src/Type/Definition/index.js';
 
 test('should return null on missing entry', () => {
   const registry = new Registry<string>();

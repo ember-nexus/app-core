@@ -23,9 +23,8 @@
     "build:esm": "yarn tsc -b tsconfig.esm.json",
     "cs": "eslint ./src ./test",
     "cs:fix": "eslint ./src ./test --fix",
-    "test:unit": "vitest run ./test/Unit --no-isolate",
-    "test:unit:coverage": "vitest run ./test/Unit --coverage --no-isolate",
-    "test:unit:html": "vitest run ./test/Unit --reporter=html --no-isolate",
+    "test:unit": "vitest run -c ./test/vitest.config.ts Unit",
+    "test:unit:coverage": "vitest run -c ./test/vitest.config.ts Unit --coverage",
     "prepare": "ts-patch install",
     "typedoc": "typedoc --tsconfig tsconfig.json"
   },

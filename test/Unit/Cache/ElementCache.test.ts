@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 
-import { ElementCache } from '../../../src/Cache';
+import { ElementCache } from '../../../src/Cache/index.js';
 import { Collection } from '../../../src/Type/Definition/index.js';
 
 test('ElementCache provides correct service identifier', () => {

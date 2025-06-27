@@ -1,11 +1,11 @@
 import { expect, test, vi } from 'vitest';
 
-import { GetElementChildrenEndpoint } from '../../../../../src/Endpoint/Element';
-import { ValidationError } from '../../../../../src/Error';
-import { CollectionParser, FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { GetElementChildrenEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { ValidationError } from '../../../../../src/Error/index.js';
+import { CollectionParser, FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 test('GetElementChildrenEndpoint should throw error if page size is negative', async () => {
   const serviceResolver = buildEndpointServiceResolver();

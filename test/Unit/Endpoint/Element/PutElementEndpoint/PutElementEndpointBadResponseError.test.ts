@@ -2,13 +2,13 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { PutElementEndpoint } from '../../../../../src/Endpoint/Element';
-import { ParseError } from '../../../../../src/Error';
-import { FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { Data } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { PutElementEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { ParseError } from '../../../../../src/Error/index.js';
+import { FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { Data } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.put('http://mock-api/17b8708b-a16c-4099-ad47-dd54fabf0ef1', () => {

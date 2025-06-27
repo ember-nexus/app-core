@@ -15,4 +15,4 @@ function validateServiceIdentifierFromString(serviceIdentifier: string): Service
   return serviceIdentifier as ServiceIdentifier;
 }
 
-export { ServiceIdentifier, validateServiceIdentifierFromString, serviceIdentifierRegex };
+export { ServiceIdentifier, serviceIdentifierRegex, validateServiceIdentifierFromString };

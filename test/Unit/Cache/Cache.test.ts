@@ -1,7 +1,7 @@
 import { LRUCache } from 'lru-cache';
 import { expect, test } from 'vitest';
 
-import { Cache, CacheEntry } from '../../../src/Cache';
+import { Cache, CacheEntry } from '../../../src/Cache/index.js';
 
 class TestCache extends Cache<string> {
   constructor() {

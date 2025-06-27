@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { ElementCache, IndexCache } from '../../../../src/Cache';
-import { GetIndexEndpoint } from '../../../../src/Endpoint/Element';
+import { createApiWrapper } from './ApiWrapper.js';
+import { ElementCache, IndexCache } from '../../../../src/Cache/index.js';
+import { GetIndexEndpoint } from '../../../../src/Endpoint/Element/index.js';
 
 test('getIndex with no cache results in API call', async () => {
   const collection = {

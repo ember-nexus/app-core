@@ -36,4 +36,4 @@ class Registry<T = unknown> implements RegistryInterface<T> {
   }
 }
 
-export { RegistryInterface, Registry };
+export { Registry, RegistryInterface };

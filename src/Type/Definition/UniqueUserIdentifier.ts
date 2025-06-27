@@ -9,4 +9,4 @@ function createUniqueUserIdentifierFromString(uniqueUserIdentifier: string): Uni
   return uniqueUserIdentifier as UniqueUserIdentifier;
 }
 
-export { UniqueUserIdentifier, createUniqueUserIdentifierFromString };
+export { createUniqueUserIdentifierFromString, UniqueUserIdentifier };

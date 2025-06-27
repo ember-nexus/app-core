@@ -1,9 +1,9 @@
 import { mock, when } from 'strong-mock';
 import { expect, test } from 'vitest';
 
-import { createApiWrapper } from './ApiWrapper';
-import { ElementCache } from '../../../../src/Cache';
-import { GetTokenEndpoint } from '../../../../src/Endpoint/User';
+import { createApiWrapper } from './ApiWrapper.js';
+import { ElementCache } from '../../../../src/Cache/index.js';
+import { GetTokenEndpoint } from '../../../../src/Endpoint/User/index.js';
 
 test('getToken with no cache results in API call', async () => {
   const element = {

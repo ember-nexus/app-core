@@ -1,13 +1,13 @@
 import { EventInterface } from './Event.js';
 import { EventListener } from './EventListener.js';
-import { EventListenerIdentifier } from './EventListenerIdentifier.js';
+import { EventListenerTarget } from './EventListenerTarget.js';
 
 interface EventDispatcherInterface {
   dispatchEvent(event: EventInterface): Promise<void>;
-  addListener(eventListenerIdentifier: EventListenerIdentifier, eventListener: EventListener, priority?: number): this;
-  removeListener(eventListenerIdentifier: EventListenerIdentifier, eventListener: EventListener): this;
-  getListeners(eventListenerIdentifier: EventListenerIdentifier): EventListener[];
-  hasListeners(eventListenerIdentifier: EventListenerIdentifier): boolean;
+  addListener(eventListenerIdentifier: EventListenerTarget, eventListener: EventListener, priority?: number): this;
+  removeListener(eventListenerIdentifier: EventListenerTarget, eventListener: EventListener): this;
+  getListeners(eventListenerIdentifier: EventListenerTarget): EventListener[];
+  hasListeners(eventListenerIdentifier: EventListenerTarget): boolean;
 }
 
 export { EventDispatcherInterface };

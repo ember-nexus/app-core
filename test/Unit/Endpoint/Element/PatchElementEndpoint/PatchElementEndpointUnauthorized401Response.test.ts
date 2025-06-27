@@ -2,13 +2,13 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { PatchElementEndpoint } from '../../../../../src/Endpoint/Element';
-import { Response401UnauthorizedError } from '../../../../../src/Error';
-import { FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface } from '../../../../../src/Type/Definition';
-import { Data } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { PatchElementEndpoint } from '../../../../../src/Endpoint/Element/index.js';
+import { Response401UnauthorizedError } from '../../../../../src/Error/index.js';
+import { FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface } from '../../../../../src/Type/Definition/index.js';
+import { Data } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.patch('http://mock-api/2fe3ba3b-c44c-45b8-a427-4724c46f9951', () => {

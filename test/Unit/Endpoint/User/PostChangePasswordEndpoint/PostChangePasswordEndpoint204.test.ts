@@ -2,11 +2,11 @@ import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
 import { expect, test, vi } from 'vitest';
 
-import { PostChangePasswordEndpoint } from '../../../../../src/Endpoint/User';
-import { FetchHelper } from '../../../../../src/Service';
-import { LoggerInterface, UniqueUserIdentifier } from '../../../../../src/Type/Definition';
-import { ServiceIdentifier } from '../../../../../src/Type/Enum';
-import { buildEndpointServiceResolver } from '../../EndpointHelper';
+import { PostChangePasswordEndpoint } from '../../../../../src/Endpoint/User/index.js';
+import { FetchHelper } from '../../../../../src/Service/index.js';
+import { LoggerInterface, UniqueUserIdentifier } from '../../../../../src/Type/Definition/index.js';
+import { ServiceIdentifier } from '../../../../../src/Type/Enum/index.js';
+import { buildEndpointServiceResolver } from '../../EndpointHelper.js';
 
 const mockServer = setupServer(
   http.post('http://mock-api/change-password', () => {

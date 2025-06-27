@@ -12,4 +12,4 @@ interface Action<T = unknown, C = object> {
   execute(data: unknown, configuration?: C): Promise<T>;
 }
 
-export { ActionManifest, Action };
+export { Action, ActionManifest };

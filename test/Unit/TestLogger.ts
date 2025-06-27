@@ -1,4 +1,4 @@
-import { LoggerInterface } from '../../src/Type/Definition';
+import { LoggerInterface } from '../../src/Type/Definition/index.js';
 
 class TestLogger implements LoggerInterface {
   private debugCalls: unknown[][] = [];
@@ -91,6 +91,7 @@ class TestLogger implements LoggerInterface {
     return this.warnCalls.length === 0;
   }
 
+  /* eslint no-console: "off" */
   printAllCalls(): void {
     console.log(this.debugCalls);
     console.log(this.errorCalls);

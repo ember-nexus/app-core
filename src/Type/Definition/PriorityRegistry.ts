@@ -82,4 +82,4 @@ class PriorityRegistry<T = unknown> implements PriorityRegistryInterface {
   }
 }
 
-export { PriorityRegistryInterface, PriorityRegistry };
+export { PriorityRegistry, PriorityRegistryInterface };

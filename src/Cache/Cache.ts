@@ -58,8 +58,8 @@ abstract class Cache<T> {
     return this;
   }
 
-  public refresh(key: string): this {
-    console.log(key);
+  /* eslint @typescript-eslint/no-unused-vars: "off" */
+  public refresh(_key: string): this {
     return this;
   }
 }

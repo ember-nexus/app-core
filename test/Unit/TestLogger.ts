@@ -91,6 +91,7 @@ class TestLogger implements LoggerInterface {
     return this.warnCalls.length === 0;
   }
 
+  /* eslint no-console: "off" */
   printAllCalls(): void {
     console.log(this.debugCalls);
     console.log(this.errorCalls);

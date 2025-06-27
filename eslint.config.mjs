@@ -81,7 +81,7 @@ export default [
       "camelcase": "error",
       "dot-notation": "warn",
       "guard-for-in": "error",
-      // "no-console": "error",
+      "no-console": "error",
       "no-eq-null": "error",
       "no-extra-bind": "error",
       "no-implicit-coercion": "error",

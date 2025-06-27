@@ -1,18 +1,21 @@
+import { EventDispatcher } from './EventDispatcher.js';
+import { ServiceResolver } from './ServiceResolver.js';
+import { RawValueToNormalizedValueEvent } from '../Event/index.js';
 import { Node, Relation, validateUuidFromString } from '../Type/Definition/index.js';
 import { ServiceIdentifier } from '../Type/Enum/index.js';
 
-/**
- * Class which helps to parse elements.
- */
 class ElementParser {
   static identifier: ServiceIdentifier = ServiceIdentifier.serviceElementParser;
-  constructor() {}
+  constructor(private eventDispatcher: EventDispatcher) {}
 
-  static constructFromServiceResolver(): ElementParser {
-    return new ElementParser();
+  static constructFromServiceResolver(serviceResolver: ServiceResolver): ElementParser {
+    const elementDispatcher = serviceResolver.getServiceOrFail<EventDispatcher>(
+      ServiceIdentifier.serviceEventDispatcher,
+    );
+    return new ElementParser(elementDispatcher);
   }
 
-  deserializeElement(element: object): Node | Relation {
+  async deserializeElement(element: object): Promise<Node | Relation> {
     if (!('id' in element)) {
       throw new Error("Raw element must contain property 'id' in order to be parsed to a node or relation.");
     }
@@ -26,16 +29,13 @@ class ElementParser {
     }
     const data = element.data as Record<string, unknown>;
 
-    // todo: refactor datetime transformation etc.
     for (const key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key) && typeof data[key] === 'string') {
-        const dateString = data[key] as string;
-        const dateRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}$/;
-
-        if (dateRegex.test(dateString)) {
-          data[key] = new Date(dateString);
-        }
+      const rawValueToNormalizedValueEevent = new RawValueToNormalizedValueEvent(data[key]);
+      await this.eventDispatcher.dispatchEvent(rawValueToNormalizedValueEevent);
+      if (!rawValueToNormalizedValueEevent.isPropagationStopped()) {
+        throw new Error(`Unable to deserialize property "${key}".`);
       }
+      data[key] = rawValueToNormalizedValueEevent.getNormalizedValue();
     }
 
     if ('start' in element && 'end' in element) {

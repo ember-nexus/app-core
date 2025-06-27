@@ -16,9 +16,11 @@ type EventDispatcherEntry = {
 };
 
 class EventDispatcher implements EventDispatcherInterface {
-  static identifier: ServiceIdentifier = ServiceIdentifier.eventDispatcher;
+  static identifier: ServiceIdentifier = ServiceIdentifier.serviceEventDispatcher;
 
   private eventListenerTargets: Map<EventListenerTarget, EventDispatcherEntry[]>;
+
+  private isSilent: boolean = true;
 
   public constructor(private logger: LoggerInterface) {
     this.eventListenerTargets = new Map();
@@ -29,10 +31,17 @@ class EventDispatcher implements EventDispatcherInterface {
     return new EventDispatcher(logger);
   }
 
+  setSilent(silent: boolean): this {
+    this.isSilent = silent;
+    return this;
+  }
+
   async dispatchEvent(event: EventInterface): Promise<void> {
-    this.logger.debug(`Dispatching event of identifier ${event.getIdentifier()}.`, { event: event });
+    if (!this.isSilent)
+      this.logger.debug(`Dispatching event of identifier ${event.getIdentifier()}.`, { event: event });
     if (event.isPropagationStopped()) {
-      this.logger.debug(`Stopped event propagation because it is already stopped.`, { event: event });
+      if (!this.isSilent)
+        this.logger.debug(`Stopped event propagation because it is already stopped.`, { event: event });
       return undefined;
     }
     const eventListenerTargetsToNotify = getEventListenerTargetsFromEventIdentifier(event.getIdentifier());
@@ -42,9 +51,11 @@ class EventDispatcher implements EventDispatcherInterface {
       if (eventListeners === undefined) {
         continue;
       }
-      this.logger.debug(`Iterating over resolved event listeners of identifier ${eventListenerTarget}`, {
-        event: event,
-      });
+      if (!this.isSilent) {
+        this.logger.debug(`Iterating over resolved event listeners of identifier ${eventListenerTarget}`, {
+          event: event,
+        });
+      }
       for (let j = eventListeners.length - 1; j >= 0; j--) {
         try {
           await Promise.resolve(eventListeners[j].eventListener.onEvent(event));
@@ -55,12 +66,12 @@ class EventDispatcher implements EventDispatcherInterface {
           });
         }
         if (event.isPropagationStopped()) {
-          this.logger.debug(`Stopped event propagation as it got stopped.`, { event: event });
+          if (!this.isSilent) this.logger.debug(`Stopped event propagation as it got stopped.`, { event: event });
           return undefined;
         }
       }
     }
-    this.logger.debug(`Event got handled by all event listeners.`, { event: event });
+    if (!this.isSilent) this.logger.debug(`Event got handled by all event listeners.`, { event: event });
     return undefined;
   }
 

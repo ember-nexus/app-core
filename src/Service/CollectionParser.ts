@@ -15,7 +15,7 @@ class CollectionParser {
     return new CollectionParser(elementParser);
   }
 
-  deserializeCollection(rawCollection: object): Collection {
+  async deserializeCollection(rawCollection: object): Promise<Collection> {
     if (!('id' in rawCollection)) {
       throw new Error("Raw collection must contain property 'id' in order to be parsed to a collection.");
     }
@@ -62,7 +62,7 @@ class CollectionParser {
     }
     const nodes: Array<Node> = [];
     for (const rawNode of rawCollection.nodes) {
-      nodes.push(this.elementParser.deserializeElement(rawNode) as Node);
+      nodes.push((await this.elementParser.deserializeElement(rawNode)) as Node);
     }
 
     if (!('relations' in rawCollection)) {
@@ -73,7 +73,7 @@ class CollectionParser {
     }
     const relations: Array<Relation> = [];
     for (const rawRelation of rawCollection.relations) {
-      relations.push(this.elementParser.deserializeElement(rawRelation) as Relation);
+      relations.push((await this.elementParser.deserializeElement(rawRelation)) as Relation);
     }
 
     return {

@@ -44,7 +44,7 @@ class TestAsyncEventListener implements EventListener<TestEvent> {
 }
 
 function getEventDispatcher(): EventDispatcher {
-  return new EventDispatcher(new TestLogger());
+  return new EventDispatcher(new TestLogger()).setSilent(false);
 }
 
 test('event dispatcher can be created', () => {

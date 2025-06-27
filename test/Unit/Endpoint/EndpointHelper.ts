@@ -1,7 +1,9 @@
+import { initEventListener } from '../../../src/EventListener/index.js';
 import {
   ApiConfiguration,
   CollectionParser,
   ElementParser,
+  EventDispatcher,
   FetchHelper,
   ServiceResolver,
   TokenParser,
@@ -20,7 +22,14 @@ function buildEndpointServiceResolver(): ServiceResolver {
     ServiceIdentifier.serviceFetchHelper,
     FetchHelper.constructFromServiceResolver(serviceResolver),
   );
-  serviceResolver.setService(ServiceIdentifier.serviceElementParser, ElementParser.constructFromServiceResolver());
+  serviceResolver.setService(
+    ServiceIdentifier.serviceEventDispatcher,
+    EventDispatcher.constructFromServiceResolver(serviceResolver),
+  );
+  serviceResolver.setService(
+    ServiceIdentifier.serviceElementParser,
+    ElementParser.constructFromServiceResolver(serviceResolver),
+  );
   serviceResolver.setService(ServiceIdentifier.serviceTokenParser, TokenParser.constructFromServiceResolver());
   serviceResolver.setService(
     ServiceIdentifier.serviceCollectionParser,
@@ -30,6 +39,8 @@ function buildEndpointServiceResolver(): ServiceResolver {
   serviceResolver
     .getServiceOrFail<ApiConfiguration>(ServiceIdentifier.serviceApiConfiguration)
     .setApiHost('http://mock-api');
+
+  initEventListener(serviceResolver);
 
   return serviceResolver;
 }

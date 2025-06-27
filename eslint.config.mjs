@@ -78,7 +78,6 @@ export default [
       'camelcase': 'error',
       'dot-notation': 'warn',
       'eqeqeq': ['error', 'always'],
-      'guard-for-in': 'error',
       'import/no-unresolved': 'error',
       'import/order': [
         'error',

@@ -52,7 +52,7 @@ class GetIndexEndpoint {
       }
 
       const rawData = await this.fetchHelper.parseJsonResponse(response);
-      const collection = this.collectionParser.deserializeCollection(rawData);
+      const collection = await this.collectionParser.deserializeCollection(rawData);
 
       return {
         data: collection,

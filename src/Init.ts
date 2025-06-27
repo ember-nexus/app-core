@@ -28,12 +28,7 @@ import {
   PostRegisterEndpoint,
   PostTokenEndpoint,
 } from './Endpoint/User/index.js';
-import {
-  DateTimeNormalizedValueToRawValueEventListener,
-  DateTimeRawValueToNormalizedValueEventListener,
-  GenericNormalizedValueToRawValueEventListener,
-  GenericRawValueToNormalizedValueEventListener,
-} from './EventListener/index.js';
+import { initEventListener } from './EventListener/index.js';
 import {
   ApiConfiguration,
   ApiWrapper,
@@ -69,6 +64,7 @@ function init(rootNode: HTMLElement): ServiceResolver {
 
   const services = [
     // services
+    EventDispatcher,
     ElementParser,
     CollectionParser,
     TokenParser,
@@ -111,20 +107,7 @@ function init(rootNode: HTMLElement): ServiceResolver {
   }
 
   // event listeners
-  const eventListeners = [
-    DateTimeNormalizedValueToRawValueEventListener,
-    DateTimeRawValueToNormalizedValueEventListener,
-    GenericNormalizedValueToRawValueEventListener,
-    GenericRawValueToNormalizedValueEventListener,
-  ];
-  const eventDispatcher = serviceResolver.getServiceOrFail<EventDispatcher>(EventDispatcher.identifier);
-  for (let i = 0; i < eventListeners.length; i++) {
-    eventDispatcher.addListener(
-      eventListeners[i].eventListenerTarget,
-      eventListeners[i].constructFromServiceResolver(),
-      eventListeners[i].priority,
-    );
-  }
+  initEventListener(serviceResolver);
 
   return serviceResolver;
 }

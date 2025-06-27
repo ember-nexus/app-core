@@ -1,7 +1,6 @@
 enum ServiceIdentifier {
   // global services
   emberNexusWebSDK = 'ember-nexus.web-sdk',
-  eventDispatcher = 'global.event-dispatcher',
   logger = 'global.logger',
   action = 'global.action-registry',
   setting = 'global.setting-registry',
@@ -16,6 +15,7 @@ enum ServiceIdentifier {
   serviceCollectionParser = 'ember-nexus.app-core.service.collection-parser-service',
   serviceTokenParser = 'ember-nexus.app-core.service.token-parser-service',
   serviceApiWrapper = 'ember-nexus.app-core.service.api-wrapper',
+  serviceEventDispatcher = 'ember-nexus.app-core.service.event-dispatcher',
 
   // endpoints: element
   endpointElementDeleteElementEndpoint = 'ember-nexus.app-core.endpoint.element.delete-element-endpoint',

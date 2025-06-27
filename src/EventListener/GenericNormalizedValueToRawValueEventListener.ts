@@ -22,6 +22,7 @@ class GenericNormalizedValueToRawValueEventListener implements EventListener<Nor
       typeof normalizedValue === 'number' ||
       typeof normalizedValue === 'boolean' ||
       typeof normalizedValue === 'string' ||
+      normalizedValue instanceof String ||
       normalizedValue === null
     ) {
       event.setRawValue(normalizedValue);

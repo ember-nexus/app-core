@@ -12,8 +12,8 @@
     "./package.json": "./package.json",
     ".": {
       "import": {
-        "types": "./dist/types/./index.d.ts",
-        "default": "./dist/esm/./index.js"
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/esm/index.js"
       }
     },
     "./BrowserEvent": {

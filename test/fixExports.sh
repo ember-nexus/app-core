@@ -6,7 +6,7 @@ folderExports=$( \
   sed -r 's|/[^/]+$||' | \
   sort | \
   uniq | \
-  jq --slurp --raw-input 'split("\n")[:-1] | map({(.): {import: {types: ("./dist/types/" + (. | ltrimstr("./")) + "/index.d.ts"), default: ("./dist/esm/" + (. | ltrimstr("./")) + "/index.js")}}}) | add' \
+  jq --slurp --raw-input 'split("\n")[:-1] | map({(.): {import: {types: ("./dist/types/" + (. | ltrimstr("./")) + "/index.d.ts"), default: ("./dist/esm/" + (. | ltrimstr("./")) + "/index.js")}}}) | add | del(.["."])' \
 )
 indexExports='{"./package.json": "./package.json", ".": {"import": {"types": "./dist/types/index.d.ts", "default": "./dist/esm/index.js"}}}'
 exports=$(jq -n --argjson indexExports "$indexExports" --argjson folderExports "$folderExports" '$indexExports + $folderExports')

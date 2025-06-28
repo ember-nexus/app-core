@@ -12,8 +12,110 @@
     "./package.json": "./package.json",
     ".": {
       "import": {
-        "types": "./dist/types/index.d.ts",
-        "default": "./dist/esm/index.js"
+        "types": "./dist/types/./index.d.ts",
+        "default": "./dist/esm/./index.js"
+      }
+    },
+    "./BrowserEvent": {
+      "import": {
+        "types": "./dist/types/BrowserEvent/index.d.ts",
+        "default": "./dist/esm/BrowserEvent/index.js"
+      }
+    },
+    "./BrowserEventListener": {
+      "import": {
+        "types": "./dist/types/BrowserEventListener/index.d.ts",
+        "default": "./dist/esm/BrowserEventListener/index.js"
+      }
+    },
+    "./Cache": {
+      "import": {
+        "types": "./dist/types/Cache/index.d.ts",
+        "default": "./dist/esm/Cache/index.js"
+      }
+    },
+    "./Endpoint": {
+      "import": {
+        "types": "./dist/types/Endpoint/index.d.ts",
+        "default": "./dist/esm/Endpoint/index.js"
+      }
+    },
+    "./Endpoint/Element": {
+      "import": {
+        "types": "./dist/types/Endpoint/Element/index.d.ts",
+        "default": "./dist/esm/Endpoint/Element/index.js"
+      }
+    },
+    "./Endpoint/File": {
+      "import": {
+        "types": "./dist/types/Endpoint/File/index.d.ts",
+        "default": "./dist/esm/Endpoint/File/index.js"
+      }
+    },
+    "./Endpoint/User": {
+      "import": {
+        "types": "./dist/types/Endpoint/User/index.d.ts",
+        "default": "./dist/esm/Endpoint/User/index.js"
+      }
+    },
+    "./Endpoint/WebDAV": {
+      "import": {
+        "types": "./dist/types/Endpoint/WebDAV/index.d.ts",
+        "default": "./dist/esm/Endpoint/WebDAV/index.js"
+      }
+    },
+    "./Error": {
+      "import": {
+        "types": "./dist/types/Error/index.d.ts",
+        "default": "./dist/esm/Error/index.js"
+      }
+    },
+    "./Event": {
+      "import": {
+        "types": "./dist/types/Event/index.d.ts",
+        "default": "./dist/esm/Event/index.js"
+      }
+    },
+    "./EventListener": {
+      "import": {
+        "types": "./dist/types/EventListener/index.d.ts",
+        "default": "./dist/esm/EventListener/index.js"
+      }
+    },
+    "./Service": {
+      "import": {
+        "types": "./dist/types/Service/index.d.ts",
+        "default": "./dist/esm/Service/index.js"
+      }
+    },
+    "./Type": {
+      "import": {
+        "types": "./dist/types/Type/index.d.ts",
+        "default": "./dist/esm/Type/index.js"
+      }
+    },
+    "./Type/Definition": {
+      "import": {
+        "types": "./dist/types/Type/Definition/index.d.ts",
+        "default": "./dist/esm/Type/Definition/index.js"
+      }
+    },
+    "./Type/Definition/Response": {
+      "import": {
+        "types": "./dist/types/Type/Definition/Response/index.d.ts",
+        "default": "./dist/esm/Type/Definition/Response/index.js"
+      }
+    },
+    "./Type/Enum": {
+      "import": {
+        "types": "./dist/types/Type/Enum/index.d.ts",
+        "default": "./dist/esm/Type/Enum/index.js"
+      }
+    },
+    "./Type/Partial": {
+      "import": {
+        "types": "./dist/types/Type/Partial/index.d.ts",
+        "default": "./dist/esm/Type/Partial/index.js"
       }
     }
   },

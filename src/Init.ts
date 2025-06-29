@@ -59,7 +59,6 @@ function init(rootNode: HTMLElement): ServiceResolver {
 
   const services = [
     // services
-    EventDispatcher,
     ElementParser,
     CollectionParser,
     TokenParser,

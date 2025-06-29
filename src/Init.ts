@@ -59,6 +59,7 @@ function init(rootNode: HTMLElement): ServiceResolver {
 
   const services = [
     // services
+    EventDispatcher,
     ElementParser,
     CollectionParser,
     TokenParser,
@@ -93,7 +94,6 @@ function init(rootNode: HTMLElement): ServiceResolver {
     IndexCache,
 
     // high level services
-    EventDispatcher,
     ApiWrapper,
   ];
   for (let i = 0; i < services.length; i++) {

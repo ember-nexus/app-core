@@ -23,7 +23,9 @@
     "strictNullChecks": true,
     "declaration": false,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "useDefineForClassFields": false
   },
   "include": [
     "src/**/*"

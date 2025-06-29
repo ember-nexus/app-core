@@ -45,11 +45,6 @@ import { BrowserEventIdentifier, ServiceIdentifier } from './Type/Enum/index.js'
 function init(rootNode: HTMLElement): ServiceResolver {
   const serviceResolver = new ServiceResolver();
 
-  rootNode.addEventListener(BrowserEventIdentifier.GetServiceResolver, (event: GetServiceResolverEvent) => {
-    event.setServiceResolver(serviceResolver);
-    event.stopPropagation();
-  });
-
   serviceResolver.setService(ServiceIdentifier.action, new PriorityRegistry());
 
   serviceResolver.setService(ServiceIdentifier.setting, new Registry());
@@ -108,6 +103,11 @@ function init(rootNode: HTMLElement): ServiceResolver {
 
   // event listeners
   initEventListener(serviceResolver);
+
+  rootNode.addEventListener(BrowserEventIdentifier.GetServiceResolver, (event: GetServiceResolverEvent) => {
+    event.setServiceResolver(serviceResolver);
+    event.stopPropagation();
+  });
 
   return serviceResolver;
 }

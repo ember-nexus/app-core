@@ -28,6 +28,9 @@ import {
   PostRegisterEndpoint,
   PostTokenEndpoint,
 } from './Endpoint/User/index.js';
+import {
+  PostSearchEndpoint
+} from "./Endpoint/Search";
 import { initEventListener } from './EventListener/index.js';
 import {
   ApiConfiguration,
@@ -85,6 +88,9 @@ function init(rootNode: HTMLElement): ServiceResolver {
     PostChangePasswordEndpoint,
     PostRegisterEndpoint,
     PostTokenEndpoint,
+
+    // search endpoints
+    PostSearchEndpoint,
 
     // caches
     ElementCache,

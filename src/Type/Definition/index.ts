@@ -20,6 +20,7 @@ export * from './Relation.js';
 export * from './RelationWithOptionalId.js';
 export * from './RequestProblem.js';
 export * as Response from './Response/index.js';
+export * from './SearchStep.js';
 export * from './ServiceIdentifier.js';
 export * from './Token.js';
 export * from './UniqueUserIdentifier.js';

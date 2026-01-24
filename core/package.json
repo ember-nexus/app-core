@@ -145,7 +145,6 @@
     "last 1 years and not dead"
   ],
   "dependencies": {
-    "cpy-cli": "^6.0.0",
     "lru-cache": "^11.1.0",
     "luxon": "^3.4.4",
     "tslib": "^2.8.1",
@@ -164,6 +163,7 @@
     "@vitest/coverage-v8": "^3.0.9",
     "@vitest/eslint-plugin": "^1.1.38",
     "@vitest/ui": "^3.1.4",
+    "cpy-cli": "^6.0.0",
     "eslint": "^9.6.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",

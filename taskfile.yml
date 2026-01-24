@@ -12,6 +12,10 @@ tasks:
       - build:module-docs
       - build:module-storybook
 
+  fix-exports:
+    cmds:
+      - ./tools/fixExports.sh
+
   build:web:
     cmds:
       - docker compose -f ./tools/docker-compose.yml exec core yarn build

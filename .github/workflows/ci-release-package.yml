@@ -9,6 +9,7 @@ permissions:
   contents: write
 jobs:
   release-package:
+    name: Release Package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,7 +36,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           registry-url: https://registry.npmjs.org/
-          node-version: '20'
+          node-version: '24'
 
       - name: Git configuration
         run: |
@@ -43,17 +44,19 @@ jobs:
           git config --global user.name "${{ steps.import-gpg.outputs.name }}"
 
       - name: Bump release version
+        working-directory: ./core
         if: startsWith(github.event.inputs.release-type, 'pre') != true
         run: |
-          echo "NEW_VERSION=$(npm --no-git-tag-version --tag-version-prefix= version $RELEASE_TYPE)" >> $GITHUB_ENV
+          echo "NEW_VERSION=$(npm --no-git-tag-version version $RELEASE_TYPE)" >> $GITHUB_ENV
           echo "RELEASE_TAG=latest" >> $GITHUB_ENV
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
 
       - name: Bump pre-release version
+        working-directory: ./core
         if: startsWith(github.event.inputs.release-type, 'pre')
         run: |
-          echo "NEW_VERSION=$(npm --no-git-tag-version --tag-version-prefix= --preid=beta version $RELEASE_TYPE
+          echo "NEW_VERSION=$(npm --no-git-tag-version --preid=beta version $RELEASE_TYPE
           echo "RELEASE_TAG=beta" >> $GITHUB_ENV
         env:
           RELEASE_TYPE: ${{ github.event.inputs.release-type }}
@@ -67,24 +70,32 @@ jobs:
 
       - name: Commit CHANGELOG.md and package.json changes and create tag
         run: |
-          git add "package.json"
+          git add "core/package.json"
           git add "CHANGELOG.md"
           git commit -m "chore: release ${{ env.NEW_VERSION }}"
           git tag ${{ env.NEW_VERSION }}
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Build
+        working-directory: ./core
         run: |
-          yarn install --dev
-          yarn build
+          pnpm install
+          pnpm build
 
       - name: Publish
-        run: yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
+        working-directory: ./core
+        run: pnpm publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create local package
+        working-directory: ./core
         run: |
-          yarn pack --filename "ember-nexus-app-core-${{ env.NEW_VERSION }}.tar.gz"
+          pnpm pack --out "ember-nexus-app-core-${{ env.NEW_VERSION }}.tar.gz"
           ls -lah
           pwd
 
@@ -96,7 +107,7 @@ jobs:
 
       - id: get-changelog
         name: Get version changelog
-        uses: superfaceai/release-changelog-action@v3
+        uses: superfaceai/release-changelog-action@v2
         with:
           path-to-changelog: CHANGELOG.md
           version: ${{ env.NEW_VERSION }}
@@ -109,24 +120,4 @@ jobs:
           body: ${{ steps.get-changelog.outputs.changelog }}
           prerelease: ${{ startsWith(github.event.inputs.release-type, 'pre') }}
           token: ${{ secrets.RELEASE_TOKEN }}
-          files: ember-nexus-app-core-${{ env.NEW_VERSION }}.tar.gz
-
-#      - name: Initiate Originstamp certificate
-#        run: |
-#          curl -X POST "http://api.originstamp.com/v4/timestamp/create" \
-#            -H "Content-Type: application/json" \
-#            -H "Authorization: ${{ secrets.ORIGINSTAMP_AUTH_TOKEN }}" \
-#            -d \
-#            "{
-#              \"comment\": \"Release ${{ env.NEW_VERSION }} of ember-nexus/app-core\",
-#              \"hash\": \"${{ env.SHA }}\"
-#            }"
-#        env:
-#          SHA: ${{ github.sha }}
-
-#      - uses: JasonEtco/create-an-issue@v2
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-#          NEW_VERSION: ${{ env.NEW_VERSION }}
-#        with:
-#          filename: .github/ISSUE_TEMPLATE_POST_RELEASE_TASK.md
+          files: core/ember-nexus-app-core-${{ env.NEW_VERSION }}.tar.gz

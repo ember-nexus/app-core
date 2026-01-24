@@ -1,0 +1,45 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - echo "Hello world! :D"
+    silent: true
+
+  build:
+    deps:
+      - build:web
+      - build:module-docs
+      - build:module-storybook
+
+  fix-exports:
+    cmds:
+      - ./tools/fixExports.sh
+
+  build:web:
+    cmds:
+      - docker compose -f ./tools/docker-compose.yml exec core yarn build
+
+  build:module-docs:
+    cmds:
+      - echo "build module docs"
+
+  build:module-storybook:
+    cmds:
+      - echo "build module storybook"
+
+  dev:build:
+    cmds:
+      - docker compose -f ./tools/docker-compose.yml build
+
+  dev:up:
+    cmds:
+      - docker compose -f ./tools/docker-compose.yml up -d
+
+  dev:down:
+    cmds:
+      - docker compose -f ./tools/docker-compose.yml down
+
+  dev:cli:
+    cmds:
+      - docker compose -f ./tools/docker-compose.yml exec core /bin/bash

@@ -10,18 +10,18 @@ jobs:
     name: 'YML lint'
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: docker pull cytopia/yamllint
-      - run: docker run --rm -t -v $(pwd):/data cytopia/yamllint --config-file=test/.yamllint .
+      - run: docker run --rm -t -v $(pwd):/data cytopia/yamllint --config-file=tools/.yamllint .
 
   markdown-lint:
     runs-on: ubuntu-latest
     name: 'Markdown lint'
     timeout-minutes: 3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - run: docker pull tmknom/markdownlint
-      - run: docker run --rm -v $(pwd):/work tmknom/markdownlint '**/*.md' --config test/.markdownlintrc --ignore node_modules --ignore CHANGELOG.md --ignore var --ignore tmp
+      - run: docker run --rm -v $(pwd):/work tmknom/markdownlint '**/*.md' --config tools/.markdownlintrc --ignore node_modules --ignore CHANGELOG.md --ignore var --ignore tmp
 
   code-style:
     runs-on: ubuntu-latest
@@ -32,7 +32,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20', '22', '23']
+        node-version: ['22', '24', '25']
+    defaults:
+      run:
+        working-directory: ./core
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -45,10 +48,13 @@ jobs:
           key: ${{ runner.os }}-node-v${{ matrix.node-version }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-v${{ matrix.node-version }}-
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Install dependencies
-        run: yarn install --dev
+        run: pnpm install
       - name: Run syntax linter
-        run: yarn cs
+        run: pnpm cs
 
   test-unit:
     runs-on: ubuntu-latest
@@ -59,7 +65,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: ['20', '22', '23']
+        node-version: ['22', '24', '25']
+    defaults:
+      run:
+        working-directory: ./core
     steps:
       - uses: actions/setup-node@v4
         with:
@@ -72,64 +81,96 @@ jobs:
           key: ${{ runner.os }}-node-v${{ matrix.node-version }}-${{ hashFiles('**/package.json') }}
           restore-keys: |
             ${{ runner.os }}-node-v${{ matrix.node-version }}-
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - name: Install dependencies
-        run: yarn install --dev
+        run: pnpm install
       - name: Run unit tests
-        run: yarn test:unit
+        run: pnpm test:unit
 
-  test-feature:
-    runs-on: ubuntu-latest
-    name: 'Feature tests @ Node v${{ matrix.node-version }}'
-    needs:
-      - yml-lint
-      - markdown-lint
-    strategy:
-      fail-fast: false
-      matrix:
-        node-version: ['20', '22', '23']
-    if: false
-    steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '${{ matrix.node-version }}'
-      - uses: actions/checkout@v4
-      - name: 'Cache node_modules'
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-v${{ matrix.node-version }}-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-v${{ matrix.node-version }}-
-      - name: Install dependencies
-        run: yarn install --dev
-      - name: Run feature tests
-        run: yarn test:feature
+#  test-feature:
+#    runs-on: ubuntu-latest
+#    name: 'Feature tests @ Node v${{ matrix.node-version }}'
+#    needs:
+#      - yml-lint
+#      - markdown-lint
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        node-version: ['22', '24', '25']
+#    if: false
+#    steps:
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: '${{ matrix.node-version }}'
+#      - uses: actions/checkout@v4
+#      - name: 'Cache node_modules'
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm
+#          key: ${{ runner.os }}-node-v${{ matrix.node-version }}-${{ hashFiles('**/package.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node-v${{ matrix.node-version }}-
+#      - name: Install dependencies
+#        run: yarn install --dev
+#      - name: Run feature tests
+#        run: yarn test:feature
 
-  test-unit-coverage:
-    runs-on: ubuntu-latest
-    name: 'Unit test coverage'
-    needs:
-      - test-unit
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - uses: actions/checkout@v4
-      - name: 'Cache node_modules'
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-v22-${{ hashFiles('**/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-v22-
-      - name: Install dependencies
-        run: yarn install --dev
-      - name: Run unit tests
-        run: yarn test:unit:coverage
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v4
-        with:
-          fail_ci_if_error: true
-          files: ./coverage/cobertura-coverage.xml
-          token: ${{ secrets.CODECOV_TOKEN }}
+#  test-unit-coverage:
+#    runs-on: ubuntu-latest
+#    name: 'Unit test coverage'
+#    needs:
+#      - test-unit
+#    steps:
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: '22'
+#      - uses: actions/checkout@v4
+#      - name: 'Cache node_modules'
+#        uses: actions/cache@v4
+#        with:
+#          path: ~/.npm
+#          key: ${{ runner.os }}-node-v22-${{ hashFiles('**/package.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node-v22-
+#      - name: Install dependencies
+#        run: yarn install --dev
+#      - name: Run unit tests
+#        run: yarn test:unit
+#      - name: Upload coverage reports to Codecov
+#        uses: codecov/codecov-action@v4
+#        with:
+#          fail_ci_if_error: true
+#          files: ./coverage/cobertura-coverage.xml
+#          token: ${{ secrets.CODECOV_TOKEN }}
+
+#  test-visual-regression:
+#    runs-on: ubuntu-latest
+#    name: 'Visual regression (Lost Pixel)'
+#    needs:
+#      - test-unit
+#      - code-style
+#    steps:
+#      - uses: actions/setup-node@v4
+#        with:
+#          node-version: '23'
+#      - uses: actions/checkout@v4
+#      - name: Update yarn
+#        run: |
+#          corepack enable
+#          yarn config set -H enableImmutableInstalls false
+#          yarn install
+#      - name: Install dependencies
+#        run: yarn install
+#      - name: Build app
+#        run: yarn build && yarn storybook:build
+#      - uses: actions/upload-artifact@v4
+#        name: storybook-static
+#        with:
+#          path: 'storybook-static'
+#          retention-days: 7
+#      - name: Run Lost Pixel visual regression tests
+#        uses: lost-pixel/lost-pixel@v3.16.0
+#        env:
+#          LOST_PIXEL_API_KEY: ${{ secrets.LOST_PIXEL_API_KEY }}

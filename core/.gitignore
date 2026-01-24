@@ -6,9 +6,10 @@ npm-debug.log*
 # Dependencies
 node_modules/
 yarn.lock
+.pnpm-store/
 
 # Coverage
-coverage
+coverage/
 
 # Transpiled files
 dist/

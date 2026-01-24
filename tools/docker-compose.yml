@@ -1,0 +1,18 @@
+name: ember-nexus-app-core
+
+services:
+
+  core:
+    container_name: ember-nexus-app-core-core
+    build:
+      dockerfile: tools/Dockerfile
+      context: ..
+    tty: true
+    volumes:
+      - ../core:/core
+    working_dir: /core
+    ports:
+      - 3000:3000
+      - 6006:6006
+    environment:
+      NPM_TOKEN: 'none'

@@ -120,9 +120,9 @@
     }
   },
   "scripts": {
-    "build": "rm -rf ./dist && yarn build:esm && yarn build:browser",
-    "build:browser": "webpack --config webpack.config.cjs",
-    "build:esm": "yarn tsc -b tsconfig.esm.json",
+    "build": "rm -rf ./dist && pnpm build:esm && pnpm build:browser",
+    "build:browser": "vite build",
+    "build:esm": "pnpm tsc -b tsconfig.esm.json && pnpm cpy 'src/**/*' '!src/**/*.ts' dist/esm",
     "cs": "eslint ./src ./test",
     "cs:fix": "eslint ./src ./test --fix",
     "test:unit": "vitest run -c ./test/vitest.config.ts Unit",
@@ -132,6 +132,10 @@
   },
   "author": "Syndesi <info@ember-nexus.dev>",
   "license": "MIT",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ember-nexus/app-core.git"
@@ -141,6 +145,7 @@
     "last 1 years and not dead"
   ],
   "dependencies": {
+    "cpy-cli": "^6.0.0",
     "lru-cache": "^11.1.0",
     "luxon": "^3.4.4",
     "tslib": "^2.8.1",
@@ -184,8 +189,7 @@
     "typedoc-plugin-mdn-links": "^3.1.9",
     "typedoc-theme-hierarchy": "^5.0",
     "typescript": "^5.5",
-    "vitest": "^3.0.9",
-    "webpack": "^5.89.0",
-    "webpack-cli": "^5.1.4"
+    "vite": "^7.0.0",
+    "vitest": "^3.0.9"
   }
 }

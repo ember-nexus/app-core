@@ -5,8 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## 0.0.9 - 2026-01-25
 ### Added
-- Implement proxied services, allowing dynamic service replacement at runtime, closes #5.
+- Implement proxied services, allowing dynamic service replacement at runtime, closes [#5].
 
 ## 0.0.8 - 2026-01-24
 

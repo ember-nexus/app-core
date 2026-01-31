@@ -36,6 +36,7 @@ import {
   ElementParser,
   EventDispatcher,
   FetchHelper,
+  RouteResolver,
   ServiceResolver,
   TokenParser,
 } from './Service/index.js';
@@ -50,6 +51,8 @@ function init(rootNode: HTMLElement): ServiceResolver {
   serviceResolver.setService(ServiceIdentifier.setting, new Registry());
 
   serviceResolver.setService(ServiceIdentifier.icon, new Registry());
+
+  serviceResolver.setService(ServiceIdentifier.routeResolver, new RouteResolver());
 
   const logger = new Logger({
     name: 'app-core',

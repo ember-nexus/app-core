@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Customization</title>
+    <title>Test</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
     <style>
         #ember-nexus-app-core {
@@ -13,29 +13,29 @@
 </head>
 <body>
 <div id="ember-nexus-app-core">
-    <div style="display: flex; flex-direction: column; gap: 0.5rem; margin:2rem;">
-        <p>demo, see console</p>
-    </div>
 </div>
 <script type="module">
   import * as EmberNexusAppCore from "../dist/browser/index.js"
 
-  const serviceResolver = EmberNexusAppCore.init(document.getElementById('ember-nexus-app-core'));
-  window.sr = serviceResolver;
-  console.log(serviceResolver);
+  const appNode = document.getElementById('ember-nexus-app-core');
+  const serviceResolver = EmberNexusAppCore.init(appNode);
 
-  window.api = serviceResolver.getServiceOrFail(EmberNexusAppCore.Service.ApiWrapper.identifier);
-  console.log(window.api);
-
-  const config = serviceResolver.getServiceOrFail(EmberNexusAppCore.Service.ApiConfiguration.identifier);
-  config.setApiHost('https://reference-dataset.ember-nexus.dev');
-
-  const token = await window.api.postToken('user@ownership-model.general.localhost.dev', '1234');
-  config.setToken(token);
-
-  console.log("app core is now initialized - you can execute further API requests");
-
-  console.log(await window.api.getIndex());
+  appNode.innerHTML = "<ember-nexus-app-core-router></ember-nexus-app-core-router>";
+  // window.sr = serviceResolver;
+  // console.log(serviceResolver);
+  //
+  // window.api = serviceResolver.getServiceOrFail(EmberNexusAppCore.Service.ApiWrapper.identifier);
+  // console.log(window.api);
+  //
+  // const config = serviceResolver.getServiceOrFail(EmberNexusAppCore.Service.ApiConfiguration.identifier);
+  // config.setApiHost('https://reference-dataset.ember-nexus.dev');
+  //
+  // const token = await window.api.postToken('user@ownership-model.general.localhost.dev', '1234');
+  // config.setToken(token);
+  //
+  // console.log("app core is now initialized - you can execute further API requests");
+  //
+  // console.log(await window.api.getIndex());
 </script>
 </body>
 </html>

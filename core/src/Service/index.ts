@@ -5,5 +5,6 @@ export * from './ElementParser.js';
 export * from './EventDispatcher.js';
 export * from './FetchHelper.js';
 export * from './Logger.js';
+export * from './RouteResolver.js';
 export * from './ServiceResolver.js';
 export * from './TokenParser.js';

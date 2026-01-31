@@ -5,6 +5,7 @@ enum ServiceIdentifier {
   action = 'global.action-registry',
   setting = 'global.setting-registry',
   icon = 'global.icon-registry',
+  routeResolver = 'global.route-resolver',
 
   // scoped services
 

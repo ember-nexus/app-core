@@ -36,6 +36,14 @@ test('configured route resolver can resolve index route', async () => {
   expect(await routeResolver.findRouteConfiguration('/')).toEqual(routeConfiguration);
 });
 
+test('configured route resolver can resolve index route (2)', async () => {
+  const routeConfiguration = buildRouteConfiguration('test-route', '/');
+
+  const routeResolver = new RouteResolver().addRouteConfiguration(routeConfiguration);
+
+  expect(await routeResolver.findRouteConfiguration('')).toEqual(routeConfiguration);
+});
+
 test('priority of configured routes is respected', async () => {
   const routeConfiguration1 = buildRouteConfiguration('test-route-1', '/', 1);
   const routeConfiguration2 = buildRouteConfiguration('test-route-2', '/', 2);

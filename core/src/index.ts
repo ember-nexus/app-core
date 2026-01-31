@@ -6,7 +6,9 @@ export * as Endpoint from './Endpoint/index.js';
 export * as Error from './Error/index.js';
 export * as Event from './Event/index.js';
 export * as EventListener from './EventListener/index.js';
-export * from './Init.js';
+export * from './init.js';
+export * from './initEventListeners.js';
+export * from './optimizeDynamicConfigurations.js';
 
 export * as Service from './Service/index.js';
 export * as Type from './Type/index.js';

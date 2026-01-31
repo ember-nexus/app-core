@@ -1,6 +1,5 @@
 import { Logger } from 'tslog';
 
-import { GetServiceResolverEvent } from './BrowserEvent/index.js';
 import {
   ElementCache,
   ElementChildrenCache,
@@ -40,18 +39,13 @@ import {
   ServiceResolver,
   TokenParser,
 } from './Service/index.js';
-import { PriorityRegistry, Registry } from './Type/Definition/index.js';
-import { BrowserEventIdentifier, ServiceIdentifier } from './Type/Enum/index.js';
+import { PriorityRegistry, Registry, pluginInit } from './Type/Definition/index.js';
+import { ServiceIdentifier } from './Type/Enum/index.js';
 
-function init(rootNode: HTMLElement): ServiceResolver {
-  const serviceResolver = new ServiceResolver();
-
+const init: pluginInit = (serviceResolver: ServiceResolver) => {
   serviceResolver.setService(ServiceIdentifier.action, new PriorityRegistry());
-
   serviceResolver.setService(ServiceIdentifier.setting, new Registry());
-
   serviceResolver.setService(ServiceIdentifier.icon, new Registry());
-
   serviceResolver.setService(ServiceIdentifier.routeResolver, new RouteResolver());
 
   const logger = new Logger({
@@ -106,12 +100,7 @@ function init(rootNode: HTMLElement): ServiceResolver {
   // event listeners
   initEventListener(serviceResolver);
 
-  rootNode.addEventListener(BrowserEventIdentifier.GetServiceResolver, (event: GetServiceResolverEvent) => {
-    event.setServiceResolver(serviceResolver);
-    event.stopPropagation();
-  });
-
-  return serviceResolver;
-}
+  return Promise.resolve();
+};
 
 export { init };

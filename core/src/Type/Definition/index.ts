@@ -15,6 +15,7 @@ export * from './Node.js';
 export * from './NodeWithOptionalId.js';
 export * from './OptionalPromise.js';
 export * from './PluginIdentifier.js';
+export * from './PluginInit.js';
 export * from './PriorityRegistry.js';
 export * from './Proxy.js';
 export * from './Registry.js';

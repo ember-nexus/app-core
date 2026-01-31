@@ -14,13 +14,13 @@ class Router extends LitElement {
 
   handleNewRoute(route: string): void {
     // eslint-disable-next-line no-console
-    console.log(`handle new route: ${route}`);
+    console.log(`router: handle new route: ${route}`);
     this._routeResolver
       ?.findRouteConfiguration(route)
       .then((routeConfiguration) => {
         if (routeConfiguration === null) {
           // eslint-disable-next-line no-console
-          console.log(`unable to resolve route: ${route}`);
+          console.log(`router: unable to resolve route: ${route}`);
           return;
         }
         this._routeConfiguration = routeConfiguration;
@@ -28,7 +28,7 @@ class Router extends LitElement {
       })
       .catch((e) => {
         // eslint-disable-next-line no-console
-        console.log('error during resolving route');
+        console.log('router: error during resolving route');
         // eslint-disable-next-line no-console
         console.log(e);
       });
@@ -74,21 +74,34 @@ class Router extends LitElement {
 
   connectedCallback(): void {
     super.connectedCallback();
+    // eslint-disable-next-line no-console
+    console.log('router: connected callback');
     window.addEventListener('popstate', this.handlePopStateEvent.bind(this));
     document.addEventListener('click', this.handleLinkClickEvent.bind(this));
 
     const getServiceResolverEvent = new GetServiceResolverEvent();
     this.dispatchEvent(getServiceResolverEvent);
     const serviceResolver = getServiceResolverEvent.getServiceResolver();
-    if (serviceResolver !== null) {
-      const routeResolver = serviceResolver.getService<RouteResolver>(RouteResolver.identifier);
-      if (routeResolver !== null) {
-        // eslint-disable-next-line no-console
-        console.log('router init complete');
-        this._routeResolver = routeResolver;
-        this.handleNewRoute(window.location.pathname);
-      }
+    if (serviceResolver === null) {
+      // eslint-disable-next-line no-console
+      console.log('router: unable to get service resolver');
+      return;
     }
+    const routeResolver = serviceResolver.getService<RouteResolver>(RouteResolver.identifier);
+    if (routeResolver === null) {
+      // eslint-disable-next-line no-console
+      console.log('router: unable to get route resolver');
+      return;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log('router: init complete');
+    this._routeResolver = routeResolver;
+
+    const firstRoute = window.location.pathname;
+    // eslint-disable-next-line no-console
+    console.log(`router: handle first route, ${firstRoute}`);
+    this.handleNewRoute(firstRoute);
   }
 
   disconnectedCallback(): void {

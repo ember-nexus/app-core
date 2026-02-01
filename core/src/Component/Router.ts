@@ -115,7 +115,7 @@ class Router extends LitElement {
       return null;
     }
     if (typeof this._routeConfiguration.webComponent === 'string') {
-      return typeof this._routeConfiguration.webComponent;
+      return this._routeConfiguration.webComponent;
     }
     // todo: support function based routes
     return null;

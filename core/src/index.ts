@@ -9,6 +9,9 @@ export * as EventListener from './EventListener/index.js';
 export * from './init.js';
 export * from './initEventListeners.js';
 export * from './optimizeDynamicConfigurations.js';
+export * as Page from './Page/index.js';
 
 export * as Service from './Service/index.js';
 export * as Type from './Type/index.js';
+
+import './index.css';

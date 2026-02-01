@@ -24,7 +24,7 @@ folderExports=$( \
   '
 )
 
-indexExports='{"./package.json": "./package.json", ".": {"import": {"types": "./dist/types/index.d.ts", "default": "./dist/esm/index.js"}}}'
+indexExports='{"./package.json": "./package.json", ".": {"import": {"types": "./dist/types/index.d.ts", "default": "./dist/esm/index.js"}}, "./style.css": {"browser": "./dist/browser/index.css", "default": "./dist/esm/index.css"}}'
 exports=$(jq -n \
   --argjson indexExports "$indexExports" \
   --argjson folderExports "$folderExports" \

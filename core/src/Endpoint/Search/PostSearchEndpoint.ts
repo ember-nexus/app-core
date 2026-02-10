@@ -34,16 +34,19 @@ class PostSearchEndpoint {
       const url = this.fetchHelper.buildUrl('/search');
       this.logger.debug(`Executing HTTP POST request against URL: ${url}`);
 
-      const response = await fetch(
-        url,
-        this.fetchHelper.getDefaultPostOptions(
-          JSON.stringify({
-            steps: steps,
-            parameters: parameters,
-            debug: debug,
-          }),
-        ),
-      ).catch((error) => this.fetchHelper.rethrowErrorAsNetworkError(error));
+      const payload: Record<string, unknown> = {
+        steps,
+      };
+      if (parameters !== null) {
+        payload.parameters = parameters;
+      }
+      if (debug) {
+        payload.debug = true;
+      }
+
+      const response = await fetch(url, this.fetchHelper.getDefaultPostOptions(JSON.stringify(payload))).catch(
+        (error) => this.fetchHelper.rethrowErrorAsNetworkError(error),
+      );
 
       const rawData = await this.fetchHelper.parseJsonResponse(response);
 

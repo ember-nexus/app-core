@@ -196,6 +196,24 @@
         "default": "./dist/esm/Type/Definition/Response/index.js"
       }
     },
+    "./Type/Definition/Search": {
+      "import": {
+        "types": "./dist/types/Type/Definition/Search/index.d.ts",
+        "default": "./dist/esm/Type/Definition/Search/index.js"
+      }
+    },
+    "./Type/Definition/Search/Step": {
+      "import": {
+        "types": "./dist/types/Type/Definition/Search/Step/index.d.ts",
+        "default": "./dist/esm/Type/Definition/Search/Step/index.js"
+      }
+    },
+    "./Type/Definition/Search/StepResult": {
+      "import": {
+        "types": "./dist/types/Type/Definition/Search/StepResult/index.d.ts",
+        "default": "./dist/esm/Type/Definition/Search/StepResult/index.js"
+      }
+    },
     "./Type/Enum": {
       "import": {
         "types": "./dist/types/Type/Enum/index.d.ts",

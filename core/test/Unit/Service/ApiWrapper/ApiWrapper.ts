@@ -19,6 +19,7 @@ import {
   PostIndexEndpoint,
   PutElementEndpoint,
 } from '../../../../src/Endpoint/Element/index.js';
+import { PostSearchEndpoint } from '../../../../src/Endpoint/Search/PostSearchEndpoint.js';
 import {
   DeleteTokenEndpoint,
   GetMeEndpoint,
@@ -46,6 +47,7 @@ function createApiWrapper(services: {
   postTokenEndpoint?: PostTokenEndpoint;
   getTokenEndpoint?: GetTokenEndpoint;
   deleteTokenEndpoint?: DeleteTokenEndpoint;
+  postSearchEndpoint?: PostSearchEndpoint;
   elementCache?: ElementCache;
   elementChildrenCache?: ElementChildrenCache;
   elementParentsCache?: ElementParentsCache;
@@ -69,6 +71,7 @@ function createApiWrapper(services: {
     services.postTokenEndpoint ?? mock<PostTokenEndpoint>(),
     services.getTokenEndpoint ?? mock<GetTokenEndpoint>(),
     services.deleteTokenEndpoint ?? mock<DeleteTokenEndpoint>(),
+    services.postSearchEndpoint ?? mock<PostSearchEndpoint>(),
     services.elementCache ?? mock<ElementCache>(),
     services.elementChildrenCache ?? mock<ElementChildrenCache>(),
     services.elementParentsCache ?? mock<ElementParentsCache>(),

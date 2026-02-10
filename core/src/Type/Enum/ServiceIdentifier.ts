@@ -38,6 +38,9 @@ enum ServiceIdentifier {
   endpointUserPostRegisterEndpoint = 'ember-nexus.app-core.endpoint.user.post-register-endpoint',
   endpointUserPostTokenEndpoint = 'ember-nexus.app-core.endpoint.user.post-token-endpoint',
 
+  // endpoints: search
+  endpointSearchPostSearchEndpoint = 'ember-nexus.app-core.endpoint.search.post-search-endpoint',
+
   // cache
   cacheElement = 'ember-nexus.app-core.cache.element-cache',
   cacheElementChildren = 'ember-nexus.app-core.cache.element-children-cache',

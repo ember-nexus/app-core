@@ -28,6 +28,7 @@ export * from './RouteGuardFunction.js';
 export * from './RouteIdentifier.js';
 export * from './RouteNode.js';
 export * from './RouteToWebComponentFunction.js';
+export * as Search from './Search/index.js';
 export * from './ServiceIdentifier.js';
 export * from './Token.js';
 export * from './UniqueUserIdentifier.js';

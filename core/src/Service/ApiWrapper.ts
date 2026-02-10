@@ -17,6 +17,7 @@ import {
   PostIndexEndpoint,
   PutElementEndpoint,
 } from '../Endpoint/Element/index.js';
+import { PostSearchEndpoint } from '../Endpoint/Search/PostSearchEndpoint.js';
 import {
   DeleteTokenEndpoint,
   GetMeEndpoint,
@@ -38,6 +39,8 @@ import {
   Uuid,
 } from '../Type/Definition/index.js';
 import { ParsedResponse } from '../Type/Definition/Response/index.js';
+import { Step } from '../Type/Definition/Search/Step/index.js';
+import { StepResult } from '../Type/Definition/Search/StepResult/index.js';
 import { ServiceIdentifier } from '../Type/Enum/index.js';
 
 class ApiWrapper {
@@ -60,6 +63,7 @@ class ApiWrapper {
     private postTokenEndpoint: PostTokenEndpoint,
     private getTokenEndpoint: GetTokenEndpoint,
     private deleteTokenEndpoint: DeleteTokenEndpoint,
+    private postSearchEndpoint: PostSearchEndpoint,
     private elementCache: ElementCache,
     private elementChildrenCache: ElementChildrenCache,
     private elementParentsCache: ElementParentsCache,
@@ -93,6 +97,7 @@ class ApiWrapper {
       serviceResolver.getServiceOrFail<PostTokenEndpoint>(ServiceIdentifier.endpointUserPostTokenEndpoint),
       serviceResolver.getServiceOrFail<GetTokenEndpoint>(ServiceIdentifier.endpointUserGetTokenEndpoint),
       serviceResolver.getServiceOrFail<DeleteTokenEndpoint>(ServiceIdentifier.endpointUserDeleteTokenEndpoint),
+      serviceResolver.getServiceOrFail<PostSearchEndpoint>(ServiceIdentifier.endpointSearchPostSearchEndpoint),
       serviceResolver.getServiceOrFail<ElementCache>(ServiceIdentifier.cacheElement),
       serviceResolver.getServiceOrFail<ElementChildrenCache>(ServiceIdentifier.cacheElementChildren),
       serviceResolver.getServiceOrFail<ElementParentsCache>(ServiceIdentifier.cacheElementParents),
@@ -536,6 +541,18 @@ class ApiWrapper {
 
   public async deleteToken(): Promise<void> {
     await this.deleteTokenEndpoint.deleteToken();
+  }
+
+  /**
+   * @experimental
+   */
+  public async postSearch(
+    steps: Step[],
+    parameters: null | Record<string, unknown> = null,
+    debug: boolean = false,
+  ): Promise<StepResult[]> {
+    const parsedResponse = await this.postSearchEndpoint.postSearch(steps, parameters, debug);
+    return parsedResponse.data;
   }
 }
 

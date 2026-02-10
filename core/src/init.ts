@@ -19,6 +19,7 @@ import {
   PostIndexEndpoint,
   PutElementEndpoint,
 } from './Endpoint/Element/index.js';
+import { PostSearchEndpoint } from './Endpoint/Search/PostSearchEndpoint.js';
 import {
   DeleteTokenEndpoint,
   GetMeEndpoint,
@@ -82,6 +83,9 @@ const init: pluginInit = (serviceResolver: ServiceResolver) => {
     PostChangePasswordEndpoint,
     PostRegisterEndpoint,
     PostTokenEndpoint,
+
+    // search endpoints
+    PostSearchEndpoint,
 
     // caches
     ElementCache,

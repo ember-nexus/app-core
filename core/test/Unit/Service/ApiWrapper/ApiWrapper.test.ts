@@ -20,6 +20,7 @@ import {
   PostIndexEndpoint,
   PutElementEndpoint,
 } from '../../../../src/Endpoint/Element/index.js';
+import { PostSearchEndpoint } from '../../../../src/Endpoint/Search/PostSearchEndpoint.js';
 import {
   DeleteTokenEndpoint,
   GetMeEndpoint,
@@ -50,6 +51,7 @@ test('create ApiWrapper from ServiceResolver', () => {
   serviceResolver.setService(PostTokenEndpoint.identifier, mock<PostTokenEndpoint>());
   serviceResolver.setService(GetTokenEndpoint.identifier, mock<GetTokenEndpoint>());
   serviceResolver.setService(DeleteTokenEndpoint.identifier, mock<DeleteTokenEndpoint>());
+  serviceResolver.setService(PostSearchEndpoint.identifier, mock<PostSearchEndpoint>());
   serviceResolver.setService(ElementCache.identifier, mock<ElementCache>());
   serviceResolver.setService(ElementChildrenCache.identifier, mock<ElementChildrenCache>());
   serviceResolver.setService(ElementParentsCache.identifier, mock<ElementParentsCache>());

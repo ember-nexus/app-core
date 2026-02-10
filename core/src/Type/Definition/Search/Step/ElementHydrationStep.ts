@@ -3,7 +3,7 @@ import { Uuid } from '../../Uuid.js';
 
 interface ElementHydrationStep extends Step {
   type: 'element-hydration';
-  query: {
+  query?: {
     elementIds: Uuid[] | string;
   };
 }
